@@ -27,5 +27,5 @@ Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
 5. Search and run "Select TypeScript version" -> "Use workspace version"
 
 cd tediProject
-  npm install
-  npm run dev
+    npm install
+    npm run dev

@@ -1,27 +1,41 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <div id="logo">
+    <h1>LinkedIn Project</h1>
+    <h3>By SDI1800056 and SDI1800000</h3>
+  </div>
+  <div id="form">
+    <welcomeForms />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
+import { defineComponent } from "vue";
+import welcomeForms  from './components/welcomeForms.vue'
 
 export default defineComponent({
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    welcomeForms,
+  },
+  setup(){
+
   }
-})
+});
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  background-color: rgb(158, 198, 211);
+}
+#form {
+  margin-left: 55%;
+  margin-top: 5%;
+}
+#logo {
+  margin-top: 80px;
+  margin-left: 150px;
+}
+#logo h3{
+  margin-left: 50px;
 }
 </style>
