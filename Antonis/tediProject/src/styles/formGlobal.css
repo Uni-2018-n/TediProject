@@ -9,7 +9,7 @@
   border-radius: 10px;
   margin-left: 20px;
   margin-right: 20px;
-  margin-top: 15px;
+  /* margin-top: 15px; */
 }
 .nonerror {
   margin-bottom: 30px;
@@ -43,6 +43,6 @@
   display: block;
   margin: 0;
   font-size: 16px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   color: red;
 }

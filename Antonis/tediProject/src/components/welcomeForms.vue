@@ -1,8 +1,8 @@
 <template>
   <div id="forms">
     <ul>
-      <li @click="flag = false">Sign in</li>
-      <li @click="flag = true">Register</li>
+      <li @click="flag = false" :class="{ focused: !flag }">Sign in</li>
+      <li @click="flag = true" :class="{ focused: flag }">Register</li>
     </ul>
     <div v-if="!flag" class="inside">
       <signInForm />
@@ -15,10 +15,11 @@
 
 <script>
 import { ref } from "@vue/reactivity";
+import { defineComponent } from "@vue/runtime-core";
 import signInForm from "./signInForm.vue";
 import signUpForm from "./signUpForm.vue";
 
-export default {
+export default defineComponent({
   name: "welcomeForms",
   components: {
     signInForm,
@@ -28,7 +29,7 @@ export default {
     const flag = ref(false);
     return { flag };
   },
-};
+});
 </script>
 
 <style>
@@ -45,7 +46,7 @@ export default {
 #forms ul {
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  /* margin-bottom: 0px; */
   margin-left: 30px;
   margin-top: 10px;
   padding-top: 10px;
@@ -54,6 +55,7 @@ export default {
   font-size: 30px;
   display: inline;
   cursor: pointer;
+  margin-bottom: 15px;
   margin-left: 1px;
   padding-right: 20px;
   padding-top: 10px;
@@ -63,5 +65,8 @@ export default {
 }
 #forms ul li:hover {
   background-color: rgb(211, 212, 212);
+}
+.focused {
+  border-color: rgb(109, 109, 109);
 }
 </style>
