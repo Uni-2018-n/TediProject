@@ -22,7 +22,7 @@
       <span id="errors" v-if="photoError">*Please select an image</span>
     </div>
     <div id="button">
-      <button @click="submit()">Sign in!</button>
+      <button @click="submit()">Register!</button>
     </div>
   </div>
 </template>
@@ -108,13 +108,28 @@ export default defineComponent({
 
     const submit = () => {
       if(fNameError.value || lNameError.value || PassError.value || emailError.value || vPassError.value || phoneNumberError.value || photoError.value){
-
+        console.log('test2')
       }else{
         blurfName();blurlName();blurPass();blurVPass();blurEmail();blurPhoneNumber();
         if(pass.value != vPass.value && !PassError.value){
           vPassErrorB.value = true
         }else{
           //send to server
+          console.log("test")
+          fetch('http://localhost:5000/users', {
+            method: 'POST',
+            body: JSON.stringify({
+              "firstname": fName,
+              "lastname": lName,
+              "email": email,
+              "password": pass,
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          })
+          .then(response => console.log(response))
+          .catch(error => console.log(error))
           //if server responded with email already inside
           // emailErrorB.value = true
         }
