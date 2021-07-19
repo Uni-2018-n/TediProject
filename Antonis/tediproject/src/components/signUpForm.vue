@@ -18,8 +18,6 @@
       <span id="errors" v-if="phoneNumberError">*Phone number field cant be empty</span>
       <!-- <span id="errors" v-if='errorFlag'>*Wrong phone number format</span> -->
 
-      <!-- <input @blur="blurPhoto" @change="selectedFile" :class="{ nonerror: !photoError }" type="file" accept="image/*"/> -->
-
       <input @change="selectedFile" @blur="blurPhoto" type="file" name="file" id="file" class="inputfile" accept="image/*" />
       <label for="file" id="fileLabel" :class="{ nonerror: !photoError }">Choose a file</label>
       <span id="fileName">{{ fileName }}</span>
@@ -132,6 +130,8 @@ export default defineComponent({
         if(pass.value != vPass.value && !PassError.value){
           vPassErrorB.value = true
         }else{
+          // const fd = new FormData();
+          // fd.append('photo', photo.value, photo.value.name)
           try {
             const response = await axios.post('localhost:5000/users', {
             // const response = await axios.post('https://jsonplaceholder.typicode.com/posts', {
@@ -139,6 +139,7 @@ export default defineComponent({
               "lastname": lName.value,
               "email": email.value,
               "password": pass.value,
+              // "photo": fd,
               // title: 'sftest',
               // body: 'bar',
               // userId: 1,
@@ -150,15 +151,19 @@ export default defineComponent({
           }catch (e){
             console.error(e)
           }
-
-
-          
         }
       }
     }
     const selectedFile = (event) => {
-      photo.value = event.target.files[0]
-      fileName.value = photo.value.name.substring(0,24)
+      if(event){
+        if(event.target.files[0].size > 50000){
+          console.log('error image more than 50k') //TODO
+        }else{
+          photo.value = event.target.files[0]
+          // console.log(photo.value)
+          fileName.value = photo.value.name.substring(0,24)
+        }
+      }
     }
     return { fName, lName, email, pass, vPass, phoneNumber, fileName, 
     fNameError, lNameError, PassError, emailError, emailErrorB, vPassError, vPassErrorB, phoneNumberError, photoError, 
