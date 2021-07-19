@@ -9,11 +9,12 @@
 </template>
 
 <script lang="ts">
+
 import { defineComponent } from "vue";
-import welcomeForms  from './components/welcomeForms.vue'
+import welcomeForms  from '../components/welcomeForms.vue'
 
 export default defineComponent({
-  name: "App",
+  name: "Home",
   components: {
     welcomeForms,
   },

@@ -18,13 +18,21 @@
       <span id="errors" v-if="phoneNumberError">*Phone number field cant be empty</span>
       <!-- <span id="errors" v-if='errorFlag'>*Wrong phone number format</span> -->
 
-      <input @blur="blurPhoto" @change="selectedFile" :class="{ nonerror: !photoError }" type="file" accept="image/*"/>
+      <!-- <input @blur="blurPhoto" @change="selectedFile" :class="{ nonerror: !photoError }" type="file" accept="image/*"/> -->
+
+      <input @change="selectedFile" @blur="blurPhoto" type="file" name="file" id="file" class="inputfile" accept="image/*" />
+      <label for="file" id="fileLabel" :class="{ nonerror: !photoError }">Choose a file</label>
+      <span id="fileName">{{ fileName }}</span>
       <span id="errors" v-if="photoError">*Please select an image</span>
     </div>
     <div id="button">
       <button @click="submit">Register</button>
     </div>
   </div>
+
+
+
+  
 </template>
 
 <script>
@@ -41,6 +49,7 @@ export default defineComponent({
     const vPass = ref("")
     const phoneNumber = ref("")
     const photo = ref(null)
+    const fileName = ref("")
 
     const fNameError = ref(false)
     const lNameError = ref(false)
@@ -149,8 +158,9 @@ export default defineComponent({
     }
     const selectedFile = (event) => {
       photo.value = event.target.files[0]
+      fileName.value = photo.value.name.substring(0,24)
     }
-    return { fName, lName, email, pass, vPass, phoneNumber, 
+    return { fName, lName, email, pass, vPass, phoneNumber, fileName, 
     fNameError, lNameError, PassError, emailError, emailErrorB, vPassError, vPassErrorB, phoneNumberError, photoError, 
     blurfName, blurlName, blurEmail, blurPass, blurVPass, blurPhoneNumber, blurPhoto, 
     submit, selectedFile };
@@ -160,4 +170,36 @@ export default defineComponent({
 
 <style scoped>
 @import "../styles/formGlobal.css";
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#fileLabel {
+  display: inline-block;
+  border: 2px solid #808080;
+  color: gray;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#fileName {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background-color: #f3f3f3;
+} 
+.inputfile + label {
+	cursor: pointer;
+}
 </style>
