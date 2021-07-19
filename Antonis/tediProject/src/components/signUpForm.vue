@@ -18,17 +18,18 @@
       <span id="errors" v-if="phoneNumberError">*Phone number field cant be empty</span>
       <!-- <span id="errors" v-if='errorFlag'>*Wrong phone number format</span> -->
 
-      <input @blur="blurPhoto" @change="selectedFile()" :class="{ nonerror: !photoError }" type="file" accept="image/*"/>
+      <input @blur="blurPhoto" @change="selectedFile" :class="{ nonerror: !photoError }" type="file" accept="image/*"/>
       <span id="errors" v-if="photoError">*Please select an image</span>
     </div>
     <div id="button">
-      <button @click="submit()">Register!</button>
+      <button @click="submit">Register</button>
     </div>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, watch } from "@vue/runtime-core"
+import axios from 'axios'
 
 export default defineComponent({
   name: "signInForm",
@@ -83,6 +84,12 @@ export default defineComponent({
       }
     };
 
+    const blurPhoto = () => {
+      if(!photo.value){
+        photoError.value = true;
+      }
+    }
+
 
     watch(fName, () => {
       fNameError.value = false
@@ -104,45 +111,48 @@ export default defineComponent({
     watch(phoneNumber, () => {
       phoneNumberError.value = false
     })
+    watch(photo, () => {
+      photoError.value = false
+    })
 
-
-    const submit = () => {
+    const submit = async () => {
+      blurfName();blurlName();blurPass();blurVPass();blurEmail();blurPhoneNumber();blurPhoto();
       if(fNameError.value || lNameError.value || PassError.value || emailError.value || vPassError.value || phoneNumberError.value || photoError.value){
-        console.log('test2')
+
       }else{
-        blurfName();blurlName();blurPass();blurVPass();blurEmail();blurPhoneNumber();
         if(pass.value != vPass.value && !PassError.value){
           vPassErrorB.value = true
         }else{
-          //send to server
-          console.log("test")
-          fetch('http://localhost:5000/users', {
-            method: 'POST',
-            body: JSON.stringify({
-              "firstname": fName,
-              "lastname": lName,
-              "email": email,
-              "password": pass,
-            }),
-            headers: {
-              'Content-type': 'application/json; charset=UTF-8',
-            },
-          })
-          .then(response => console.log(response))
-          .catch(error => console.log(error))
-          //if server responded with email already inside
-          // emailErrorB.value = true
+          try {
+            const response = await axios.post('localhost:5000/users', {
+            // const response = await axios.post('https://jsonplaceholder.typicode.com/posts', {
+              "firstname": fName.value,
+              "lastname": lName.value,
+              "email": email.value,
+              "password": pass.value,
+              // title: 'sftest',
+              // body: 'bar',
+              // userId: 1,
+            })
+            const data = response.data
+            console.log(data)
+            //if server responded with email already inside
+            // emailErrorB.value = true
+          }catch (e){
+            console.error(e)
+          }
+
+
+          
         }
       }
     }
     const selectedFile = (event) => {
-      // photo = event.target.files[0]
-
-      // console.log(event)
+      photo.value = event.target.files[0]
     }
     return { fName, lName, email, pass, vPass, phoneNumber, 
     fNameError, lNameError, PassError, emailError, emailErrorB, vPassError, vPassErrorB, phoneNumberError, photoError, 
-    blurfName, blurlName, blurEmail, blurPass, blurVPass, blurPhoneNumber, 
+    blurfName, blurlName, blurEmail, blurPass, blurVPass, blurPhoneNumber, blurPhoto, 
     submit, selectedFile };
   },
 });
