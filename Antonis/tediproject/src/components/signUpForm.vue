@@ -1,26 +1,26 @@
 <template>
   <div id="all">
     <div id="inputs">
-      <input v-model="fName" @blur="blurfName" :class="{ nonerror: !fNameError }" type="text" size="25" placeholder="First Name" /><br />
+      <input v-model="fName" @blur="blurfName" :class="{ nonerror: !fNameError }" type="text" size="25" placeholder="First Name" />
       <span id="errors" v-if="fNameError">*First name field cant be empty</span>
-      <input v-model="lName" @blur="blurlName" :class="{ nonerror: !lNameError }" type="text" size="25" placeholder="Last Name" /><br />
+      <input v-model="lName" @blur="blurlName" :class="{ nonerror: !lNameError }" type="text" size="25" placeholder="Last Name" />
       <span id="errors" v-if="lNameError">*Last name field cant be empty</span>
-      <input v-model="email" @blur="blurEmail" :class="{ nonerror: !emailError && !emailErrorB }" type="email" size="25" placeholder="Email" /><br />
+      <input v-model="email" @blur="blurEmail" :class="{ nonerror: !emailError && !emailErrorB }" type="email" size="25" placeholder="Email" />
       <span id="errors" v-if="emailError">*Email field cant be empty</span>
       <span id="errors" v-if='emailErrorB'>*Wrong email</span>
-      <input v-model="pass" @blur="blurPass" :class="{ nonerror: !PassError }" type="password" size="25" placeholder="Password" /><br />
+      <input v-model="pass" @blur="blurPass" :class="{ nonerror: !PassError }" type="password" size="25" placeholder="Password" />
       <span id="errors" v-if="PassError">*Password field cant be empty</span>
       <!-- <span id="errors" v-if='errorFlag'>*Use better password</span> -->
-      <input v-model="vPass" @blur="blurVPass" :class="{ nonerror: !vPassError && !vPassErrorB }" type="password" size="25" placeholder="Verify Password" /><br />
+      <input v-model="vPass" @blur="blurVPass" :class="{ nonerror: !vPassError && !vPassErrorB }" type="password" size="25" placeholder="Verify Password" />
       <span id="errors" v-if="vPassError">*Please verify the password</span>
       <span id="errors" v-if='vPassErrorB'>*Password and verified password are diffrent</span>
-      <input v-model="phoneNumber" @blur="blurPhoneNumber" :class="{ nonerror: !phoneNumberError }" type="tel" size="25" placeholder="Phone Number" /><br />
+      <input v-model="phoneNumber" @blur="blurPhoneNumber" :class="{ nonerror: !phoneNumberError }" type="tel" size="25" placeholder="Phone Number" />
       <span id="errors" v-if="phoneNumberError">*Phone number field cant be empty</span>
       <!-- <span id="errors" v-if='errorFlag'>*Wrong phone number format</span> -->
 
       <input @change="selectedFile" @blur="blurPhoto" type="file" name="file" id="file" class="inputfile" accept="image/*" />
       <label for="file" id="fileLabel" :class="{ nonerror: !photoError }">Choose a file</label>
-      <span id="fileName">{{ fileName }}</span>
+      <span id="fileName" v-if="photo" :title="photo.name">{{ fileName }}</span>
       <span id="errors" v-if="photoError">*Please select an image</span>
     </div>
     <div id="button">
@@ -156,16 +156,16 @@ export default defineComponent({
     }
     const selectedFile = (event) => {
       if(event){
-        if(event.target.files[0].size > 50000){
+        if(event.target.files[0].size > 100000){
           console.log('error image more than 50k') //TODO
         }else{
           photo.value = event.target.files[0]
           // console.log(photo.value)
-          fileName.value = photo.value.name.substring(0,24)
+          fileName.value = photo.value.name.substring(0,16)
         }
       }
     }
-    return { fName, lName, email, pass, vPass, phoneNumber, fileName, 
+    return { fName, lName, email, pass, vPass, phoneNumber, fileName, photo, 
     fNameError, lNameError, PassError, emailError, emailErrorB, vPassError, vPassErrorB, phoneNumberError, photoError, 
     blurfName, blurlName, blurEmail, blurPass, blurVPass, blurPhoneNumber, blurPhoto, 
     submit, selectedFile };
@@ -182,6 +182,7 @@ export default defineComponent({
 	opacity: 0;
 	overflow: hidden;
 	position: absolute;
+  right: 0%;
 	z-index: -1;
 }
 

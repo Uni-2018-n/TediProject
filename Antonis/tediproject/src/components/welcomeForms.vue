@@ -37,11 +37,13 @@ export default defineComponent({
   margin-bottom: 20px;/*todo move this to global form css*/
 }
 #forms {
-  display: inline-block;
+  /* display: block; */
   border-style: solid;
   border-radius: 40px;
   border-color: rgb(247, 247, 247);
   background-color: rgb(240, 240, 240);
+  max-width: 350px;
+  min-width: 350px;
 }
 #forms ul {
   list-style-type: none;

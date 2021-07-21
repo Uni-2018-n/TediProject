@@ -4,18 +4,21 @@
   border-color: rgb(64, 64, 221);
   border: 0 0 5px 0;
   padding-top: 20px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 3%;
+  padding-right: 3%;
   border-radius: 10px;
   margin-left: 20px;
   margin-right: 20px;
+  max-width: fit-content;
 }
 .nonerror {
   margin-bottom: 30px;
 }
 #inputs input {
+  box-sizing: border-box;
   padding: 4px;
   font-size: 20px;
+  width: 100%;
 }
 #button {
   display: flex;

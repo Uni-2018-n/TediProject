@@ -1,9 +1,9 @@
 <template>
   <div id="all">
     <div id="inputs">
-      <input v-model="email" @blur="blurEmail" :class="{ nonerror: !emailError }" type="email" size="25" placeholder="Email" /><br />
+      <input v-model="email" @blur="blurEmail" :class="{ nonerror: !emailError }" type="email" placeholder="Email" />
       <span id="errors" v-if="emailError">*Email address cant be empty</span>
-      <input v-model="pass" @blur="blurPass" type="password" :class="{ nonerror: !passErrorA && !passErrorB }" size="25" placeholder="Password" /><br />
+      <input v-model="pass" @blur="blurPass" type="password" :class="{ nonerror: !passErrorA && !passErrorB }" placeholder="Password" />
       <span id="errors" v-if="passErrorA">*Password cant be empty</span>
       <span id="errors" v-if="passErrorB">*Wrong email or password</span>
     </div>
