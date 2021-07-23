@@ -33,9 +33,6 @@ export default defineComponent({
 </script>
 
 <style>
-.inside {
-  margin-bottom: 20px;/*todo move this to global form css*/
-}
 #forms {
   /* display: block; */
   border-style: solid;

@@ -31,18 +31,56 @@ export default defineComponent({
 <style>
 body {
   margin: 0;
-  background-color: rgb(158, 198, 211);
+  /* background-color: rgb(158, 198, 211); */
 }
+
+body {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 30s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
 #form {
   margin-left: 55%;
-  margin-top: 5%;
+  margin-top: 1%;
   margin-right: 10%;
 }
 #logo {
-  margin-top: 80px;
+  margin-top: 1%;
   margin-left: 150px;
 }
 #logo h3 {
   margin-left: 50px;
+}
+
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 100px; /*change 100 for more space of footer*/
+    /* bottom = footer height */
+    padding: 25px;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
 </style>

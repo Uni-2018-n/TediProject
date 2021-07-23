@@ -1,11 +1,11 @@
 <template>
-  <div id="general">
+  <div id="general" class="disable-select">
     <ul>
       <div class="btn">
-        <li class="wborders">copyright</li>
+        <li class="wborders">©copyright</li>
       </div>
       <div class="btn">
-        <li class="wborders">terms of use</li>
+        <li @click="termsFlag=true;overflow=true" class="wborders">terms of use</li>
       </div>
       <div class="btn">
         <li class="wborders">privacy notice</li>
@@ -18,25 +18,44 @@
       </div>
     </ul>
   </div>
+  <terms v-if="termsFlag" :termTriger="() => termTriger()" />
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent, ref } from "@vue/runtime-core";
+import terms from "./terms.vue";
 
 export default defineComponent({
   name: "Footer",
-  setup() {},
+  components: {
+    terms,
+  },
+  setup() {
+    const termsFlag = ref(false);
+
+    const termTriger = () => {
+      termsFlag.value = false;
+    }
+
+    return { termsFlag, termTriger }
+  },
 });
 </script>
 
 <style>
+.disable-select {
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
+
 #general {
   display: block;
-  margin-top: 5%;
-  padding-top: 2%;
-  padding-bottom: 2%;
+  /* margin-top: 5%; */
+  padding-top: 1%;
+  padding-bottom: 1%;
   padding-left: 5%;
-  /* padding-right: 20%;  */
   background-color: rgb(0, 132, 255);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -56,7 +75,7 @@ export default defineComponent({
 }
 
 .btn {
-    margin-right: 10px;
+  margin-right: 10px;
   padding: 10px;
   border-style: none none none solid;
   border-color: rgb(150, 150, 150);
@@ -68,6 +87,8 @@ export default defineComponent({
   /* height: 30px; */
   /* display: block; */
 
+  font-size: 15px;
+  
   background: linear-gradient(
     to right,
     rgb(150, 150, 150) 50%,
