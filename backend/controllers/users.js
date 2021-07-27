@@ -24,6 +24,7 @@ const getUser = (req, res) => {
 }
 
 const createUser = (req, res) => {
+    console.log(req.file);
     let securePassword;
 
     const used = NewUser.findOne({ email: req.body.email })
@@ -38,7 +39,8 @@ const createUser = (req, res) => {
                         lastname: req.body.lastname,
                         email: req.body.email,
                         number: req.body.number,
-                        password: securePassword
+                        password: securePassword,
+                        UserImage: req.file.path
                     });
                 
                     post.save()
