@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, watch } from "@vue/runtime-core";
 
 export default defineComponent({
@@ -24,7 +24,7 @@ export default defineComponent({
     const emailError = ref(false)
     const passErrorA = ref(false)
     const passErrorB = ref(false)
-    const error = (t) => {
+    const error = (t: Number) => {
       if (t == 0) {
         emailError.value = true
       } else if (t == 1) {

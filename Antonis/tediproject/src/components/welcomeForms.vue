@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from "@vue/reactivity";
 import { defineComponent } from "@vue/runtime-core";
 import signInForm from "./signInForm.vue";
@@ -32,7 +32,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 #forms {
   /* display: block; */
   border-style: solid;

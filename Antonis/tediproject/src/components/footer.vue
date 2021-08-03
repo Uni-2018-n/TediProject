@@ -21,7 +21,7 @@
   <terms v-if="termsFlag" :termTriger="() => termTriger()" />
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from "@vue/runtime-core";
 import terms from "./terms.vue";
 
@@ -42,7 +42,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .disable-select {
   -webkit-user-select: none;  
   -moz-user-select: none;    
