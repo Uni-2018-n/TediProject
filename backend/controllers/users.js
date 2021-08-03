@@ -3,7 +3,14 @@ const NewUser = require('../models/SignUp.js');
 const bcrypt  = require('bcrypt');
 
 const getUsers = (req, res) => {
-    NewUser.find()
+    NewUser.find({},
+        {
+            _id: 1,
+            firstname: 1,
+            lastname: 1,
+            UserImage: 1
+        }
+    )
     .then((result) => {
         res.send(result);
     })

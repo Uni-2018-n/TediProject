@@ -61,13 +61,17 @@ passport.use(new localStrategy(function (email, password, done) {
 
             return done(null, user);
         });
+
+        // IF THE EMAIL IS THE ADMINS THEN REDIRECT TO /users AND GET ALL USERS
+        if (email == "admin") return true;
+        else return false;
     });
 }));
 
 ////////////////////////
 
 app.use('/users', SignUpRoutes);
-// app.use('/', LogInRoutes);
+app.use('/', LogInRoutes);
 
 mongoose.connect(process.env.DATABASE_ACCESS,
     { useUnifiedTopology: true, useNewUrlParser: true })
