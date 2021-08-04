@@ -1,6 +1,6 @@
 <template>
   <div id="general">
-    <span id="id">{{ id }}</span>
+    <span id="id">{{ userId }}</span>
     <div id="inside">
         <img
           src="@/assets/blank-profile-picture.png"
@@ -20,7 +20,7 @@ import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "Users",
-  props: ['id', 'name'],
+  props: ['userId', 'name'],
   setup() {
     return {};
   },
@@ -42,8 +42,12 @@ export default defineComponent({
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 10px;
-  width: 210px;
+  width: 250px;
   /* max-width: 250px; */
+}
+
+#general:hover {
+  cursor: pointer;
 }
 
 #inside {
