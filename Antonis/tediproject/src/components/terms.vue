@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
@@ -42,7 +42,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 #external {
   background-color: rgb(0, 0, 0, 0.2);
   position: fixed;

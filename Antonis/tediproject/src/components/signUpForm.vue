@@ -33,8 +33,9 @@
   
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, watch } from "@vue/runtime-core"
+import { InputHTMLAttributes } from "@vue/runtime-dom";
 import axios from 'axios'
 
 export default defineComponent({
@@ -46,7 +47,7 @@ export default defineComponent({
     const pass = ref("")
     const vPass = ref("")
     const phoneNumber = ref("")
-    const photo = ref(null)
+    const photo = ref<File>()
     const fileName = ref("")
 
     const fNameError = ref(false)
@@ -154,12 +155,13 @@ export default defineComponent({
         }
       }
     }
-    const selectedFile = (event) => {
+    const selectedFile = (event: Event) => {
       if(event){
-        if(event.target.files[0].size > 100000){
+        if(((event.target as HTMLInputElement).files as FileList)[0].size > 100000){
+
           console.log('error image more than 50k') //TODO
         }else{
-          photo.value = event.target.files[0]
+          photo.value = ((event.target as HTMLInputElement).files as FileList)[0]
           // console.log(photo.value)
           fileName.value = photo.value.name.substring(0,16)
         }
