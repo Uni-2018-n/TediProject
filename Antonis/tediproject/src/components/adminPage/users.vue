@@ -45,28 +45,23 @@ export default defineComponent({
   width: 250px;
   /* max-width: 250px; */
 }
-
 #general:hover {
   cursor: pointer;
 }
-
 #inside {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 #inside img {
   vertical-align: middle;
   border-style: solid;
   border-color: transparent;
   border-radius: 10px;
 }
-
 #id {
   color: rgb(143, 143, 143);
   font-size: 12px;
-  margin-left: 20px;
 }
 #text {
   padding-left: 10px;

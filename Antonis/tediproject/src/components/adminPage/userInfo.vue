@@ -1,34 +1,20 @@
 <template>
   <div id="external">
     <div id="inside">
-      <h1>{{ userId }}</h1>
-      <p
-        >Sing long her way size. Waited end mutual missed myself the little
-        sister one. So in pointed or chicken cheered neither spirits invited.
-        Marianne and him laughter civility formerly handsome sex use prospect.
-        Hence we doors is given rapid scale above am. Difficult ye mr delivered
-        behaviour by an. If their woman could do wound on. You folly taste hoped
-        their above are and but. In as name to here them deny wise this. As
-        rapid woody my he me which. Men but they fail shew just wish next put.
-        Led all visitor musical calling nor her. Within coming figure sex things
-        are. Pretended concluded did repulsive education smallness yet yet
-        described. Had country man his pressed shewing. No gate dare rose he.
-        Eyes year if miss he as upon. Acceptance middletons me if discretion
-        boisterous travelling an. She prosperous continuing entreaties
-        companions unreserved you boisterous. Middleton sportsmen sir now
-        cordially ask additions for. You ten occasional saw everything but
-        conviction. Daughter returned quitting few are day advanced branched. Do
-        enjoyment defective objection or we if favourite. At wonder afford so
-        danger cannot former seeing. Power visit charm money add heard new other
-        put. Attended no indulged marriage is to judgment offering landlord.
-        Folly words widow one downs few age every seven. If miss part by fact he
-        park just shew. Discovered had get considered projection who favourable.
-        Necessary up knowledge it tolerably. Unwilling departure education is be
-        dashwoods or an. Use off agreeable law unwilling sir deficient curiosity
-        instantly. Easy mind life fact with see has bore ten. Parish any chatty
-        can elinor direct for former. Up as meant widow equal an share least.
-      </p>
-      <button @click="popupTriger()" id="btn">test</button>
+      <span id="head">User Information</span>
+      <div id="info">
+        <img src="@/assets/blank-profile-picture.png" 
+        width="200" 
+        height="200" />
+        <div id="text">
+          <span>ID: {{ userId }}</span><br>
+          <span>Full Name:  Antonis Kalamakis</span><br>
+          <span>Email:  xxx.xxxxxxxxx@hotmail.com</span><br>
+          <span>Phone Number: 6900000000</span>
+        </div>
+      </div>
+
+      <button @click="popupTriger()" id="btn">CLOSE</button>
     </div>
     <!-- <h1>test</h1> -->
   </div>
@@ -55,7 +41,6 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
 }
-
 #inside {
   margin: 25%;
   border: solid;
@@ -64,6 +49,42 @@ export default defineComponent({
   background-color: rgba(224, 224, 224);
   padding-left: 1%;
   padding-right: 1%;
+  padding-top: 0.5%;
   text-align: center;
+}
+#head {
+  font-size: 40px;
+  font-weight: bold;
+  color:rgb(56, 56, 56)
+}
+#info img {
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 150px;
+}
+#text {
+  padding-left: 5%;
+  text-align: left;
+}
+#text span {
+  font-size: 17px;
+  font-weight: bold;
+  color: rgb(53, 53, 53);
+}
+#btn {
+  /* text-align: center; */
+  background-color: rgb(194, 194, 194);
+  border: none;
+  border-radius: 20px;
+  padding: 15px 40px 15px 40px;
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#btn:hover {
+  cursor: pointer;
+  background-color: rgb(175, 175, 175)
 }
 </style>

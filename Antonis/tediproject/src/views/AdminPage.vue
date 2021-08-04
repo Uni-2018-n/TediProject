@@ -1,12 +1,10 @@
 <template>
   <div id="genera">
-    <div id="inside">
-      <ul>
-        <li v-for="item in items" :key="item.id">
-          <Users @click="idprop=item.id;flag=true;" :userId="item.id" :name="item.name" />
-        </li>
-      </ul>
-    </div>
+    <ul>
+      <li v-for="item in items" :key="item.id">
+        <Users @click="idprop=item.id;flag=true;" :userId="item.id" :name="item.name" />
+      </li>
+    </ul>
   </div>
   <footer>
     <Footer />
@@ -67,10 +65,7 @@ export default defineComponent({
 </script>
 <style scoped>
 #genera {
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
-  /* margin-left: 10%; */
+  text-align: center;
 }
 ul {
   list-style-type: none;
@@ -78,9 +73,6 @@ ul {
   column-gap: 5px;
   row-gap: 5px;
   grid-template-columns: 1fr 1fr 1fr;
-}
-#inside {
-  
 }
 
 .top {
