@@ -20,10 +20,6 @@ const NewUser = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    },
-    UserImage: {
-        type: String,
-        require: false
     }
 }, {timestamps: true});
 
