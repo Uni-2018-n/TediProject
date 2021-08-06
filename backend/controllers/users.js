@@ -2,17 +2,6 @@
 const NewUser           = require('../models/SignUp.js');
 const UploadController  = require('../controllers/Upload.js');
 const bcrypt            = require('bcrypt');
-const mongoose          = require('mongoose');
-const Grid              = require('gridfs-stream');
-
-// Init gfs
-let gfs;
-
-mongoose.connection.once('open', () => {
-  // Init stream
-  gfs = Grid(mongoose.connection.db, mongoose.mongo);
-  gfs.collection('uploads');
-})
 
 const getUsers = async (req, res) => {
     try {
@@ -36,7 +25,7 @@ const getUsers = async (req, res) => {
         //             const readStream = gfs.createReadStream(file.filename);
         //             readStream.pipe(res)
         //             // return res.json(file)
-        //             // nizar = await UploadController.getUsersFiles(temp)
+        //             await UploadController.getUsersFiles(temp)
         //             console.log(temp);
         //         }
         //     } catch (error) {

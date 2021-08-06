@@ -14,10 +14,9 @@ mongoose.connection.once('open', () => {
 // @desc  Uploads file to DB
 const uploadFile = (req, res) => {
   if (req.file === undefined) return res.send("you must select a file.");
-  const imgUrl = `https://localhost:8000/upload/${req.file.filename}`;
+  const imgUrl = `https://localhost:8000/upload/files/${req.file.filename}`;
   return res.send(imgUrl);
   // res.json({file: req.file});
-  // res.redirect('/');
 };
 
 // @route GET /files/:filename
