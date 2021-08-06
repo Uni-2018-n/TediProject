@@ -1,22 +1,53 @@
 // import { v4 as uuidv4 } from 'uuid';
-const NewUser = require('../models/SignUp.js');
-const bcrypt  = require('bcrypt');
+const NewUser           = require('../models/SignUp.js');
+const UploadController  = require('../controllers/Upload.js');
+const bcrypt            = require('bcrypt');
+const mongoose          = require('mongoose');
+const Grid              = require('gridfs-stream');
 
-const getUsers = (req, res) => {
-    NewUser.find({},
-        {
-            _id: 1,
-            firstname: 1,
-            lastname: 1,
-            UserImage: 1
-        }
-    )
-    .then((result) => {
+// Init gfs
+let gfs;
+
+mongoose.connection.once('open', () => {
+  // Init stream
+  gfs = Grid(mongoose.connection.db, mongoose.mongo);
+  gfs.collection('uploads');
+})
+
+const getUsers = async (req, res) => {
+    try {
+        const result = await NewUser.find({},
+            {
+                _id: 1,
+                firstname: 1,
+                lastname: 1,
+                ProfilePic: 1
+            }
+        )
+
+        // result.forEach( async function(table) {
+        //     try {
+        //         if (table.ProfilePic) {
+        //             temp = {filename: table.ProfilePic}
+                        
+        //             console.log(table.ProfilePic);
+        //             const file = await gfs.files.findOne({ filename: table.ProfilePic });
+        //             // File exists
+        //             const readStream = gfs.createReadStream(file.filename);
+        //             readStream.pipe(res)
+        //             // return res.json(file)
+        //             // nizar = await UploadController.getUsersFiles(temp)
+        //             console.log(temp);
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // });
+
         res.send(result);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 const getUser = (req, res) => {

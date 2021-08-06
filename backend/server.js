@@ -1,6 +1,10 @@
 const express		 = require('express');
 const session        = require('express-session');
 // const hbs         = require('express-handlebars');
+const path           = require('path');
+const crypto         = require('crypto');
+const mongoose       = require('mongoose');
+const Grid           = require('gridfs-stream');
 const cors           = require('cors');
 const passport       = require('passport');
 const localStrategy  = require('passport-local');
@@ -16,6 +20,7 @@ const options = {
 
 const methodOverride = require('method-override');
 
+const connection     = require('./db.js');
 const UserInDb       = require('./models/SignUp.js');
 const LogInRoutes    = require('./routes/LogIn.js');
 const SignUpRoutes   = require('./routes/SignUp.js');
@@ -23,11 +28,23 @@ const UploadRoutes   = require('./routes/Uploads.js');
 
 const app = express();
 
+// Connect to db
+connection();
+
+// Init gfs
+let gfs;
+
+mongoose.connection.once('open', () => {
+  // Init stream
+  gfs = Grid(mongoose.connection.db, mongoose.mongo);
+  gfs.collection('uploads');
+});
+
 // Middleware
 // app.engine('hbs', hbs({ extname: '.hbs' }));
-app.use(methodOverride('_method'));
-app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));
+// app.use(methodOverride('_method'));
+// app.set('view engine', 'ejs');
+// app.use(express.static(__dirname + '/public'));
 // app.use(session({
 //     secret: "verygoodsecret",
 //     resave: false,
@@ -76,7 +93,8 @@ app.use('/users', SignUpRoutes);
 app.use('/upload', UploadRoutes);
 
 app.use('/', (req, res) => {
-    res.render('index');
+    res.send('hello');
+    // res.render('index');
 });
 
 https.createServer(options, app).listen(8000);

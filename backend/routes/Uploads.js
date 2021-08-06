@@ -1,5 +1,6 @@
 const express			= require('express');
 const UploadController  = require('../controllers/Upload.js');
+const upload            = require('../middleware/upload.js');
 
 const router  = express.Router();
 
@@ -7,11 +8,11 @@ const router  = express.Router();
 
 router.get('/files', UploadController.getFiles);
 
-router.post('/', UploadController.upload.single('file'), UploadController.uploadFile);
+router.post('/', upload.single('file'), UploadController.uploadFile);
 
-router.get('/files/:md5', UploadController.getUsersFiles);
+router.get('/files/:filename', UploadController.getUsersFiles);
 
-// router.delete('/:id', UserController.deleteUser);
+router.delete('/files/:filename', UploadController.deleteFile);
 
 // router.patch('/:id', UserController.updateUser);
 
