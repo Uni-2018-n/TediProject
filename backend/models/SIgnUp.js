@@ -21,10 +21,11 @@ const NewUser = new mongoose.Schema({
         type: String,
         required: true
     },
-    UserImage: {
+    ProfilePic: {
         type: String,
-        require: false
+        required: false
     }
+    // Add every file necessary later
 }, {timestamps: true});
 
 const model = mongoose.model('NewUser', NewUser);

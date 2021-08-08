@@ -1,37 +1,56 @@
-const express			= require('express');
-const session           = require('express-session');
-const hbs               = require('express-handlebars');
-const mongoose          = require('mongoose');
-const dotenv            = require('dotenv');
-const cors              = require('cors');
-const passport          = require('passport');
-const localStrategy     = require('passport-local');
-const bcrypt            = require('bcrypt');
-const https             = require('https');
-const fs                = require('fs');
+const express		 = require('express');
+const session        = require('express-session');
+// const hbs         = require('express-handlebars');
+const path           = require('path');
+const crypto         = require('crypto');
+const mongoose       = require('mongoose');
+const Grid           = require('gridfs-stream');
+const cors           = require('cors');
+const passport       = require('passport');
+const localStrategy  = require('passport-local');
+const bcrypt         = require('bcrypt');
 
+const https          = require('https');
+const fs             = require('fs');
+const { connect }    = require('http2');
 const options = {
-  key: fs.readFileSync('cert/key.pem'),
-  cert: fs.readFileSync('cert/cert.pem')
+    key: fs.readFileSync('cert/key.pem'),
+    cert: fs.readFileSync('cert/cert.pem')
 };
 
-const UserInDb          = require('./models/SignUp.js');
-const LogInRoutes       = require('./routes/LogIn.js');
-const SignUpRoutes      = require('./routes/SignUp.js');
+const methodOverride = require('method-override');
+
+const connection    = require('./db.js');
+const UserInDb      = require('./models/SignUp.js');
+const LogInRoutes   = require('./routes/LogIn.js');
+const SignUpRoutes  = require('./routes/SignUp.js');
+const UploadRoutes  = require('./routes/Uploads.js');
+const PostsRoutes   = require('./routes/Posts.js');
 
 const app = express();
-const PORT = 5000;
-dotenv.config();
+
+// Connect to db
+connection();
+
+// Init gfs
+let gfs;
+
+mongoose.connection.once('open', () => {
+  // Init stream
+  gfs = Grid(mongoose.connection.db, mongoose.mongo);
+  gfs.collection('uploads');
+});
 
 // Middleware
-app.engine('hbs', hbs({ extname: '.hbs' }));
-app.set('view engine', 'hbs');
-app.use(express.static(__dirname + '/public'));
-app.use(session({
-    secret: "verygoodsecret",
-    resave: false,
-    saveUninitialized: true
-}));
+// app.engine('hbs', hbs({ extname: '.hbs' }));
+// app.use(methodOverride('_method'));
+// app.set('view engine', 'ejs');
+// app.use(express.static(__dirname + '/public'));
+// app.use(session({
+//     secret: "verygoodsecret",
+//     resave: false,
+//     saveUninitialized: true
+// }));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
@@ -71,18 +90,13 @@ passport.use(new localStrategy(function (email, password, done) {
 ////////////////////////
 
 app.use('/users', SignUpRoutes);
-app.use('/', LogInRoutes);
+// app.use('/', LogInRoutes);
+app.use('/upload', UploadRoutes);
+app.use('/posts', PostsRoutes);
 
-mongoose.connect(process.env.DATABASE_ACCESS,
-    { useUnifiedTopology: true, useNewUrlParser: true })
-    .then(() => {
-    console.log("Connected to the database!");
-    // Listen to requests when connection to db is established
-    // app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));
-    https.createServer(options, app).listen(8000);
-    })
-    .catch(err => {
-    console.log("Cannot connect to the database!", err);
-    process.exit();
+app.use('/', (req, res) => {
+    res.send('hello');
+    // res.render('index');
 });
 
+https.createServer(options, app).listen(8000);
