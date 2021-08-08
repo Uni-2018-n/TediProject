@@ -20,11 +20,12 @@ const options = {
 
 const methodOverride = require('method-override');
 
-const connection     = require('./db.js');
-const UserInDb       = require('./models/SignUp.js');
-const LogInRoutes    = require('./routes/LogIn.js');
-const SignUpRoutes   = require('./routes/SignUp.js');
-const UploadRoutes   = require('./routes/Uploads.js');
+const connection    = require('./db.js');
+const UserInDb      = require('./models/SignUp.js');
+const LogInRoutes   = require('./routes/LogIn.js');
+const SignUpRoutes  = require('./routes/SignUp.js');
+const UploadRoutes  = require('./routes/Uploads.js');
+const PostsRoutes   = require('./routes/Posts.js');
 
 const app = express();
 
@@ -91,6 +92,7 @@ passport.use(new localStrategy(function (email, password, done) {
 app.use('/users', SignUpRoutes);
 // app.use('/', LogInRoutes);
 app.use('/upload', UploadRoutes);
+app.use('/posts', PostsRoutes);
 
 app.use('/', (req, res) => {
     res.send('hello');

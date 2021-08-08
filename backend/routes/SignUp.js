@@ -1,6 +1,5 @@
 const express			= require('express');
 const UserController    = require('../controllers/users.js');
-const UploadController  = require('../controllers/Upload.js');
 const upload            = require('../middleware/upload.js');
 const dotenv            = require('dotenv');
 dotenv.config();
