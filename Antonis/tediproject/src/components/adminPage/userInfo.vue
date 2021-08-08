@@ -7,10 +7,24 @@
         width="200" 
         height="200" />
         <div id="text">
-          <span>ID: {{ userId }}</span><br>
-          <span>Full Name:  Antonis Kalamakis</span><br>
-          <span>Email:  xxx.xxxxxxxxx@hotmail.com</span><br>
-          <span>Phone Number: 6900000000</span>
+          <ul>
+            <li>
+              <label>ID:</label>
+              <span>{{ userId }}</span>
+            </li>
+            <li>
+              <label>Full Name:</label>
+              <span>Antonis Kalamakis</span>
+            </li>
+            <li>
+              <label>Email:</label> 
+              <span>xxx.xxxxxxxx@hotmail.com</span>
+            </li>
+            <li>
+              <label>Phone Number:</label>
+              <span>690000000</span>
+            </li>
+          </ul>
         </div>
       </div>
 
@@ -63,13 +77,23 @@ export default defineComponent({
   border-radius: 150px;
 }
 #text {
-  padding-left: 5%;
+  /* padding-left: 5%; */
   text-align: left;
 }
-#text span {
+#text ul {
+  list-style-type: none;
+  display: table;
+  padding: 0;
+  border-spacing: 5px;
+}
+#text li {
+  display: table-row;
+}
+#text label, span {
   font-size: 17px;
   font-weight: bold;
   color: rgb(53, 53, 53);
+  display: table-cell;
 }
 #btn {
   /* text-align: center; */

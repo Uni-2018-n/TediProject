@@ -1,10 +1,15 @@
 <template>
-  <div id="genera">
-    <ul>
-      <li v-for="item in items" :key="item.id">
-        <Users @click="idprop=item.id;flag=true;" :userId="item.id" :name="item.name" />
-      </li>
-    </ul>
+  <div class="outer">
+    <div id="top">
+      <userSearch />
+    </div>
+    <div id="genera">
+      <ul>
+        <li v-for="item in items" :key="item.id">
+          <Users @click="idprop=item.id;flag=true;" :userId="item.id" :name="item.name" />
+        </li>
+      </ul>
+    </div>
   </div>
   <footer>
     <Footer />
@@ -17,6 +22,7 @@ import { defineComponent, ref } from "@vue/runtime-core";
 import Footer from "../components/footer.vue";
 import Users from "../components/adminPage/users.vue";
 import userInfo from "../components/adminPage/userInfo.vue"
+import userSearch from "../components/adminPage/userSearch.vue"
 
 export default defineComponent({
   name: "AdminPage",
@@ -24,6 +30,8 @@ export default defineComponent({
     Footer,
     Users,
     userInfo,
+    userSearch,
+
   },
   setup() {
     const items = [
@@ -64,6 +72,10 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.outer {
+  display: flex;
+  flex-direction: column;
+}
 #genera {
   text-align: center;
 }
@@ -73,10 +85,5 @@ ul {
   column-gap: 5px;
   row-gap: 5px;
   grid-template-columns: 1fr 1fr 1fr;
-}
-
-.top {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
 }
 </style>
