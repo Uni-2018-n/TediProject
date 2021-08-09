@@ -1,5 +1,5 @@
 <template>
-  <div id="general">
+  <div class="general" :class="{ selected: selected }">
     <span id="id">{{ userId }}</span>
     <div id="inside">
         <img
@@ -20,7 +20,7 @@ import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "Users",
-  props: ['userId', 'name'],
+  props: ['userId', 'name', 'selected'],
   setup() {
     return {};
   },
@@ -28,7 +28,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#general {
+.general {
   background-color: white;
   display: inline-block;
   border-bottom: solid;
@@ -44,8 +44,12 @@ export default defineComponent({
   padding-bottom: 10px;
   width: 250px;
   /* max-width: 250px; */
+  user-select: none;
 }
-#general:hover {
+.selected {
+  background-color: rgb(65, 209, 214);
+}
+.general:hover {
   cursor: pointer;
 }
 #inside {

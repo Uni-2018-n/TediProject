@@ -1,19 +1,19 @@
 <template>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <div class="searchBox">
-        <input class="searchInput" type="search" name="q" placeholder="Type to search...">
+        <input class="searchInput" type="search" name="q" v-model="query.text" placeholder="Type to search...">
         <button class="searchButton" type="submit">
-            <i class="material-icons"> search </i>
+            <i @click="updateQuery(query)" class="material-icons"> search </i>
         </button>
     </div>
     <div class="container">
         <ul>
             <li>
-                <input type=radio name="searchOpt" id="radio1" checked>
+                <input type=radio name="searchOpt" value="true" v-model="query.bool" id="radio1" checked>
                 <label for="radio1">ID</label>
             </li>
             <li>
-                <input type=radio name="searchOpt" id="radio2">
+                <input type=radio name="searchOpt" value="false" v-model="query.bool" id="radio2">
                 <label for="radio2">Name</label>
             </li>
         </ul>
@@ -21,13 +21,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent, ref } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "userSearch",
+  props: ["updateQuery", ],
   components: {},
   setup() {
-    return {};
+      const query = ref({bool: true});
+
+    return { query};
   },
 });
 </script>
@@ -102,7 +105,8 @@ export default defineComponent({
     border-style: none none solid none;
     /* border: solid; */
     border-width: 2px;
-    border-color: rgb(201, 201, 201);
+    border-color: white;
+
     padding: 11px;
     display: block;
     width: 100%;
@@ -113,7 +117,7 @@ export default defineComponent({
 
 }
 .container input:checked + label {
-    border-color: white;
+    border-color: rgb(201, 201, 201);
 }
 .container label:hover {
     background-color: rgba(0, 0, 0, 0.226);
