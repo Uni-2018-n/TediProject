@@ -108,6 +108,7 @@ export default defineComponent({
 .outer {
   display: flex;
   flex-direction: column;
+  margin: 25px;
 }
 #genera {
   text-align: center;
