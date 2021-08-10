@@ -36,7 +36,7 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
     Posts.find({author: req.params.id})
     .then(result => res.json(result))
-    .catch(err => res.status(404).json({nopostfound: 'This User has no posts'}));
+    .catch(err => res.status(404).json({post: 'This User has no posts'}));
 })
 
 // @dec Delete all Users Post
@@ -102,9 +102,23 @@ router.post('/comment/:id', (req, res) => {
       Post.comments.push(newComment);
       Post.save().then(Post => res.json(Post))
     })
-    .catch(err => res.status(404).json({postnotfound: 'No post found'}));
+    .catch(err => res.status(404).json({post: 'No post found'}));
 })
 
 // @desc Delete a comment on a Users Post
+router.delete('/comment/:comment_id/:Post_id', (req, res) => {
+    Posts.findById({_id: req.params.Post_id})
+    .then(Post => {
+        if (Post.comments.filter(user_comment => user_comment._id.toString() === req.params.comment_id).length === 0) {
+            return res.status(404).json({post: 'Comment not found'})
+        }
+        
+        const Index = Post.comments.map(item => item._id.toString()).indexOf(req.params.comment_id);
+
+        // Splice it out of the array and save the edited Post
+        Post.comments.splice(Index, 1);
+        Post.save().then(Post => res.json(Post));
+    }).catch(err => res.status(404).json({post: 'Post not found'}));
+})
 
 module.exports = router;
