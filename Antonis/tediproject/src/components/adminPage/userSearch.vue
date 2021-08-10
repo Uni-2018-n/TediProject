@@ -1,11 +1,5 @@
 <template>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <div class="searchBox">
-        <input class="searchInput" type="search" name="q" v-model="query.text" placeholder="Type to search...">
-        <button class="searchButton" type="submit">
-            <i @click="updateQuery(query)" class="material-icons"> search </i>
-        </button>
-    </div>
+    <searchBar />
     <div class="container">
         <ul>
             <li>
@@ -22,11 +16,14 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "@vue/runtime-core";
+import searchBar from "../searchBar.vue"
 
 export default defineComponent({
   name: "userSearch",
   props: ["updateQuery", ],
-  components: {},
+  components: {
+      searchBar,
+  },
   setup() {
       const query = ref({bool: true});
 
@@ -35,42 +32,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.searchBox {
-    height: 50px;
-    width: max-content;
-    float: left;
-}
-.searchInput {
-    border-style: none none solid none;
-    border-color: white;
-    background: none;
-    height: 50px;
-    padding: 0;
-    outline: none;
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
-    float: left;
-}
-
-.searchInput::placeholder {
-    color: white;
-}
-.searchButton {
-    height: 50px;
-    width: 50px;
-    background: none;
-    padding: 0;
-    border-style: none none solid none;
-
-    border-color: white;
-    color: white;
-    text-align: center;
-    cursor: pointer;
-}
-.searchButton:hover {
-    background-color: rgba(0, 0, 0, 0.226);
-}
 .container {
     height: 50px;
     float: left;
