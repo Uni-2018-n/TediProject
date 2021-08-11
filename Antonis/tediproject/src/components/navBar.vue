@@ -74,7 +74,7 @@ export default defineComponent({
 }
 .navbar ul li {
     display: inline-block;
-    padding: 10px 20px 10px 20px;
+    padding: 18px 20px 18px 20px;
     border-right-style: solid;
     border-width: 1px;
     font-weight: 400;
