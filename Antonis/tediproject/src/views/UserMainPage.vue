@@ -1,5 +1,10 @@
 <template>
     <navBar />
+    <div class="middle">
+        <div class="posts">
+            <userPost />
+        </div>
+    </div>
     <footer>
         <Footer />
     </footer>
@@ -8,6 +13,7 @@
 import { defineComponent } from 'vue';
 import Footer from "../components/footer.vue";
 import navBar from "../components/navBar.vue";
+import userPost from "../components/userMainPage/userPost.vue";
 
 
 export default defineComponent({
@@ -15,6 +21,7 @@ export default defineComponent({
     components: {
         Footer,
         navBar,
+        userPost
     },
     setup() {
         return {  }
@@ -22,5 +29,8 @@ export default defineComponent({
 })
 </script>
 <style scoped>
-
+.posts {
+    display: flex;
+    justify-content: center;
+}
 </style>
