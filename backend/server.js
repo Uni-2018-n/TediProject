@@ -26,6 +26,7 @@ const LogInRoutes   = require('./routes/LogIn.js');
 const SignUpRoutes  = require('./routes/SignUp.js');
 const UploadRoutes  = require('./routes/Uploads.js');
 const PostsRoutes   = require('./routes/Posts.js');
+const ChatRoutes   = require('./routes/Chat.js');
 
 const app = express();
 
@@ -93,6 +94,7 @@ app.use('/users', SignUpRoutes);
 // app.use('/', LogInRoutes);
 app.use('/upload', UploadRoutes);
 app.use('/posts', PostsRoutes);
+app.use('/chat', ChatRoutes);
 
 app.use('/', (req, res) => {
     res.send('hello');
