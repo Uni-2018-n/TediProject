@@ -47,7 +47,7 @@
                         height="35"
                         />
                         <div class="textArea" @click="focus()">
-                            <textarea id="isnideTextArea" @input="resize($event)" rows="1"></textarea>
+                            <textarea id="commentTextArea" @input="resize($event)" rows="1" placeholder="Type heree..."></textarea>
                         </div>
                     </div>
                     <span>Load Previous...</span>
@@ -85,7 +85,7 @@ export default defineComponent({
             e.target.style.height = e.target.scrollHeight +'px';
         };
         const focus = () => {
-            document.getElementById('isnideTextArea').focus();
+            this.document.getElementById('commentTextArea').focus();
         }
         
         return { loadFlag, flag, postText, postTextTemp, resize, commentFlag, focus }
@@ -257,7 +257,6 @@ export default defineComponent({
 .comments .inputComment .textArea textarea {
     margin-left: 5px;
     width: 350px;
-    min-height: 30px;
     line-height: 20px;
     padding: 0px;
     resize: none;
