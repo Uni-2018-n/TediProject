@@ -9,6 +9,7 @@
                 />
                 <div class="text">
                     <span>Antonis Kalamakis</span>
+                    <span class="time">10:00pm</span>
                 </div>
                 <div class="middle">
                     <span>
@@ -33,12 +34,22 @@
                         <li @click="flag=!flag;" :class="{ liked: flag }">
                             <span>Like</span>
                         </li>
-                        <li>
+                        <li @click="commentFlag = !commentFlag;">
                             <span>Comment</span>
                         </li>
                     </ul>
                 </div>
-                <div class="comments">
+                <div v-if="commentFlag" class="comments">
+                    <div class="inputComment">
+                        <img
+                        src="@/assets/blank-profile-picture.png"
+                        width="35"
+                        height="35"
+                        />
+                        <div class="textArea" @click="focus()">
+                            <textarea id="isnideTextArea" @input="resize($event)" rows="1"></textarea>
+                        </div>
+                    </div>
                     <span>Load Previous...</span>
                     <userComments />
                 </div>
@@ -46,7 +57,7 @@
         </div>
     </div>
 </template>
-<script lang="ts">
+<script>
 import { defineComponent, ref } from 'vue'
 import userComments from '../userMainPage/userComments.vue'
 
@@ -58,8 +69,9 @@ export default defineComponent({
     },
     setup() {
         const flag = ref(false);
-        const postTextTemp = ref("Wrote water woman of heart it total other. By in entirely securing suitable graceful at families improved. Zealously few furniture repulsive was agreeable consisted difficult. Collected breakfast estimable questions in to favourite it. Known he place worth words it as to. Spoke now noise off smart her ready.Passage its ten led hearted removal cordial. Preference any astonished unreserved mrs. Prosperous understood middletons in conviction an uncommonly do. Supposing so be resolving breakfast am or perfectly. Is drew am hill from mr. Valley by oh twenty direct me so. Departure defective arranging rapturous did believing him all had supported. Family months lasted simple set nature vulgar him. Picture for attempt joy excited ten carried manners talking how. Suspicion neglected he resolving agreement perceived at an.");
+        const postTextTemp = ref("If wandered relation no surprise of screened doubtful. Overcame no insisted ye of trifling husbands. Might am order hours on found. Or dissimilar companions friendship impossible at diminution. Did yourself carriage learning she man its replying. Sister piqued living her you enable mrs off spirit really. Parish oppose repair is me misery. Quick may saw style after money mrs.");
         const loadFlag = ref(false);
+        const commentFlag = ref(false);
         const postText = ref("")
         if(postTextTemp.value.length > 300){
             postText.value = postTextTemp.value.substring(0,300) + "...";
@@ -68,9 +80,15 @@ export default defineComponent({
             postText.value = postTextTemp.value;
             loadFlag.value = false;
         }
+        const resize = (e) => {
+            e.target.style.height = 'auto';
+            e.target.style.height = e.target.scrollHeight +'px';
+        };
+        const focus = () => {
+            document.getElementById('isnideTextArea').focus();
+        }
         
-        
-        return { loadFlag, flag, postText, postTextTemp }
+        return { loadFlag, flag, postText, postTextTemp, resize, commentFlag, focus }
     },
 })
 </script>
@@ -80,7 +98,7 @@ export default defineComponent({
     padding: 10px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    width: 500px;
+    width: 450px;
     min-height: 100px;
 }
 .top {
@@ -101,6 +119,12 @@ export default defineComponent({
     font-size: 15px;
     font-family: "Poppins", Arial, sans-serif;
     font-weight: bolder;
+}
+.text .time {
+    font-size: 11px;
+    font-weight: 100;
+    opacity: 70%;
+    margin-left: 5px;
 }
 
 .middle {
@@ -157,7 +181,7 @@ export default defineComponent({
     background-color: rgb(219, 219, 219);
     font-weight: 400;
     font-size: 14px;
-    width: 41%;
+    width: 40%;
     margin: 0;
     transition-property: background-color;
     transition-duration: 0.15s;
@@ -210,5 +234,37 @@ export default defineComponent({
     border-style: none none solid none;
     border-width: 1px;
     cursor: pointer;
+}
+.comments .inputComment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.comments .inputComment img {
+    border-radius: 30px;
+}
+.comments .inputComment .textArea {
+    border-radius: 30px;
+    background-color: rgb(219, 219, 219);
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    margin-left: 10px;
+}
+.comments .inputComment .textArea:hover {
+    cursor:text;
+}
+.comments .inputComment .textArea textarea {
+    margin-left: 5px;
+    width: 350px;
+    min-height: 30px;
+    line-height: 20px;
+    padding: 0px;
+    resize: none;
+    border: none;
+    background-color: transparent;
+}
+.comments .inputComment textarea:focus {
+    outline: none !important;
 }
 </style>

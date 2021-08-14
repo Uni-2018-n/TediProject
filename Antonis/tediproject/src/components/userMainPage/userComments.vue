@@ -8,6 +8,7 @@
         <div class="data">
             <div class="name">
                 <span>Antonis Kalamakis</span>
+                <span class="time">10:00pm</span>
             </div>
             <div class="text">
                 <span>
@@ -24,7 +25,7 @@ import { defineComponent, ref } from 'vue'
 export default defineComponent({
     name: "userComments",
     setup() {
-        const commentTextTemp = ref("Wrote water woman of heart it total other. By in entirely securing suitable graceful at families improved. Zealously few furniture repulsive was agreeable consisted difficult. Collected breakfast estimable questions in to favourite it. Known he place worth wordps it as to. Spoke now noise off smart her ready. Passage its ten led hearted removal cordial. Preference any astonished unreserved mrs. Prosperous understood middletons in conviction an uncommonly do. Supposing so be resolving breakfast am or perfectly. Is drew am hill from mr. Valley by oh twenty direct me so. Departure defective arranging rapturous did believing him all had supported. Family months lasted simple set nature vulgar him. Picture for attempt joy excited ten carried manners talking how. Suspicion neglected he resolving agreement perceived at an.");
+        const commentTextTemp = ref("Wrote water woman of ");
         const loadFlag = ref(false);
         const commentText = ref("")
         if(commentTextTemp.value.length > 200){
@@ -56,6 +57,12 @@ export default defineComponent({
     font-size: 12px;
     font-family: "Poppins", Arial, sans-serif;
     font-weight: bold;
+}
+.name .time {
+    font-size: 11px;
+    font-weight: 100;
+    opacity: 70%;
+    margin-left: 5px;
 }
 .text {
     background-color: rgb(240, 240, 240);
