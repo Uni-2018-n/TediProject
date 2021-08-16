@@ -13,27 +13,63 @@
             </div>
             <textarea id="postTextArea" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
             <div class="icons">
-                <input @change="selectPhotos" type="file" name="photoFile" id="photoFile" class="inputfile" accept="image/*" />
+                <input multiple @change="selectPhotos" type="file" name="photoFile" id="photoFile" class="inputfile" accept="image/*" />
                 <label for="photoFile" id="fileLabel"><img src="@/assets/outline_collections_black_24dp.png"></label>
                 
-                <input @change="selectVideos" type="file" name="videoFile" id="videoFile" class="inputfile" accept="video/*" />
+                <input multiple @change="selectVideos" type="file" name="videoFile" id="videoFile" class="inputfile" accept="video/*" />
                 <label for="videoFile" id="fileLabel"><img src="@/assets/outline_video_library_black_24dp.png"></label>
                 
-                <input @change="selectVoices" type="file" name="voiceFile" id="voiceFile" class="inputfile" accept="audio/*" />
+                <input multiple @change="selectVoices" type="file" name="voiceFile" id="voiceFile" class="inputfile" accept="audio/*" />
                 <label for="voiceFile" id="fileLabel"><img src="@/assets/outline_voicemail_black_24dp.png"></label>
+            </div>
+        </div>
+        <div class="media">
+            <div class="voice">
+                <ul>
+                    <li v-for="voice in voices" :key="voice">
+                        <audio controls>
+                            <source :src="voice" type="audio/mpeg"> 
+                        </audio>
+                    </li>
+                </ul>
+            </div>
+            <div class="other">
+                <ul>
+                    <li v-for="(photo, index) in photosURL.slice(0,4)" :key="index">
+                        <img :src="photo" :class="{ imgOnly: only && index === 0, imgFirst: first && index === 0, imgElse: imgElse || index != 0, imgLast: imgLast && index === 3 }">
+                    </li>
+                    <li v-for="video in videosURL" :key="video">
+                        <video controls>
+                            <source :src="video" type="video/mp4">
+                        </video>>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive, ref, watch } from 'vue'
 
 export default defineComponent({
     name: "userPostInput",
     setup() {
-        const photos = ref<File[]>();
-        const videos = ref<File[]>();
-        const voices = ref<File[]>();
+        const photos = reactive<File[]>([]);
+        const videos = reactive<File[]>([]);
+        const voices = reactive<File[]>([]);
+
+        const photosURL = reactive<string[]>([]);
+        const videosURL = reactive<string[]>([]);
+        const voicesURL = reactive<string[]>([]);
+
+        const allCount = ref(photos.length + videos.length + voices.length);
+
+        const only = ref(false);
+        const first = ref(false);
+        const imgElse = ref(false);
+        const imgLast = ref(false);
+        const n = ref(0);
+
         const resize = (e: Event) => {
             (e.target as HTMLTextAreaElement).style.height = 'auto';
             (e.target as HTMLTextAreaElement).style.height = (e.target as HTMLTextAreaElement).scrollHeight +'px';
@@ -44,40 +80,85 @@ export default defineComponent({
 
         const selectPhotos = (event: Event) => {
             if(event){
+                photos.splice(0);
+                photosURL.splice(0);
                 for (let photo of ((event.target as HTMLInputElement).files as FileList)) {
-                    if(photo.size > 100000){
+                    if(photo.size > 10000000){
                         console.log("error image too big");
                     }else{
-                        photos.value?.push(photo);
+                        photosURL.push(URL.createObjectURL(photo));
+                        photos.push(photo);
                     }
                 }
             }
+            allCount.value = photos.length + videos.length + voices.length
         }
 
         const selectVideos = (event: Event) => {
             if(event){
+                videos.splice(0);
+                videosURL.splice(0);
                 for (let video of ((event.target as HTMLInputElement).files as FileList)) {
-                    if(video.size > 100000){
+                    if(video.size > 100000000){
                         console.log("error image too big");
                     }else{
-                        videos.value?.push(video);
+                        videosURL.push(URL.createObjectURL(video));
+                        videos.push(video);
                     }
                 }
             }
+            allCount.value = photos.length + videos.length + voices.length
         }
 
         const selectVoices = (event: Event) => {
             if(event){
+                voices.splice(0);
+                voicesURL.splice(0);
                 for (let voice of ((event.target as HTMLInputElement).files as FileList)) {
-                    if(voice.size > 100000){
+                    if(voice.size > 1000000){
                         console.log("error image too big");
                     }else{
-                        voices.value?.push(voice);
+                        voicesURL.push(URL.createObjectURL(voice));
+                        voices.push(voice);
                     }
                 }
             }
+            allCount.value = photos.length + videos.length + voices.length
         }
-        return { resize, focus, selectPhotos, selectVideos, selectVoices };
+
+        watch(allCount, () => {
+            if(allCount.value == 1){
+                first.value = false;
+                only.value = true;
+                imgElse.value = false;
+                imgLast.value = false;
+                n.value=4;
+            }else if(allCount.value % 2 != 0){
+                if(allCount.value == 3){
+                    first.value = true;
+                    imgElse.value = false;
+                }else{
+                    first.value = false;
+                    imgElse.value = true;
+                }
+                only.value = false;
+                imgLast.value = false;
+            }else {
+                first.value = false;
+                only.value = false;
+                imgElse.value = true;
+                imgLast.value = false;
+            }
+            if(allCount.value > 4){
+                imgLast.value = true;
+            }
+        })
+
+        return { resize, focus,
+         selectPhotos, selectVideos, selectVoices,
+          photos, videos, voices,
+          photosURL, videosURL, voicesURL,
+          allCount, only, first, imgElse, imgLast, n };
     },
 })
 </script>
@@ -87,6 +168,7 @@ export default defineComponent({
     background-color: rgb(255, 255, 255);
     padding: 10px;
     border-radius: 5px;
+    width: 450px;
 }
 .inner {
     width: 450px;
@@ -149,15 +231,60 @@ textarea:focus {
   display: inline-block;
   padding: 0;
   margin: 0;
-  /* border: 2px solid #808080; */
-  /* color: gray; */
-  /* padding: 8px 20px; */
-  /* border-radius: 8px; */
-  /* font-size: 20px; */
-  /* font-weight: bold; */
 }
 #fileLabel:hover {
     cursor: pointer;
     opacity: 40%;
+}
+
+.media {
+    margin-top: 10px;
+}
+
+.voice {
+    display: flex;
+    justify-content: center;
+}
+
+.voice ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.other {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.other ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.other ul li {
+    display: inline-block;
+    margin: 3px;
+}
+
+
+.imgFirst {
+    object-fit: cover;
+    width: 360px;
+    height: 180px;
+}
+.imgOnly {
+    object-fit: cover;
+    width: 360px;
+    height: 360px;
+}
+.imgElse {
+    object-fit: cover;
+    width: 180px;
+    height: 180px;
+}
+.imgLast {
+    filter: blur(2px);
 }
 </style>
