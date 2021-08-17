@@ -36,7 +36,12 @@
             <div class="other">
                 <ul>
                     <li v-for="(photo, index) in photosURL.slice(0,4)" :key="index">
-                        <img :src="photo" :class="{ imgOnly: only && index === 0, imgFirst: first && index === 0, imgElse: imgElse || index != 0, imgLast: imgLast && index === 3 }">
+                        <div class="img-container">
+                            <img @click="indx=index;imgFlag=true;" :src="photo" :class="{ imgOnly: only && index === 0, imgFirst: first && index === 0, imgElse: imgElse || index != 0, imgLast: imgLast && index === 3 }">
+                            <div v-if="imgLast && index === 3" class="img-text">
+                                <span>+ {{ allCount-4 }}</span>
+                            </div>
+                        </div>
                     </li>
                     <li v-for="video in videosURL" :key="video">
                         <video controls>
@@ -47,12 +52,17 @@
             </div>
         </div>
     </div>
+    <imgSlideShow v-if="imgFlag" :src="photosURL" :indx="indx" :closeTriger="() => imgCloseTriger()"/>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, watch } from 'vue'
+import imgSlideShow from "../imgSlideShow.vue"
 
 export default defineComponent({
     name: "userPostInput",
+    components: {
+        imgSlideShow,
+    },
     setup() {
         const photos = reactive<File[]>([]);
         const videos = reactive<File[]>([]);
@@ -69,6 +79,9 @@ export default defineComponent({
         const imgElse = ref(false);
         const imgLast = ref(false);
         const n = ref(0);
+        const indx= ref(0);
+
+        const imgFlag = ref(false);
 
         const resize = (e: Event) => {
             (e.target as HTMLTextAreaElement).style.height = 'auto';
@@ -154,11 +167,16 @@ export default defineComponent({
             }
         })
 
+        const imgCloseTriger = () => {
+            imgFlag.value = false;
+        }
+
         return { resize, focus,
          selectPhotos, selectVideos, selectVoices,
           photos, videos, voices,
           photosURL, videosURL, voicesURL,
-          allCount, only, first, imgElse, imgLast, n };
+          allCount, only, first, imgElse, imgLast, n,
+          imgFlag, indx, imgCloseTriger };
     },
 })
 </script>
@@ -286,5 +304,22 @@ textarea:focus {
 }
 .imgLast {
     filter: blur(2px);
+}
+
+.img-container {
+    position: relative;
+}
+.img-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.img-text span {
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 5px rgb(0, 0, 0);
 }
 </style>
