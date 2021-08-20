@@ -12,6 +12,10 @@ body {
     margin: 0 0 100px; /*change 100 for more space of footer*/
     /* bottom = footer height */
 }
+
+.popupOpen {
+    overflow: hidden;
+}
   
 @keyframes gradient {
       0% {

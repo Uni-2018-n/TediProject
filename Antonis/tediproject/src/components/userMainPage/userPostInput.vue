@@ -35,24 +35,26 @@
             </div>
             <div class="other">
                 <ul>
-                    <li v-for="(photo, index) in photosURL.slice(0,4)" :key="index">
+                    <li v-for="(photo, index) in totalURL.slice(0,4)" :key="index">
                         <div class="img-container">
-                            <img @click="indx=index;imgFlag=true;" :src="photo" :class="{ imgOnly: only && index === 0, imgFirst: first && index === 0, imgElse: imgElse || index != 0, imgLast: imgLast && index === 3 }">
-                            <div v-if="imgLast && index === 3" class="img-text">
-                                <span>+ {{ allCount-4 }}</span>
+                            <div v-if="!photo.t">
+                                <img @click="imgOpenTriger(index)" :src="photo.photo" :class="{ imgOnly: only && index === 0, imgFirst: first && index === 0, imgElse: imgElse || index != 0, imgLast: imgLast && index === 3 }">
+                                <div v-if="imgLast && index === 3" @click="imgOpenTriger(index)"  class="img-text">
+                                    <span>+ {{ allCount-4 }}</span>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <video controls>
+                                    <source :src="photo.video" />
+                                </video>
                             </div>
                         </div>
-                    </li>
-                    <li v-for="video in videosURL" :key="video">
-                        <video controls>
-                            <source :src="video" type="video/mp4">
-                        </video>>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-    <imgSlideShow v-if="imgFlag" :src="photosURL" :indx="indx" :closeTriger="() => imgCloseTriger()"/>
+    <imgSlideShow v-if="imgFlag" :src="totalURL" :indx="indx" :closeTriger="() => imgCloseTriger()"/>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, watch } from 'vue'
@@ -68,9 +70,11 @@ export default defineComponent({
         const videos = reactive<File[]>([]);
         const voices = reactive<File[]>([]);
 
-        const photosURL = reactive<string[]>([]);
-        const videosURL = reactive<string[]>([]);
-        const voicesURL = reactive<string[]>([]);
+        const photosURL = reactive<{}[]>([]);
+        const videosURL = reactive<{}[]>([]);
+        const voicesURL = reactive<{}[]>([]);
+        
+        const totalURL = reactive<{}[]>([]);
 
         const allCount = ref(photos.length + videos.length + voices.length);
 
@@ -99,12 +103,17 @@ export default defineComponent({
                     if(photo.size > 10000000){
                         console.log("error image too big");
                     }else{
-                        photosURL.push(URL.createObjectURL(photo));
+                        photosURL.push({photo: URL.createObjectURL(photo), t: 0});
                         photos.push(photo);
                     }
                 }
             }
-            allCount.value = photos.length + videos.length + voices.length
+            totalURL.splice(0, totalURL.length);
+            totalURL.push(...photosURL);
+            totalURL.push(...videosURL);
+            allCount.value = totalURL.length;
+
+
         }
 
         const selectVideos = (event: Event) => {
@@ -115,12 +124,15 @@ export default defineComponent({
                     if(video.size > 100000000){
                         console.log("error image too big");
                     }else{
-                        videosURL.push(URL.createObjectURL(video));
+                        videosURL.push({video: URL.createObjectURL(video), t:1});
                         videos.push(video);
                     }
                 }
             }
-            allCount.value = photos.length + videos.length + voices.length
+            totalURL.splice(0, totalURL.length);
+            totalURL.push(...photosURL);
+            totalURL.push(...videosURL);
+            allCount.value = totalURL.length;
         }
 
         const selectVoices = (event: Event) => {
@@ -136,7 +148,6 @@ export default defineComponent({
                     }
                 }
             }
-            allCount.value = photos.length + videos.length + voices.length
         }
 
         watch(allCount, () => {
@@ -169,14 +180,21 @@ export default defineComponent({
 
         const imgCloseTriger = () => {
             imgFlag.value = false;
+            document.body.classList.remove("popupOpen");
+        }
+
+        const imgOpenTriger = (index: number) => {
+            indx.value=index;
+            imgFlag.value=true;
+            document.body.classList.add("popupOpen");
         }
 
         return { resize, focus,
          selectPhotos, selectVideos, selectVoices,
           photos, videos, voices,
-          photosURL, videosURL, voicesURL,
+          photosURL, videosURL, voicesURL, totalURL,
           allCount, only, first, imgElse, imgLast, n,
-          imgFlag, indx, imgCloseTriger };
+          imgFlag, indx, imgCloseTriger, imgOpenTriger };
     },
 })
 </script>
