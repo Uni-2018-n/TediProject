@@ -26,7 +26,7 @@ const LogInRoutes   = require('./routes/LogIn.js');
 const SignUpRoutes  = require('./routes/SignUp.js');
 const UploadRoutes  = require('./routes/Uploads.js');
 const PostsRoutes   = require('./routes/Posts.js');
-const ChatRoutes   = require('./routes/Chat.js');
+const ChatRoutes    = require('./routes/Chat.js');
 
 const app = express();
 
