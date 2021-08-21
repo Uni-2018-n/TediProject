@@ -35,4 +35,42 @@ router.get("/:User_Id", async (req, res) => {
     }
 })
 
+// @desc New message
+router.post('/message/:id', (req, res) => {
+    Chat.findById({_id: req.params.id})
+    .then(chat => {
+        const newMessage = {
+            sender: req.body.sender,
+            text: req.body.text,
+            avatar: req.body.avatar
+        }
+
+        // Check if sender is in chat
+        if (chat.chaters.filter(id => id.toString() == req.body.sender).length === 0) {
+            return res.status(404).json({chat: 'Sender not found'})
+            
+        }
+        // Add a new message to the array
+        chat.messages.push(newMessage);
+        chat.save().then(chat => res.json(chat));
+    })
+    .catch(err => res.status(404).json({chat: 'No chat found'}));
+})
+
+// @desc Delete a message in Chat
+router.delete('/message/:message_id/:Chat_id', (req, res) => {
+    Chat.findById({_id: req.params.Chat_id})
+    .then(chat => {
+        if (chat.messages.filter(user_comment => user_comment._id.toString() === req.params.message_id).length === 0) {
+            return res.status(404).json({chat: 'Message not found'})
+        }
+        
+        const Index = chat.messages.map(item => item._id.toString()).indexOf(req.params.message_id);
+
+        // Splice it out of the array and save the edited Post
+        chat.messages.splice(Index, 1);
+        chat.save().then(chat => res.json(chat));
+    }).catch(err => res.status(404).json({chat: 'Chat not found'}));
+})
+
 module.exports = router;
