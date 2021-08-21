@@ -44,9 +44,12 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <video controls>
+                                <video @click="imgOpenTriger(index)" :class="{ imgOnly: only && index === 0, imgFirst: first && index === 0, imgElse: imgElse || index != 0, imgLast: imgLast && index === 3 }">
                                     <source :src="photo.video" />
                                 </video>
+                                <div @click="imgOpenTriger(index)" class="video-play">
+                                    <img src="@/assets/outline_play_arrow_black_48dp.png">         
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -109,8 +112,8 @@ export default defineComponent({
                 }
             }
             totalURL.splice(0, totalURL.length);
-            totalURL.push(...photosURL);
             totalURL.push(...videosURL);
+            totalURL.push(...photosURL);
             allCount.value = totalURL.length;
 
 
@@ -130,8 +133,8 @@ export default defineComponent({
                 }
             }
             totalURL.splice(0, totalURL.length);
-            totalURL.push(...photosURL);
             totalURL.push(...videosURL);
+            totalURL.push(...photosURL);
             allCount.value = totalURL.length;
         }
 
@@ -311,9 +314,10 @@ textarea:focus {
     height: 180px;
 }
 .imgOnly {
-    object-fit: cover;
-    width: 360px;
-    height: 360px;
+    object-fit: contain;
+    width: auto;
+    max-height: 360px;
+    height: auto;
 }
 .imgElse {
     object-fit: cover;
@@ -327,6 +331,15 @@ textarea:focus {
 .img-container {
     position: relative;
 }
+
+.img-container img:hover {
+    cursor: pointer;
+}
+
+.img-container video:hover {
+    cursor: pointer;
+}
+
 .img-text {
     position: absolute;
     top: 50%;
@@ -334,10 +347,31 @@ textarea:focus {
     transform: translate(-50%, -50%);
 }
 
+.img-text:hover {
+    cursor: pointer;
+}
+
 .img-text span {
     font-size: 30px;
     font-weight: bold;
     color: white;
     text-shadow: 1px 1px 5px rgb(0, 0, 0);
+}
+
+.video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.video-play:hover {
+    cursor: pointer;
+}
+
+.video-play img {
+    object-fit: contain;
+    width: auto;
+    height: 100px;
 }
 </style>
