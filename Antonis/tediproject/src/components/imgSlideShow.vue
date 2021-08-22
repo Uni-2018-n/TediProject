@@ -30,7 +30,7 @@ export default defineComponent({
     props: ["src", "indx", "closeTriger"],
     setup() {
         
-    },
+    }
 })
 </script>
 <style scoped>
