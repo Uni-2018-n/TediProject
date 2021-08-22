@@ -115,6 +115,25 @@ const updateUser = (req, res) => {
     });
 }
 
+const connectUser = (req, res) => {
+    NewUser.findById({_id: req.params.id})
+    .then(User => {
+        if (User.Connected_users.filter(connected_users => connected_users._id.toString() === req.params.connect_id).length > 0) {
+            // Disconnect if already connected with this User
+            const Index = User.Connected_users.map(item => item._id.toString()).indexOf(req.params.connect_id);
+
+            // Splice it out of the array
+            User.Connected_users.splice(Index, 1);
+        } else {
+            // Add the User to the connected list
+            User.Connected_users.unshift(req.params.connect_id);
+        }
+
+        User.save().then(User => res.json(User));
+    })
+    .catch(err => res.send(err));
+}
+
 module.exports = {
-    getUsers, getUser, createUser, deleteUser, updateUser
+    getUsers, getUser, createUser, deleteUser, updateUser, connectUser
 }

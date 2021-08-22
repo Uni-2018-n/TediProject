@@ -24,6 +24,10 @@ const NewUser = new mongoose.Schema({
     ProfilePic: {
         type: String,
         required: false
+    },
+    Connected_users: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'NewUser'
     }
     // Add every file necessary later
 }, {timestamps: true});
