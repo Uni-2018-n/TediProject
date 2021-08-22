@@ -70,6 +70,7 @@ export default defineComponent({
         });
         const load = (id: string) =>{
             current.value = id;
+            props.loaded(current.value);
         }
         return { temp, current, load }
     },
