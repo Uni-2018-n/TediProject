@@ -11,17 +11,17 @@
                     height="25"
                     />
                 </div>
-                <chats />
+                <chats :loaded="loaded" />
             </div>
             <div class="right">
-                <chat />
+                <chat v-if="current" :id="current"/>
             </div>
         </div>
         <Footer />
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
 import chats from '../components/communicationPage/chats.vue'
@@ -35,7 +35,11 @@ export default defineComponent({
         Footer,
     },
     setup() {
-        return {  }  
+        const current = ref("")
+        const loaded = (id: string) =>{
+            current.value = id;
+        }
+        return { current, loaded }
     },
 })
 </script>
@@ -50,6 +54,7 @@ export default defineComponent({
     margin: 1%;
     flex: 1;
     height: 100%;
+    min-height: 0px;
     display: flex;
 }
 .left {
@@ -57,11 +62,16 @@ export default defineComponent({
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     width: max-content;
+
+    display: flex;
+    flex-direction: column;
 }
 .right {
     flex: 1;
     margin-left: 5px;
-    /* height: 100%; */
+    height: 100%;
+    min-height: 0px;
+    display: flex;
 }
 .top {
     padding: 10px;
