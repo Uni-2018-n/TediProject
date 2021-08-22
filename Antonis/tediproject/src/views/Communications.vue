@@ -1,24 +1,24 @@
 <template>
-    <navBar />
-    <div class="external-com">
-        <div class="left">
-            <div class="top">
-                <span>Chats</span>
-                <img
-                src="@/assets/outline_chat_black_24dp.png"
-                width="25"
-                height="25"
-                />
+    <div class="big">
+        <navBar />
+        <div class="external-com">
+            <div class="left">
+                <div class="top">
+                    <span>Chats</span>
+                    <img
+                    src="@/assets/outline_chat_black_24dp.png"
+                    width="25"
+                    height="25"
+                    />
+                </div>
+                <chats />
             </div>
-            <chats />
+            <div class="right">
+                <chat />
+            </div>
         </div>
-        <div class="right">
-            <chat />
-        </div>
-    </div>
-    <footer>
         <Footer />
-    </footer>
+    </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -40,8 +40,16 @@ export default defineComponent({
 })
 </script>
 <style scoped>
+.big {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .external-com {
     margin: 1%;
+    flex: 1;
+    height: 100%;
     display: flex;
 }
 .left {
@@ -51,9 +59,9 @@ export default defineComponent({
     width: max-content;
 }
 .right {
-    display: inline-block;
+    flex: 1;
     margin-left: 5px;
-    flex-grow: 1;
+    /* height: 100%; */
 }
 .top {
     padding: 10px;
@@ -63,7 +71,6 @@ export default defineComponent({
     font-weight: bolder;
     font-family: "Poppins", Arial, sans-serif;
     margin-left: 35px;
-    /* float: left; */
 }
 .top img {
     border: solid;

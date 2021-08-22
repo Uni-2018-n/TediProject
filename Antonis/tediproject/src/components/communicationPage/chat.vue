@@ -15,7 +15,7 @@
                 <Bubles :src="messages"/>
             </div>
             <div class="input">
-
+                test
             </div>
         </div>
     </div>
@@ -44,7 +44,7 @@ export default defineComponent({
             },
             {
                 me: false,
-                message: "test4;erovijser ;oiejg;oeitjg;e togijt;g oritj roh jr;tohi rtho;rt ihrjt;h ortih r;tho rth;r tohirt h;roth irt;h ortih rt;r; hortihr thrtrtrthri eogi jtpog ri;ho tih; orh ;thoirohr ohir;hortih;r toh;rothr; thorth;rtrot;horthirtoh "
+                message: "test4"
             }
         ])
         return { messages }
@@ -53,13 +53,22 @@ export default defineComponent({
 </script>
 <style scoped>
 .external {
+    height: 100%;
     background-color: white;
-    border: solid;
+    /* border: solid; */
     border-width: 3px;
     border-color: rgb(212, 212, 212);
-    border-radius: 15px;
-    padding: 2px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
+
+.inside {
+    padding: 2px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .top {
     display: flex;
     padding: 10px;
@@ -82,5 +91,6 @@ export default defineComponent({
 }
 .chat {
     margin-top: 10px;
+    flex: 1;
 }
 </style>

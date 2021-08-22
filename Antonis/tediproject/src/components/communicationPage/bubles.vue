@@ -46,9 +46,9 @@ ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-}
-li {
-    display: inline;
+    display: flex;
+    flex-direction: column-reverse;
+    height: 100%;
 }
 .me {
     display: flex;
@@ -57,9 +57,6 @@ li {
 .other {
     display: flex;
     justify-content: flex-start;
-}
-.in {
-
 }
 .in img {
     border-radius: 25px;

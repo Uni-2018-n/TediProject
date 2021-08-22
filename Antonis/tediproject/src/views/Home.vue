@@ -1,16 +1,14 @@
 <template>
-  <div id="logo">
-    <h1>LinkedIn Project</h1>
-    <h3>By SDI1800056 and SDI1800000</h3>
-  </div>
-  <div id="form">
-    <welcomeForms />
-  </div>
-  <footer>
-    <div id="footer">
-      <Footer />
+  <div class="outer">
+    <div id="logo">
+      <h1>LinkedIn Project</h1>
+      <h3>By SDI1800056 and SDI1800000</h3>
     </div>
-  </footer>
+    <div id="form">
+      <welcomeForms />
+    </div>
+    <Footer />
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,13 +27,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
-body {
-    padding: 25px;
+.outer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 #form {
   margin-left: 55%;
   margin-top: 1%;
   margin-right: 10%;
+  flex: 1;
 }
 #logo {
   margin-top: 1%;

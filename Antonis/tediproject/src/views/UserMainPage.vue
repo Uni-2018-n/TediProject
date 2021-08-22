@@ -1,19 +1,23 @@
 <template>
-    <navBar />
-    <div class="middle">
-        <div class="postInput">
-            <userPostInput />
+    <div class="outeer">
+        <navBar />
+        <div class="middle">
+            <div class="postInput">
+                <userPostInput />
+            </div>
+            <div class="posts">
+                <ul>
+                    <li v-for="post in posts" :key="post">
+                        <userPost />
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="posts">
-            <userPost />
-        </div>
-    </div>
-    <footer>
         <Footer />
-    </footer>
+    </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import Footer from "../components/footer.vue";
 import navBar from "../components/navBar.vue";
 import userPost from "../components/userMainPage/userPost.vue";
@@ -29,17 +33,55 @@ export default defineComponent({
         userPostInput,
     },
     setup() {
-        return {  }
+        const posts= reactive([
+            {
+                name: "antonis",
+            },
+            {
+                name: "antonis",
+            },
+            {
+                name: "antonis",
+            },
+            {
+                name: "antonis",
+            },
+            {
+                name: "antonis",
+            },
+        ])
+        return { posts }
     },
 })
 </script>
 <style scoped>
-.posts {
+.outeer {
     display: flex;
-    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+}
+.middle {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
 }
 .postInput {
     display: flex;
     justify-content: center;
+}
+.posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.posts ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.posts ul li {
+    padding: 0px 0px 10px 0px;
+    margin: 0;
 }
 </style>
