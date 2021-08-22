@@ -35,6 +35,19 @@ router.get("/:User_Id", async (req, res) => {
     }
 })
 
+// Get one Chat
+router.get("/:User_Id/:Friend_Id", async (req, res) => {
+    try {
+        const result = await Chat.find({ chaters: {
+            $in: [mongoose.Types.ObjectId(req.params.User_Id)],
+            $in: [mongoose.Types.ObjectId(req.params.Friend_Id)]
+        }});
+        res.json(result);
+    } catch (error) {
+        res.status(400).json(error)
+    }
+})
+
 // @desc New message
 router.post('/message/:id', (req, res) => {
     Chat.findById({_id: req.params.id})
