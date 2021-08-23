@@ -4,6 +4,7 @@ import About from '../views/About.vue'
 import AdminPage from '../views/AdminPage.vue'
 import UserMainPage from '../views/UserMainPage.vue'
 import Communications from '../views/Communications.vue'
+import Network from '../views/Network.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/communication',
     name: 'Communication',
     component: Communications
+  },
+  {
+    path: '/network',
+    name: 'Network',
+    component: Network
   }
   
 ]

@@ -74,7 +74,7 @@ ul {
 }
 .span {
     padding: 5px;
-    background-color: lightgray;
+    background-color: rgb(235, 235, 235);
     border-radius: 10px;
 }
 </style>

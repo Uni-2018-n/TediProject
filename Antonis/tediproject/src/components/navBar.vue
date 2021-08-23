@@ -10,13 +10,9 @@
                 </div>
                 <div class="navbar">
                     <ul>
-                        <li>Αρχική Σελίδα</li>
-                        <li>Δίκτυο</li>
-                        <li>Αγγελίες</li>
-                        <li>Συζητήσεις</li>
-                        <li>Ειδοποιήσεις</li>
-                        <li>Προσωπικά Στοιχεία</li>
-                        <li>Ρυθμίσεις</li>
+                        <li v-for="item in list" :key="item">
+                            <router-link class="routerLink" :to="item.to">{{ item.name }}</router-link>
+                        </li>
                     </ul>
                 </div> 
             </div>
@@ -24,7 +20,7 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import searchBar from './searchBar.vue'
 
 export default defineComponent({
@@ -33,11 +29,51 @@ export default defineComponent({
         searchBar,
     },
     setup() {
-        return {  }
+        const list = reactive([
+            {
+                name: "Αρχική Σελίδα",
+                to: "/user",
+            },
+            {
+                name: "Δίκτυο",
+                to: "/network",
+            },
+            {
+                name: "Αγγελίες",
+                to: "/user",
+            },
+            {
+                name: "Συζητήσεις",
+                to: "/communication",
+            },
+            {
+                name: "Ειδοποιήσεις",
+                to: "/user",
+            },
+            {
+                name: "Προσωπικά Στοιχεία",
+                to: "/user",
+            },
+            {
+                name: "Ρυθμίσεις",
+                to: "/user",
+            },
+        ])
+        return { list }
     },
 })
 </script>
 <style scoped>
+.routerLink {
+    text-decoration: none;
+}
+.routerLink:visited{
+    color: rgb(51, 51, 51);
+}
+.routerLink:hover {
+    cursor: pointer;
+    color: rgb(0, 119, 255);
+}
 .outer {
     padding: 10px;
     margin: 1%;
@@ -88,15 +124,11 @@ export default defineComponent({
 .navbar ul li:last-child {
     border-right-style: none;
 }
-.navbar ul li:hover {
-    cursor: pointer;
-    color: rgb(0, 119, 255);
-}
 
-/deep/ .searchBox {
+::v-deep .searchBox {
     /* transform: translate(-50%); */ /*use this in case of middle and remove the divs */
 }
-/deep/ .searchInput {
+::v-deep .searchInput {
     font-size: 14px;
     border-width: 1px;
     transition: width 0.75s;
@@ -107,21 +139,21 @@ export default defineComponent({
     font-weight: 400;
     width: 0;
 }
-/deep/ .searchButton:hover + .searchInput {
+::v-deep .searchButton:hover + .searchInput {
     width: 200px;
 }
-/deep/ .searchInput:hover {
+::v-deep .searchInput:hover {
     width: 200px;
 }
-/deep/ .searchInput:focus {
+::v-deep .searchInput:focus {
     width: 200px;
 }
 
-/deep/ .searchInput::placeholder {
+::v-deep .searchInput::placeholder {
     color: rgb(0, 0, 0);
     font-size: 14px;
 }
-/deep/ .searchButton{
+::v-deep .searchButton{
     z-index: 2;
     border-color: rgb(0, 0, 0);
     color: rgb(0, 0, 0);
