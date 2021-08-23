@@ -124,10 +124,6 @@ export default defineComponent({
 .navbar ul li:last-child {
     border-right-style: none;
 }
-
-::v-deep .searchBox {
-    /* transform: translate(-50%); */ /*use this in case of middle and remove the divs */
-}
 ::v-deep .searchInput {
     font-size: 14px;
     border-width: 1px;
