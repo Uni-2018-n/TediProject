@@ -6,6 +6,7 @@ import UserMainPage from '../views/UserMainPage.vue'
 import Communications from '../views/Communications.vue'
 import Network from '../views/Network.vue'
 import Settings from '../views/Settings.vue'
+import Profile from '../views/Profile.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -42,6 +43,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/settings',
     name: 'Settings',
     component: Settings
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
   }
   
 ]

@@ -52,7 +52,7 @@ export default defineComponent({
             },
             {
                 name: "Προσωπικά Στοιχεία",
-                to: "/user",
+                to: "/profile",
             },
             {
                 name: "Ρυθμίσεις",

@@ -57,7 +57,7 @@
         </div>
     </div>
 </template>
-<script>
+<script lang="ts">
 import { defineComponent, ref } from 'vue'
 import userComments from '../userMainPage/userComments.vue'
 
@@ -80,12 +80,12 @@ export default defineComponent({
             postText.value = postTextTemp.value;
             loadFlag.value = false;
         }
-        const resize = (e) => {
-            e.target.style.height = 'auto';
-            e.target.style.height = e.target.scrollHeight +'px';
+        const resize = (e: Event) => {
+            (e.target as HTMLTextAreaElement).style.height = 'auto';
+            (e.target as HTMLTextAreaElement).style.height = (e.target as HTMLTextAreaElement).scrollHeight +'px';
         };
         const focus = () => {
-            this.document.getElementById('commentTextArea').focus();
+            document.getElementById('commentTextArea')!.focus();
         }
         
         return { loadFlag, flag, postText, postTextTemp, resize, commentFlag, focus }
