@@ -56,7 +56,7 @@ export default defineComponent({
             },
             {
                 name: "Ρυθμίσεις",
-                to: "/user",
+                to: "/settings",
             },
         ])
         return { list }

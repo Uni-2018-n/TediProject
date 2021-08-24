@@ -2,15 +2,20 @@
     <div class="outeer">
         <navBar />
         <div class="middle">
-            <div class="postInput">
-                <userPostInput />
+            <div class="left">
+                <userLeftCompartment />
             </div>
-            <div class="posts">
-                <ul>
-                    <li v-for="post in posts" :key="post">
-                        <userPost />
-                    </li>
-                </ul>
+            <div class="other">
+                <div class="postInput">
+                    <userPostInput />
+                </div>
+                <div class="posts">
+                    <ul>
+                        <li v-for="post in posts" :key="post">
+                            <userPost />
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <Footer />
@@ -22,6 +27,7 @@ import Footer from "../components/footer.vue";
 import navBar from "../components/navBar.vue";
 import userPost from "../components/userMainPage/userPost.vue";
 import userPostInput from "../components/userMainPage/userPostInput.vue";
+import userLeftCompartment from "../components/userMainPage/userLeftCompartment.vue";
 
 
 export default defineComponent({
@@ -31,6 +37,7 @@ export default defineComponent({
         navBar,
         userPost,
         userPostInput,
+        userLeftCompartment
     },
     setup() {
         const posts= reactive([
@@ -62,20 +69,13 @@ export default defineComponent({
 }
 .middle {
     flex: 1;
-
     display: flex;
-    flex-direction: column;
-}
-.postInput {
-    display: flex;
+    flex-direction: row;
     justify-content: center;
 }
-.posts {
+.posts ul {
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-.posts ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -83,5 +83,15 @@ export default defineComponent({
 .posts ul li {
     padding: 0px 0px 10px 0px;
     margin: 0;
+}
+.other {
+    display: flex;
+    flex-direction: column;
+}
+.left{
+    align-self: flex-start;
+    height: auto;
+    position: sticky;
+    top: 15px;
 }
 </style>
