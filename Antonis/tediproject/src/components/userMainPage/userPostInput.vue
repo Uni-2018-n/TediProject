@@ -26,7 +26,7 @@
         <div class="media">
             <div class="voice">
                 <ul>
-                    <li v-for="voice in voices" :key="voice">
+                    <li v-for="voice in voicesURL" :key="voice">
                         <audio controls>
                             <source :src="voice" type="audio/mpeg"> 
                         </audio>
@@ -280,12 +280,11 @@ textarea:focus {
     margin-top: 10px;
 }
 
-.voice {
-    display: flex;
-    justify-content: center;
-}
-
 .voice ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -316,7 +315,7 @@ textarea:focus {
 .imgOnly {
     object-fit: contain;
     width: auto;
-    max-height: 360px;
+    max-width: 420px;
     height: auto;
 }
 .imgElse {
