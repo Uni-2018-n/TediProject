@@ -4,11 +4,14 @@
         <div class="external">
             <div class="internal">
                 <div class="top">
+                    <label for="img">
                     <img
                         src="@/assets/blank-profile-picture.png"
                         width="185"
                         height="185"
                     />
+                    </label>
+                    <input type="file" id="img" accept="image/*"/>
                     <div class="top-text">
                         <span>Antonis Kalamakis</span>
                     </div>
@@ -45,7 +48,7 @@
                             </ul>
                         </div>
                         <div class="edit">
-                            <img
+                            <img @click="skillsFlag=true;"
                                 src="@/assets/outline_edit_black_24dp.png"
                                 width="35"
                                 height="35"
@@ -58,12 +61,14 @@
         <Footer />
     </div>
     <editEducation v-if="educationFlag" :close="()=>{educationFlag=false;}"/>
+    <editSkills v-if="skillsFlag" :close="()=>{skillsFlag=false;}" :curr="skills"/>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
 import editEducation from "../components/profilePage/editEducation.vue"
+import editSkills from "../components/profilePage/editSkills.vue"
 
 export default defineComponent({
     name: "Profile",
@@ -71,11 +76,14 @@ export default defineComponent({
         navBar,
         Footer,
         editEducation,
+        editSkills
     },
     setup() {
         const educationFlag = ref(false);
-        const skills = reactive(["first", "second", "third", "forth", "first", "second", "third", "forth", "first", "second", "third", "forth", "first", "second", "third", "forth"]);
-        return { skills, educationFlag }
+        const skillsFlag = ref(false);
+        const skills = reactive(["second", "third", "forth", "first", "second", "third", "forth", "first", "second", "third", "forth", "first", "second", "third", "forth"]);
+        // const skills = reactive(["second", "third", "forth", "first", "second"]);
+        return { skills, educationFlag, skillsFlag }
     },
 })
 </script>
@@ -118,6 +126,12 @@ export default defineComponent({
     font-weight: bolder;
     opacity: 0.9;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.top label:hover {
+    cursor: pointer;
+}
+.top input {
+    display: none;
 }
 .middle {
     display: flex;
