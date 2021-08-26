@@ -40,7 +40,7 @@ export default defineComponent({
             },
             {
                 name: "Αγγελίες",
-                to: "/user",
+                to: "/jobs",
             },
             {
                 name: "Συζητήσεις",
