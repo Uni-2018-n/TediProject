@@ -107,6 +107,7 @@ export default defineComponent({
     border-radius: 35px;
     width: 60%;
     height: 100%;
+    padding-bottom: 10px;
 }
 .top {
     padding: 15px;

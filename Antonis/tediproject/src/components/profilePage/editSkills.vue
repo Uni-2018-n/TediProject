@@ -29,7 +29,7 @@ export default defineComponent({
         const tempAppend = reactive(toAppend.concat(props.curr));
         const temp= ref("");
         const append = () => {
-            if(props.curr.includes(temp.value)) {
+            if(toAppend.includes(temp.value)) {
                 temp.value = "";
             }else{
                 toAppend.push(temp.value);

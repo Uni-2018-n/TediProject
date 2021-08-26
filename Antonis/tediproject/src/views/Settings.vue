@@ -96,6 +96,7 @@ export default defineComponent({
 .rest {
     display: flex;
     flex-direction: column;
+    padding-bottom: 10px;
 }
 .email, .pass {
     margin-bottom: 60px;

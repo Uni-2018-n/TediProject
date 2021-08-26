@@ -7,6 +7,7 @@ import Communications from '../views/Communications.vue'
 import Network from '../views/Network.vue'
 import Settings from '../views/Settings.vue'
 import Profile from '../views/Profile.vue'
+import NotificationPage from '../views/NotificationPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -48,7 +49,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile',
     name: 'Profile',
     component: Profile
-  }
+  },
+  {
+    path: '/notifications',
+    name: 'NotificationPage',
+    component: NotificationPage
+  },
   
 ]
 

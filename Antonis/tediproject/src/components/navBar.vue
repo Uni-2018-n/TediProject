@@ -48,7 +48,7 @@ export default defineComponent({
             },
             {
                 name: "Ειδοποιήσεις",
-                to: "/user",
+                to: "/notifications",
             },
             {
                 name: "Προσωπικά Στοιχεία",
@@ -70,9 +70,15 @@ export default defineComponent({
 .routerLink:visited{
     color: rgb(51, 51, 51);
 }
+.routerLink:active{
+    color: rgb(51, 51, 51);
+}
 .routerLink:hover {
     cursor: pointer;
     color: rgb(0, 119, 255);
+}
+.routerLink:link {
+    color: rgb(51, 51, 51);
 }
 .outer {
     padding: 10px;
