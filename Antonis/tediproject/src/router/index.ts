@@ -9,6 +9,7 @@ import Settings from '../views/Settings.vue'
 import Profile from '../views/Profile.vue'
 import NotificationPage from '../views/NotificationPage.vue'
 import jobsPage from '../views/jobsPage.vue'
+import userList from '../views/userList.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -60,6 +61,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/jobs',
     name: 'jobsPage',
     component: jobsPage
+  },
+  {
+    path: '/userList',
+    name: 'userList',
+    component: userList
   },
   
 ]
