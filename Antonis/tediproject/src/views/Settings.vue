@@ -78,7 +78,9 @@ export default defineComponent({
     align-items: center;
     background-color: white;
     border-radius: 25px;
-    width: 30%;
+    min-width: fit-content;
+    padding: 40px;
+    /* width: 30%; */
     flex-direction: column;
 }
 .top label img {
@@ -88,7 +90,7 @@ export default defineComponent({
     cursor: pointer;
 }
 .top {
-    margin: 50px 0 100px 0;
+    margin: 50px 0 60px 0;
 }
 .top input{
     display: none;

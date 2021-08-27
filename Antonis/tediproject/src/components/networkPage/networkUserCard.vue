@@ -30,12 +30,13 @@ export default defineComponent({
 </script>
 <style scoped>
 .card-External {
-    min-width: fit-content;
+    width: fit-content;
+
 }
 .card-Internal {
     display: flex;
     align-items: center;
-    width: fit-content;
+    width: max-content;
     border: solid;
     border-color: rgb(210, 210, 210);
     border-radius: 15px;

@@ -86,6 +86,7 @@ export default defineComponent({
     border-radius: 5px;
     background: #ffffff;
     line-height: 1.8;
+    min-width: max-content;
 }
 .inner {
     padding: 0 15px 0 15px;
@@ -104,7 +105,13 @@ export default defineComponent({
 .right {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+}
+
+.search {
+    min-width: 270px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .navbar ul {
@@ -113,9 +120,11 @@ export default defineComponent({
     margin: 0;
     border-style: solid;
     border-width: 0px;
+    display: flex;
+    flex-direction: row;
 }
 .navbar ul li {
-    display: inline-block;
+    /* display: inline-block; */
     padding: 18px 20px 18px 20px;
     border-right-style: solid;
     border-width: 1px;
@@ -141,6 +150,7 @@ export default defineComponent({
     font-weight: 400;
     width: 0;
 }
+
 ::v-deep .searchButton:hover + .searchInput {
     width: 200px;
 }

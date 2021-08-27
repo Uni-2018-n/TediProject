@@ -72,6 +72,7 @@ export default defineComponent({
     display: flex;
     flex-direction: row;
     justify-content: center;
+    min-width: fit-content;
 }
 .posts ul {
     display: flex;
@@ -91,6 +92,7 @@ export default defineComponent({
 .left{
     align-self: flex-start;
     height: auto;
+    min-width: fit-content;
     position: sticky;
     top: 15px;
 }
