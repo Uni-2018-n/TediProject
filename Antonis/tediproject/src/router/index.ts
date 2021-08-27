@@ -10,6 +10,7 @@ import Profile from '../views/Profile.vue'
 import NotificationPage from '../views/NotificationPage.vue'
 import jobsPage from '../views/jobsPage.vue'
 import userList from '../views/userList.vue'
+import ProfileOther from '../views/ProfileOther.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -67,7 +68,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'userList',
     component: userList
   },
-  
+  {
+    path: '/profileOther',
+    name: 'ProfileOther',
+    component: ProfileOther
+  },
 ]
 
 const router = createRouter({
