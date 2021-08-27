@@ -38,7 +38,7 @@ export default defineComponent({
         requests,
     },
     setup() {
-        const curr= ref(1);
+        const curr= ref(3);
         return { curr }
     },
 })
