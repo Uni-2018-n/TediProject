@@ -9,7 +9,7 @@ export const store = createStore({
         // firstname: String,
         // lastname: String,
         // ProfilePic: String,
-      }
+      },
     }
   }
 })
