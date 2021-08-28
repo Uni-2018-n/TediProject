@@ -41,6 +41,10 @@ export default defineComponent({
         userLeftCompartment
     },
     setup() {
+        const user = localStorage.getItem('user');
+        if(!user){
+            router.push('/');
+        }
         const posts= reactive([
             {
                 name: "antonis",

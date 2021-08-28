@@ -15,6 +15,9 @@
 import { defineComponent } from "vue";
 import welcomeForms from "../components/welcomeForms.vue";
 import Footer from "../components/footer.vue";
+import router from '../router/index'
+import { useStore } from "vuex";
+
 
 export default defineComponent({
   name: "Home",
@@ -22,7 +25,11 @@ export default defineComponent({
     welcomeForms,
     Footer,
   },
-  setup() {},
+  setup() {
+    if(localStorage.getItem("user")){
+      router.push('/user');
+    }
+  },
 });
 </script>
 

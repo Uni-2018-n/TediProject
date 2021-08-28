@@ -16,18 +16,13 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from "@vue/runtime-core";
 import axios from "axios";
-import { useStore } from "vuex";
+import { Store, useStore } from "vuex";
 import router from '../router/index'
 
 export default defineComponent({
   name: "signInForm",
   setup() {
     const store = useStore();
-    console.log(store.state.flag);
-    if(store.state.flag) {
-      console.log(store.state.user);
-      router.push('/user');
-    }
     const email = ref("")
     const pass = ref("")
     const emailError = ref(false)
@@ -64,10 +59,10 @@ export default defineComponent({
             error(2);//TODO make this so it prints wrong email or password
           }else{
             if(response.data.token) {
-              // console.log(response.data.token);
-              // localStorage.setItem('user', JSON.stringify(response.data));
-              store.state.user = response.data;
-              store.state.flag = true;
+              console.log(response.data.token);
+              localStorage.setItem('user', JSON.stringify(response.data));
+              // store.state.flag = true;
+              // store.state.user= JSON.stringify(response.data);
               router.push('/user');
             }
           }

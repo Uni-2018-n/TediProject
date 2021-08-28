@@ -3,17 +3,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useStore } from "vuex";
 import router from '../router/index'
+import { useStore } from "vuex";
 
 export default defineComponent({
     name: "logout",
     setup() {
-        if(useStore().state.user){
-            useStore().state.flag = false;
-            useStore().state.user = null;
-            router.push("/");
-        }
+        localStorage.clear();
+        router.push('/');
         return {  }
     },
 })
