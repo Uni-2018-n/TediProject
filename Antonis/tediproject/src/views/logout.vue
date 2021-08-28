@@ -10,6 +10,7 @@ export default defineComponent({
     name: "logout",
     setup() {
         if(useStore().state.user){
+            useStore().state.flag = false;
             useStore().state.user = null;
             router.push("/");
         }

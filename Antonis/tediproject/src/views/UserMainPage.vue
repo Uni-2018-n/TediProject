@@ -28,7 +28,8 @@ import navBar from "../components/navBar.vue";
 import userPost from "../components/userMainPage/userPost.vue";
 import userPostInput from "../components/userMainPage/userPostInput.vue";
 import userLeftCompartment from "../components/userMainPage/userLeftCompartment.vue";
-
+import { useStore } from "vuex";
+import router from '../router/index'
 
 export default defineComponent({
     name: "UserMainPage",

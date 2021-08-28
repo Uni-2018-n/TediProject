@@ -23,7 +23,8 @@ export default defineComponent({
   name: "signInForm",
   setup() {
     const store = useStore();
-    if(store.state.user) {
+    console.log(store.state.flag);
+    if(store.state.flag) {
       console.log(store.state.user);
       router.push('/user');
     }
@@ -66,6 +67,7 @@ export default defineComponent({
               // console.log(response.data.token);
               // localStorage.setItem('user', JSON.stringify(response.data));
               store.state.user = response.data;
+              store.state.flag = true;
               router.push('/user');
             }
           }
