@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const upload   = require('../middleware/upload.js');
 const Posts    = require('../models/Posts.js');
+const jwt      = require('jsonwebtoken');
 // const NewUser  = require('../models/Signup.js');
 
 const router = express.Router();
@@ -33,10 +34,22 @@ router.post('/', (req, res) => {
 })
 
 // @desc Get all the Posts of a User
-router.get('/:id', (req, res) => {
-    Posts.find({author: req.params.id})
-    .then(result => res.json(result))
-    .catch(err => res.status(404).json({post: 'This User has no posts'}));
+router.post('/:id', (req, res) => {
+    jwt.verify(req.token, 'secretkey', (err, token) => {
+        
+        if(err) {
+            res.sendStatus(403);
+        } else {
+            Posts.find({author: req.params.id})
+            .then((result, authData) =>
+                res.json({
+                    result,
+                    authData
+                })
+            )
+            .catch(err => res.status(404).json({post: 'This User has no posts'}));
+        }
+    });
 })
 
 // @dec Delete all Users Post

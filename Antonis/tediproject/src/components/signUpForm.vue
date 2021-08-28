@@ -124,7 +124,7 @@ export default defineComponent({
     })
 
     const submit = async () => {
-      blurfName();blurlName();blurPass();blurVPass();blurEmail();blurPhoneNumber();blurPhoto();
+      blurfName();blurlName();blurPass();blurVPass();blurEmail();blurPhoneNumber();//blurPhoto();
       if(fNameError.value || lNameError.value || PassError.value || emailError.value || vPassError.value || phoneNumberError.value || photoError.value){
 
       }else{
@@ -134,13 +134,13 @@ export default defineComponent({
           // const fd = new FormData();
           // fd.append('photo', photo.value, photo.value.name)
           try {
-            const response = await axios.post('localhost:5000/users', {
+            const response = await axios.post('https://localhost:8000/users', {
             // const response = await axios.post('https://jsonplaceholder.typicode.com/posts', {
               "firstname": fName.value,
               "lastname": lName.value,
               "email": email.value,
               "password": pass.value,
-              // "photo": fd,
+              // "ProfilePic": fd,
               // title: 'sftest',
               // body: 'bar',
               // userId: 1,

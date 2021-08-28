@@ -58,6 +58,10 @@ export default defineComponent({
                 name: "Ρυθμίσεις",
                 to: "/settings",
             },
+            {
+                name: "Logout",
+                to: "/logout",
+            },
         ])
         return { list }
     },

@@ -11,6 +11,7 @@ import NotificationPage from '../views/NotificationPage.vue'
 import jobsPage from '../views/jobsPage.vue'
 import userList from '../views/userList.vue'
 import ProfileOther from '../views/ProfileOther.vue'
+import logout from '../views/logout.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -72,6 +73,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profileOther',
     name: 'ProfileOther',
     component: ProfileOther
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: logout
   },
 ]
 
