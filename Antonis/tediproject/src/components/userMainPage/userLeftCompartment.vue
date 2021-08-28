@@ -8,7 +8,7 @@
                     height="90"
                 />
                 <div class="text">
-                    <span class="name">Antonis Kalamakis</span>
+                    <span class="name">{{ userName }}</span>
                     <span class="inf">Student at National & Kapodistrian University of Athens</span>
                 </div>
             </div>
@@ -22,6 +22,9 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+    props: {
+        userName: {type: String, required: true},
+    },
     name: "userLeftCompartment",
     setup() {
         

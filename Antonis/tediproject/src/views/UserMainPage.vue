@@ -3,11 +3,11 @@
         <navBar />
         <div class="middle">
             <div class="left">
-                <userLeftCompartment />
+                <userLeftCompartment :userName="user.firstname + ' ' + user.lastname" />
             </div>
             <div class="other">
                 <div class="postInput">
-                    <userPostInput />
+                    <userPostInput :userName="user.firstname + ' ' + user.lastname" />
                 </div>
                 <div class="posts">
                     <ul>
@@ -28,7 +28,6 @@ import navBar from "../components/navBar.vue";
 import userPost from "../components/userMainPage/userPost.vue";
 import userPostInput from "../components/userMainPage/userPostInput.vue";
 import userLeftCompartment from "../components/userMainPage/userLeftCompartment.vue";
-import { useStore } from "vuex";
 import router from '../router/index'
 
 export default defineComponent({
@@ -41,7 +40,7 @@ export default defineComponent({
         userLeftCompartment
     },
     setup() {
-        const user = localStorage.getItem('user');
+        const user = JSON.parse(localStorage.getItem('user') as string);
         if(!user){
             router.push('/');
         }
@@ -62,7 +61,7 @@ export default defineComponent({
                 name: "antonis",
             },
         ])
-        return { posts }
+        return { user, posts }
     },
 })
 </script>

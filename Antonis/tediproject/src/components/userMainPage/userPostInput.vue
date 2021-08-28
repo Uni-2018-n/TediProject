@@ -8,7 +8,7 @@
                 height="55"
                 />
                 <div class="text">
-                    <span>Antonis Kalamakis</span>
+                    <span>{{ userName }}</span>
                 </div>
             </div>
             <textarea id="postTextArea" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
@@ -36,6 +36,9 @@ import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
 
 export default defineComponent({
     name: "userPostInput",
+    props: {
+        userName: {type: String, required: true},
+    },
     components: {
         imgSlideShow,
         userUnderPostImg,

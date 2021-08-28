@@ -59,7 +59,6 @@ export default defineComponent({
             error(2);//TODO make this so it prints wrong email or password
           }else{
             if(response.data.token) {
-              console.log(response.data.token);
               localStorage.setItem('user', JSON.stringify(response.data));
               // store.state.flag = true;
               // store.state.user= JSON.stringify(response.data);
