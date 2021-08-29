@@ -13,7 +13,7 @@ router.get('/', LogInController.isLoggedIn, LogInController.LoggedOutUser);
 router.get('/login', LogInController.isLoggedOut, LogInController.LoggedInUser);
 
 router.post('/login', passport.authenticate('local', {
-	successRedirect: '/', // If the logIn was successful then redirect
+	successRedirect: '/user', // If the logIn was successful then redirect
 	failureRedirect: '/login?error=true'
 }));
 

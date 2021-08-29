@@ -1,24 +1,34 @@
 <template>
-    <navBar />
-    <div class="middle">
-        <div class="postInput">
-            <userPostInput />
+    <div class="outeer">
+        <navBar />
+        <div class="middle">
+            <div class="left">
+                <userLeftCompartment :userName="user.firstname + ' ' + user.lastname" />
+            </div>
+            <div class="other">
+                <div class="postInput">
+                    <userPostInput :userName="user.firstname + ' ' + user.lastname" />
+                </div>
+                <div class="posts">
+                    <ul>
+                        <li v-for="post in posts" :key="post">
+                            <userPost />
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="posts">
-            <userPost />
-        </div>
-    </div>
-    <footer>
         <Footer />
-    </footer>
+    </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import Footer from "../components/footer.vue";
 import navBar from "../components/navBar.vue";
 import userPost from "../components/userMainPage/userPost.vue";
 import userPostInput from "../components/userMainPage/userPostInput.vue";
-
+import userLeftCompartment from "../components/userMainPage/userLeftCompartment.vue";
+import router from '../router/index'
 
 export default defineComponent({
     name: "UserMainPage",
@@ -27,19 +37,67 @@ export default defineComponent({
         navBar,
         userPost,
         userPostInput,
+        userLeftCompartment
     },
     setup() {
-        return {  }
+        const user = JSON.parse(localStorage.getItem('user') as string);
+        if(!user){
+            router.push('/');
+        }
+        const posts= reactive([
+            {
+                name: "antonis",
+            },
+            {
+                name: "antonis",
+            },
+            {
+                name: "antonis",
+            },
+            {
+                name: "antonis",
+            },
+            {
+                name: "antonis",
+            },
+        ])
+        return { user, posts }
     },
 })
 </script>
 <style scoped>
-.posts {
+.outeer {
     display: flex;
-    justify-content: center;
+    height: 100%;
+    flex-direction: column;
 }
-.postInput {
+.middle {
+    flex: 1;
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    min-width: fit-content;
+}
+.posts ul {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.posts ul li {
+    padding: 0px 0px 10px 0px;
+    margin: 0;
+}
+.other {
+    display: flex;
+    flex-direction: column;
+}
+.left{
+    align-self: flex-start;
+    height: auto;
+    min-width: fit-content;
+    position: sticky;
+    top: 15px;
 }
 </style>

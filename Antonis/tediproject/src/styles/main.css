@@ -1,6 +1,12 @@
+html, body, #app {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
 html {
     position: relative;
-    min-height: 100%;
+    /* min-height: 100%; */
 }
 
 body {
@@ -8,9 +14,7 @@ body {
     background-size: 400% 400%;
     animation: gradient 30s ease infinite;
 
-
-    margin: 0 0 100px; /*change 100 for more space of footer*/
-    /* bottom = footer height */
+    
 }
 
 .popupOpen {
@@ -27,11 +31,4 @@ body {
       100% {
           background-position: 0% 50%;
       }
-}
-
-footer {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
 }

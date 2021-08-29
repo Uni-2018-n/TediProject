@@ -1,19 +1,10 @@
-# tediprojectnew
++ comment delete
++ fix zoomed images in posts
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+TODO:
+user:
+left compartment needs to get() the school
+left compartment connections redirect to network
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+all the photos

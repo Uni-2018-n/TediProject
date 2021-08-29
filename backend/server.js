@@ -1,6 +1,6 @@
 const express		 = require('express');
 const session        = require('express-session');
-// const hbs         = require('express-handlebars');
+const hbs            = require('express-handlebars');
 const path           = require('path');
 const crypto         = require('crypto');
 const mongoose       = require('mongoose');
@@ -9,6 +9,8 @@ const cors           = require('cors');
 const passport       = require('passport');
 const localStrategy  = require('passport-local');
 const bcrypt         = require('bcrypt');
+const jwt            = require('jsonwebtoken');
+// const hbs            = require('hbs');
 
 const https          = require('https');
 const fs             = require('fs');
@@ -22,7 +24,7 @@ const methodOverride = require('method-override');
 
 const connection    = require('./db.js');
 const UserInDb      = require('./models/SignUp.js');
-const LogInRoutes   = require('./routes/LogIn.js');
+// const LogInRoutes   = require('./routes/LogIn.js');
 const SignUpRoutes  = require('./routes/SignUp.js');
 const UploadRoutes  = require('./routes/Uploads.js');
 const PostsRoutes   = require('./routes/Posts.js');
@@ -41,17 +43,18 @@ mongoose.connection.once('open', () => {
   gfs = Grid(mongoose.connection.db, mongoose.mongo);
   gfs.collection('uploads');
 });
-
+// 
 // Middleware
-// app.engine('hbs', hbs({ extname: '.hbs' }));
-// app.use(methodOverride('_method'));
-// app.set('view engine', 'ejs');
-// app.use(express.static(__dirname + '/public'));
-// app.use(session({
-//     secret: "verygoodsecret",
-//     resave: false,
-//     saveUninitialized: true
-// }));
+app.engine('hbs', hbs({ extname: '.hbs' }));
+app.use(methodOverride('_method'));
+app.set('view engine', 'ejs');
+app.use(express.static('/home/smackflad/Documents/uni/6o/tedi/Project/TediProject/Antonis/tediproject/src' + '/public'));
+// console.log(__dirname);
+app.use(session({
+    secret: "verygoodsecret",
+    resave: false,
+    saveUninitialized: true
+}));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
@@ -93,8 +96,68 @@ passport.use(new localStrategy(function (email, password, done) {
 app.use('/users', SignUpRoutes);
 // app.use('/', LogInRoutes);
 app.use('/upload', UploadRoutes);
-app.use('/posts', PostsRoutes);
-app.use('/chat', ChatRoutes);
+app.use('/posts', verifyToken, PostsRoutes);
+app.use('/chat', verifyToken, ChatRoutes);
+
+/////////////////////////////// LOGIN ROUTES
+// app.post('/home')
+
+app.post('/login', async (req, res) => {
+
+    const user = await UserInDb.findOne({ email: req.body.email })
+    .then(async (result) => {
+        if (result) {
+            const check = await bcrypt.compare(req.body.password, result.password);
+
+            if (check == false) {
+                res.send({flag: false, message: 'Incorrect password.' });
+                return {};
+            }
+            else {
+                // res.send(result);
+                return result;
+            }
+        }
+        else
+            res.send({ flag: false, message: 'Incorrect email.' });
+    })
+    .catch((err) => {
+        console.log(err);
+        console.log("test1");
+    });
+
+    jwt.sign({user: user}, 'secretkey', (err, token) => {
+        res.json({
+            flag: true,
+            token,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            ProfilePic: user.ProfilePic
+        });
+    });
+});
+
+// TOKEN FORMAT
+// Authorization: Bearer <access_token>
+
+// Verify Token
+function verifyToken(req, res, next) {
+    const bearerHeader = req.headers['authorization'];
+    
+    // Check bearer
+    if (typeof bearerHeader !== 'undefined') {
+        const bearer = bearerHeader.split(' ');
+
+        // Get token for array
+        req.token = bearer[1];
+        next();
+    } else {
+        res.sendStatus(403);
+    }
+}
+
+
+/////////////////////////////////
 
 app.use('/', (req, res) => {
     res.send('hello');

@@ -67,7 +67,7 @@ const createUser = (req, res) => {
                         email: req.body.email,
                         number: req.body.number,
                         password: securePassword,
-                        ProfilePic: req.file.filename
+                        // ProfilePic: req.file.filename
                     });
                 
                     post.save()

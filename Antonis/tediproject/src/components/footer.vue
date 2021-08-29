@@ -51,7 +51,7 @@ export default defineComponent({
 }
 
 #general {
-  display: block;
+  /* display: block; */
   /* margin-top: 5%; */
   padding-top: 1%;
   padding-bottom: 1%;
@@ -60,12 +60,18 @@ export default defineComponent({
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   box-shadow: 0px -2px 15px rgba(0, 0, 0, 0.671);
+  min-width: max-content;
 }
 #general ul {
   padding: 0;
+  margin: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+
 }
 #general ul li {
-  display: inline;
+  /* display: inline; */
   padding: 5px;
   margin-right: 10px;
 }

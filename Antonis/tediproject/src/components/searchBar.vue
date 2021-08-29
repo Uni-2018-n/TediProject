@@ -19,7 +19,6 @@ export default defineComponent({
 .searchBox {
     height: 50px;
     float: left;
-    width: max-content;
 }
 
 .searchInput {

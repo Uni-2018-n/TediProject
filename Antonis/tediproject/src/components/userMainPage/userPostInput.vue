@@ -8,7 +8,7 @@
                 height="55"
                 />
                 <div class="text">
-                    <span>Antonis Kalamakis</span>
+                    <span>{{ userName }}</span>
                 </div>
             </div>
             <textarea id="postTextArea" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
@@ -24,37 +24,7 @@
             </div>
         </div>
         <div class="media">
-            <div class="voice">
-                <ul>
-                    <li v-for="voice in voices" :key="voice">
-                        <audio controls>
-                            <source :src="voice" type="audio/mpeg"> 
-                        </audio>
-                    </li>
-                </ul>
-            </div>
-            <div class="other">
-                <ul>
-                    <li v-for="(photo, index) in totalURL.slice(0,4)" :key="index">
-                        <div class="img-container">
-                            <div v-if="!photo.t">
-                                <img @click="imgOpenTriger(index)" :src="photo.photo" :class="{ imgOnly: only && index === 0, imgFirst: first && index === 0, imgElse: imgElse || index != 0, imgLast: imgLast && index === 3 }">
-                                <div v-if="imgLast && index === 3" @click="imgOpenTriger(index)"  class="img-text">
-                                    <span>+ {{ allCount-4 }}</span>
-                                </div>
-                            </div>
-                            <div v-else>
-                                <video @click="imgOpenTriger(index)" :class="{ imgOnly: only && index === 0, imgFirst: first && index === 0, imgElse: imgElse || index != 0, imgLast: imgLast && index === 3 }">
-                                    <source :src="photo.video" />
-                                </video>
-                                <div @click="imgOpenTriger(index)" class="video-play">
-                                    <img src="@/assets/outline_play_arrow_black_48dp.png">         
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <userUnderPostImg :imgOpenTriger="imgOpenTriger" :only="only" :first="first" :imgElse="imgElse" :imgLast="imgLast" :n="n" :indx="indx" :allCount="allCount" :voicesURL="voicesURL" :totalURL="totalURL" />
         </div>
     </div>
     <imgSlideShow v-if="imgFlag" :src="totalURL" :indx="indx" :closeTriger="() => imgCloseTriger()"/>
@@ -62,11 +32,16 @@
 <script lang="ts">
 import { defineComponent, reactive, ref, watch } from 'vue'
 import imgSlideShow from "../imgSlideShow.vue"
+import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
 
 export default defineComponent({
     name: "userPostInput",
+    props: {
+        userName: {type: String, required: true},
+    },
     components: {
         imgSlideShow,
+        userUnderPostImg,
     },
     setup() {
         const photos = reactive<File[]>([]);
@@ -278,100 +253,5 @@ textarea:focus {
 
 .media {
     margin-top: 10px;
-}
-
-.voice {
-    display: flex;
-    justify-content: center;
-}
-
-.voice ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.other {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-}
-
-.other ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-.other ul li {
-    display: inline-block;
-    margin: 3px;
-}
-
-
-.imgFirst {
-    object-fit: cover;
-    width: 360px;
-    height: 180px;
-}
-.imgOnly {
-    object-fit: contain;
-    width: auto;
-    max-height: 360px;
-    height: auto;
-}
-.imgElse {
-    object-fit: cover;
-    width: 180px;
-    height: 180px;
-}
-.imgLast {
-    filter: blur(2px);
-}
-
-.img-container {
-    position: relative;
-}
-
-.img-container img:hover {
-    cursor: pointer;
-}
-
-.img-container video:hover {
-    cursor: pointer;
-}
-
-.img-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.img-text:hover {
-    cursor: pointer;
-}
-
-.img-text span {
-    font-size: 30px;
-    font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px 5px rgb(0, 0, 0);
-}
-
-.video-play {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.video-play:hover {
-    cursor: pointer;
-}
-
-.video-play img {
-    object-fit: contain;
-    width: auto;
-    height: 100px;
 }
 </style>

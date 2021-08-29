@@ -35,10 +35,8 @@
         </li>
       </ul>
     </div>
-  </div>
-  <footer>
     <Footer />
-  </footer>
+  </div>
   <userInfo v-if=flag :popupTriger="() => popupTriger()" :userId="idprop" />
 </template>
 
@@ -108,10 +106,13 @@ export default defineComponent({
 .outer {
   display: flex;
   flex-direction: column;
-  margin: 25px;
+  /* margin: 25px; */
+  height: 100%;
 }
 #genera {
   text-align: center;
+  flex: 1;
+  height: 100%;
 }
 ul {
   list-style-type: none;
@@ -122,6 +123,7 @@ ul {
 }
 #top {
   /* margin-bottom: 10px; */
+  margin: 25px;
 }
 .inpcheck {
   opacity: 0;

@@ -1,7 +1,7 @@
 <template>
     <div class="external">
         <div class="internal">
-            <div class="tag">
+            <div :class="{ selected: selected}" class="tag">
                 <img
                 src="@/assets/blank-profile-picture.png"
                 width="55"
@@ -22,7 +22,7 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
     name: "userChats",
-    props: [ "name", "text"],
+    props: [ "name", "text", "selected"],
     setup() {
         return {  }
     },
@@ -34,6 +34,10 @@ export default defineComponent({
     display: flex;
     padding: 8px;
     width: inherit;
+    min-width: 280px;
+}
+.selected {
+    background-color: rgb(230, 230, 230);
 }
 .tag img {
     border-radius: 30px;
