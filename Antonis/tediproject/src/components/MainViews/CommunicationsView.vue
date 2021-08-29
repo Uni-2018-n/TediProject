@@ -23,11 +23,11 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import navBar from "../components/navBar.vue";
-import Footer from "../components/footer.vue";
-import chats from '../components/communicationPage/chats.vue'
-import chat from '../components/communicationPage/chat.vue'
-import popupSearch from '../components/communicationPage/popupSearch.vue'
+import navBar from "../../components/navBar.vue";
+import Footer from "../../components/footer.vue";
+import chats from '../../components/communicationPage/chats.vue'
+import chat from '../../components/communicationPage/chat.vue'
+import popupSearch from '../communicationPage/popupSearch.vue'
 
 export default defineComponent({
     name: "CommunicationsView",

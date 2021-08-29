@@ -9,9 +9,9 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import navBar from '../components/navBar.vue'
-import Footer from '../components/footer.vue'
-import userPost from '../components/userMainPage/userPost.vue'
+import navBar from '../../components/navBar.vue'
+import Footer from '../../components/footer.vue'
+import userPost from '../../components/userMainPage/userPost.vue'
 
 export default defineComponent({
     name: "postPageView",

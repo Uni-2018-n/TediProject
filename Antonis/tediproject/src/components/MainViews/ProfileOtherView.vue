@@ -46,10 +46,10 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import navBar from "../components/navBar.vue";
-import Footer from "../components/footer.vue";
-import editEducation from "../components/profilePage/editEducation.vue"
-import editSkills from "../components/profilePage/editSkills.vue"
+import navBar from "../../components/navBar.vue";
+import Footer from "../../components/footer.vue";
+import editEducation from "../../components/profilePage/editEducation.vue"
+import editSkills from "../../components/profilePage/editSkills.vue"
 
 export default defineComponent({
     name: "ProfileView",

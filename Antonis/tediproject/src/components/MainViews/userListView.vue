@@ -22,8 +22,8 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import navBar from "../components/navBar.vue";
-import Footer from "../components/footer.vue";
+import navBar from "../../components/navBar.vue";
+import Footer from "../../components/footer.vue";
 
 export default defineComponent({
     name: "UserListView",

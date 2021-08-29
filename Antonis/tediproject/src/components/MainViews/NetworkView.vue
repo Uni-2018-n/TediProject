@@ -18,9 +18,9 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import navBar from "../components/navBar.vue";
-import Footer from "../components/footer.vue";
-import networkUserCard from "../components/networkPage/networkUserCard.vue"
+import navBar from "../../components/navBar.vue";
+import Footer from "../../components/footer.vue";
+import networkUserCard from "../../components/networkPage/networkUserCard.vue"
 
 export default defineComponent({
     name: "NetworkView",

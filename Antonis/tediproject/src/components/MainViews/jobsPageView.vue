@@ -22,11 +22,11 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import navBar from "../components/navBar.vue";
-import Footer from "../components/footer.vue";
-import myjobs from "../components/jobsPage/myJobs.vue";
-import jobs from "../components/jobsPage/jobs.vue";
-import requests from "../components/jobsPage/requests.vue";
+import navBar from "../../components/navBar.vue";
+import Footer from "../../components/footer.vue";
+import myjobs from "../../components/jobsPage/myJobs.vue";
+import jobs from "../../components/jobsPage/jobs.vue";
+import requests from "../../components/jobsPage/requests.vue";
 
 export default defineComponent({
     name: "jobsPageView",

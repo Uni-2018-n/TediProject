@@ -42,10 +42,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "@vue/runtime-core";
-import Footer from "../components/footer.vue";
-import Users from "../components/adminPage/users.vue";
-import userInfo from "../components/adminPage/userInfo.vue"
-import userSearch from "../components/adminPage/userSearch.vue"
+import Footer from "../../components/footer.vue";
+import Users from "../../components/adminPage/users.vue";
+import userInfo from "../../components/adminPage/userInfo.vue"
+import userSearch from "../../components/adminPage/userSearch.vue"
 
 export default defineComponent({
   name: "AdminPageView",
