@@ -132,7 +132,7 @@ export default defineComponent({
 }
 
 
-::v-deep .searchInput {
+:deep(.searchInput) {
     font-size: 35px;
     border-width: 1px;
     z-index: 0;
@@ -140,10 +140,10 @@ export default defineComponent({
     width: 400px;
 }
 
-::v-deep .searchInput::placeholder {
+:deep(.searchInput::placeholder) {
     font-size: 35px;
 }
-::v-deep .searchButton{
+:deep(.searchButton){
     z-index: 2;
     border-width: 1px;
 }

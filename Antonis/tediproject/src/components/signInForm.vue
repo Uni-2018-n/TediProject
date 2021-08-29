@@ -18,11 +18,11 @@ import { defineComponent, ref, watch } from "@vue/runtime-core";
 import axios from "axios";
 import { Store, useStore } from "vuex";
 import router from '../router/index'
+import { login } from '../jsLibs/auth';
 
 export default defineComponent({
   name: "signInForm",
   setup() {
-    const store = useStore();
     const email = ref("")
     const pass = ref("")
     const emailError = ref(false)
@@ -39,7 +39,7 @@ export default defineComponent({
         passErrorB.value = true
       }
     };
-    const submit = async () => {
+    const submit = () => {
       if (!email.value || !pass.value) {
         if (!email.value) {
           error(0)
@@ -50,25 +50,10 @@ export default defineComponent({
       }else{
         //check if server returned error
         //if yes:
-        await axios.post("https://localhost:8000/login", {
-          email: email.value,
-          password: pass.value
-        }).then((response) => {
-          if(!response.data.flag){
-            console.log(response.data.message);
-            error(2);//TODO make this so it prints wrong email or password
-          }else{
-            if(response.data.token) {
-              localStorage.setItem('user', JSON.stringify(response.data));
-              // store.state.flag = true;
-              // store.state.user= JSON.stringify(response.data);
-              router.push('/user');
-            }
-          }
-          console.log("OK");
-        }).catch((errors) => {
-          console.log("**LOGIN ERROR**");
-        })
+        login(email.value, pass.value).then(data => {
+          console.log(data);
+          error(data);
+        });
       }
     };
     const blurEmail = () => {

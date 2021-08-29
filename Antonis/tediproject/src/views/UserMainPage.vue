@@ -22,13 +22,14 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, onMounted, reactive, ref,  } from 'vue';
 import Footer from "../components/footer.vue";
 import navBar from "../components/navBar.vue";
 import userPost from "../components/userMainPage/userPost.vue";
 import userPostInput from "../components/userMainPage/userPostInput.vue";
 import userLeftCompartment from "../components/userMainPage/userLeftCompartment.vue";
 import router from '../router/index'
+import { login, loginCheck } from "../jsLibs/auth"
 
 export default defineComponent({
     name: "UserMainPage",
@@ -40,10 +41,13 @@ export default defineComponent({
         userLeftCompartment
     },
     setup() {
-        const user = JSON.parse(localStorage.getItem('user') as string);
-        if(!user){
-            router.push('/');
-        }
+        const user = ref({});
+        onMounted(async() => {
+            loginCheck().then((data) =>{
+                user.value = data;
+            })
+        });
+
         const posts= reactive([
             {
                 name: "antonis",

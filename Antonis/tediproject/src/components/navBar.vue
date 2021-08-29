@@ -143,7 +143,7 @@ export default defineComponent({
 .navbar ul li:last-child {
     border-right-style: none;
 }
-::v-deep .searchInput {
+:deep(.searchInput) {
     font-size: 14px;
     border-width: 1px;
     transition: width 0.75s;
@@ -155,21 +155,21 @@ export default defineComponent({
     width: 0;
 }
 
-::v-deep .searchButton:hover + .searchInput {
+:deep(.searchButton:hover + .searchInput) {
     width: 200px;
 }
-::v-deep .searchInput:hover {
+:deep(.searchInput:hover) {
     width: 200px;
 }
-::v-deep .searchInput:focus {
+:deep(.searchInput:focus) {
     width: 200px;
 }
 
-::v-deep .searchInput::placeholder {
+:deep(.searchInput::placeholder) {
     color: rgb(0, 0, 0);
     font-size: 14px;
 }
-::v-deep .searchButton{
+:deep(.searchButton){
     z-index: 2;
     border-color: rgb(0, 0, 0);
     color: rgb(0, 0, 0);
