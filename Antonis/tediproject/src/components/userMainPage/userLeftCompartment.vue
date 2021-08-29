@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="left-other">
-                <span>Connections</span>
+                <router-link class="network" to='network'>Connections</router-link>
             </div>
         </div>
     </div>
@@ -27,7 +27,8 @@ export default defineComponent({
     },
     name: "userLeftCompartment",
     setup() {
-        
+
+        return {  }
     },
 })
 </script>
@@ -86,9 +87,27 @@ export default defineComponent({
     width: 100%;
     height: 100%;
 }
-.left-other span {
+.network {
     margin: 15px;
+    text-decoration: none;
 }
+.network {
+    text-decoration: none;
+}
+.network:visited{
+    color: black;
+}
+.network:active{
+    color: black;
+}
+.network:hover {
+    cursor: pointer;
+    color: black;
+}
+.network:link {
+    color: black;
+}
+
 .left-other:hover {
     background-color: rgba(0, 0, 0, 0.2);
     border-bottom-left-radius: 20px;

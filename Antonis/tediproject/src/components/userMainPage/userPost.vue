@@ -8,8 +8,8 @@
                 height="55"
                 />
                 <div class="text">
-                    <span>Antonis Kalamakis</span>
-                    <span class="time">10:00pm</span>
+                    <span>{{ post.name }}</span>
+                    <span class="time">{{ time }}</span>
                 </div>
                 <div class="middle">
                     <span>
@@ -22,10 +22,10 @@
                 <div class="tophalf">
                     <ul>
                         <li>
-                            <span>10 Likes</span>
+                            <span>{{ post.likes.length }} Likes</span>
                         </li>
                         <li>
-                            <span>10 Comments</span>
+                            <span>{{ post.comments.length }} Comments</span>
                         </li>
                     </ul>
                 </div>
@@ -58,18 +58,22 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 import userComments from '../userMainPage/userComments.vue'
+import { postType } from "../../jsLibs/auth"
+
 
 export default defineComponent({
     name: "userPost",
-    props: [],
+    props: {
+        post: {type: Object as PropType<postType>, required: true},
+    },
     components: {
         userComments,
     },
-    setup() {
+    setup(props) {
         const flag = ref(false);
-        const postTextTemp = ref("If wandered relation no surprise of screened doubtful. Overcame no insisted ye of trifling husbands. Might am order hours on found. Or dissimilar companions friendship impossible at diminution. Did yourself carriage learning she man its replying. Sister piqued living her you enable mrs off spirit really. Parish oppose repair is me misery. Quick may saw style after money mrs.");
+        const postTextTemp = ref<string>(props.post.text.toString());
         const loadFlag = ref(false);
         const commentFlag = ref(false);
         const postText = ref("")
@@ -80,6 +84,10 @@ export default defineComponent({
             postText.value = postTextTemp.value;
             loadFlag.value = false;
         }
+        console.log(props.post)
+        let date: Date =new Date(Date.parse(props.post.createdAt.toString()));
+        const time = ref(date.getHours() + ':' + date.getMinutes());
+
         const resize = (e: Event) => {
             (e.target as HTMLTextAreaElement).style.height = 'auto';
             (e.target as HTMLTextAreaElement).style.height = (e.target as HTMLTextAreaElement).scrollHeight +'px';
@@ -88,7 +96,7 @@ export default defineComponent({
             document.getElementById('commentTextArea')!.focus();
         }
         
-        return { loadFlag, flag, postText, postTextTemp, resize, commentFlag, focus }
+        return { loadFlag, flag, postText, postTextTemp, resize, commentFlag, focus, time }
     },
 })
 </script>

@@ -1,6 +1,32 @@
 import axios from "axios";
 import router from "../router/index"
 
+export type givenType = {
+    flag: Boolean,
+    token: String,
+    firstname: String,
+    lastname: String,
+    _id: String
+}
+
+export type likeType = {
+    _id: String,
+    user: String
+}
+
+export type postType = {
+    _id: String,
+    author: String,
+    text: String,
+    name: String,
+    likes: Array<likeType>,
+    comments: Array<likeType>,
+    date: String,
+    createdAt: String,
+    updatedAt: String,
+    __v: Number
+}
+
 export const login = async (email: string, pass: string): Promise<Number> =>{
     try {
         const response = await axios.post("https://localhost:8000/login", {
@@ -28,7 +54,7 @@ export const logout = async () =>{
     router.push('/');
 }
 
-export const loginCheck = async (): Promise<Object> =>{
+export const loginCheck = async (): Promise<givenType> =>{
     const user = JSON.parse(localStorage.getItem('user') as string);
     if(!user){
         router.push('/');
