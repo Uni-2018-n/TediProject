@@ -28,7 +28,15 @@ const NewUser = new mongoose.Schema({
     Connected_users: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'NewUser'
-    }
+    },
+    Liked_Posts: [
+        {
+          post: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'Posts'
+          }
+        }
+    ]
     // Add every file necessary later
 }, {timestamps: true});
 

@@ -51,12 +51,14 @@ const getUser = (req, res) => {
 }
 
 const createUser = (req, res) => {
-    console.log(req.file);
     let securePassword;
 
     const used = NewUser.findOne({ email: req.body.email })
     .then((result) => {
-        if (result) res.send("This email is already registed.");
+        if (result) res.json({
+            "message": "This email is already registed.",
+            "boolean": false
+        });
         else {
                 void async function() {
                     securePassword = await bcrypt.hash(req.body.password, 10)
@@ -67,12 +69,14 @@ const createUser = (req, res) => {
                         email: req.body.email,
                         number: req.body.number,
                         password: securePassword,
-                        // ProfilePic: req.file.filename
+                        ProfilePic: req.file.filename
                     });
                 
                     post.save()
                     .then((result) => {
-                        res.send('/about');
+                        res.json({
+                            "boolean": true
+                        })
                     })
                     .catch((err) => {
                         res.json(err);

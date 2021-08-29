@@ -4,23 +4,24 @@ const passport = require("passport");
 const upload   = require('../middleware/upload.js');
 const Posts    = require('../models/Posts.js');
 const jwt      = require('jsonwebtoken');
-// const NewUser  = require('../models/Signup.js');
+const NewUser  = require('../models/SignUp');
 
 const router = express.Router();
 
 //all routes are starting with /posts
 
 // @desc Create a new post
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     // Dont forget to check if post is valid (check library validator)
 
+    const user = await NewUser.findById({_id: req.body.author.id})
     const Post = new Posts({
         author: req.body.author.id,
         text: req.body.text,
         picture: req.body.picture,
         video: req.body.video,
         voice_recording: req.body.voice_recording,
-        name: req.body.name,
+        name: user.firstname.concat(" ", user.lastname),
         avatar: req.body.avatar
     });
 
@@ -33,23 +34,43 @@ router.post('/', (req, res) => {
     });
 })
 
-// @desc Get all the Posts of a User
-router.post('/:id', (req, res) => {
-    jwt.verify(req.token, 'secretkey', (err, token) => {
-        
-        if(err) {
-            res.sendStatus(403);
-        } else {
-            Posts.find({author: req.params.id})
-            .then((result, authData) =>
-                res.json({
-                    result,
-                    authData
+// @desc HomePage - Get all the Posts of the Users friends and others
+router.get('/:User_id', async (req, res) => {
+    let all_posts = [];
+    const Users_Posts = await Posts.find({author: req.params.User_id});
+    all_posts = all_posts.concat(Users_Posts);
+
+    try {
+        await NewUser.findById({_id: req.params.User_id})
+        .then(async (user) => {
+            for (const User of user.Connected_users) {
+                all_posts = all_posts.concat(await Posts.find({author: User}))
+
+                await NewUser.findById({_id: User})
+                .then(async (connected_user) => {
+                    for (const post of connected_user.Liked_Posts) {
+                        all_posts = all_posts.concat(await Posts.findById(post.post));
+                    }
                 })
-            )
-            .catch(err => res.status(404).json({post: 'This User has no posts'}));
-        }
-    });
+            }
+            res.json({all_posts});
+        })
+        .catch((error) => {
+            res.json(error)
+        })
+        
+    } catch (error) {
+        res.json(error);
+    }    
+})
+
+// @desc Get all the Posts of a User
+router.get('/:id', (req, res) => {
+    Posts.find({author: req.params.id})
+    .then((result) =>
+        res.json({result})
+    )
+    .catch(err => res.status(404).json({post: 'This User has no posts'}));
 })
 
 // @dec Delete all Users Post
@@ -79,20 +100,29 @@ router.delete('/:Post_id', async (req, res) => {
 // @desc Like/Unlike a Users Post
 router.post('/like/:User_id/:Post_id', async (req, res) => {
     try {
-        Posts.findById({_id: req.params.Post_id})
+        const user = await NewUser.findById({_id: req.params.User_id});
+        await Posts.findById({_id: req.params.Post_id})
         .then(Post => {
             if (Post.likes.filter(users_like => users_like.user.toString() === req.params.User_id).length > 0) {
                 // Unlike if liked from this User
+                
                 const Index = Post.likes.map(item => item.user.toString()).indexOf(req.params.User_id);
+                const post_index = user.Liked_Posts.map(item => item.post.toString()).indexOf(req.params.Post_id);
 
                 // Splice it out of the array
                 Post.likes.splice(Index, 1);
+                user.Liked_Posts.splice(post_index, 1);
             } else {
                 // Add the User to the liked list
                 Post.likes.unshift({user: req.params.User_id});
+                user.Liked_Posts.unshift({post: req.params.Post_id});
             }
 
-            Post.save().then(Post => res.json(Post));
+            Post.save().then(Post => {
+                res.json(Post);
+                user.save()
+            });
+            
         })
         .catch(err => res.send(err));
     } catch (error) {

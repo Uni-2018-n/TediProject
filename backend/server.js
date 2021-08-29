@@ -96,11 +96,10 @@ passport.use(new localStrategy(function (email, password, done) {
 app.use('/users', SignUpRoutes);
 // app.use('/', LogInRoutes);
 app.use('/upload', UploadRoutes);
-app.use('/posts', verifyToken, PostsRoutes);
-app.use('/chat', verifyToken, ChatRoutes);
+app.use('/posts', PostsRoutes);
+app.use('/chat', ChatRoutes);
 
 /////////////////////////////// LOGIN ROUTES
-// app.post('/home')
 
 app.post('/login', async (req, res) => {
 
@@ -123,13 +122,13 @@ app.post('/login', async (req, res) => {
     })
     .catch((err) => {
         console.log(err);
-        console.log("test1");
     });
 
     jwt.sign({user: user}, 'secretkey', (err, token) => {
         res.json({
             flag: true,
             token,
+            _id: user._id,
             firstname: user.firstname,
             lastname: user.lastname,
             ProfilePic: user.ProfilePic
@@ -155,6 +154,19 @@ function verifyToken(req, res, next) {
         res.sendStatus(403);
     }
 }
+
+app.get('/check', verifyToken, async (req, res) => {
+    jwt.verify(req.token, 'secretkey', (err, authData) => {
+
+        if(err) {
+            res.sendStatus(403);
+        } else {
+            res.json({
+                iat: authData.iat
+            })
+        }
+    });
+})
 
 
 /////////////////////////////////
