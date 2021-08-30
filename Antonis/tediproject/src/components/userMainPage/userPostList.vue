@@ -1,15 +1,17 @@
-<template>
-    <ul>
-        <li v-for="post in posts" :key="post">
-            <userPost :post="post"/>
-        </li>
-    </ul>
+  <template>
+    <div ref='scrollComponent'>
+        <ul>
+            <li v-for="post in posts" :key="post">
+                <userPost :post="post"/>
+            </li>
+        </ul>
+    </div>
 </template>
 <script lang="ts">
-import axios from 'axios';
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import userPost from "./userPost.vue";
 import { loginCheck, givenType, postType } from "../../tsLibs/auth"
+import { getPosts } from "../../tsLibs/postLoading"
 
 export default defineComponent({
     name: "userPostList",
@@ -17,21 +19,43 @@ export default defineComponent({
         userPost,
     },
     async setup() {
+        onMounted(() => {
+            window.addEventListener("scroll", handleScroll)
+        })
+
+        onUnmounted(() => {
+            window.removeEventListener("scroll", handleScroll)
+        })
         const user = ref<givenType>();
         const posts = ref<postType[]>([]);
         await loginCheck().then((data: givenType) =>{
             user.value = data;
         })
-        if(user.value)
-        try {
-            const response = await axios.get("https://localhost:8000/posts/"+user.value._id);
-            posts.value= response.data.all_posts;
-            // console.log(posts.value[0].date.toString());
-        }catch(errors){
-            console.log("**POST GET ERROR**")
+        if(user.value){
+            getPosts(user.value._id.toString(), 10).then(data => {
+                posts.value.push(...data);
+            });
         }
 
-        return { user, posts }
+        const loadMorePosts = () =>{
+            if(user.value)
+            getPosts(user.value._id.toString(), 10).then(data => {
+                posts.value.push(...data);
+            })
+        }
+
+
+        const scrollComponent = ref<HTMLDivElement>()
+
+
+        const handleScroll = () => {
+            let element: HTMLDivElement = scrollComponent.value as HTMLDivElement;
+            if(element?.getBoundingClientRect().bottom < window.innerHeight+1){
+                // loadMorePosts();
+            }
+        }
+
+        return { user, posts, scrollComponent }
     },
 })
 </script>

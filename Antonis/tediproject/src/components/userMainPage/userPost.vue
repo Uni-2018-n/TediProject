@@ -84,7 +84,7 @@ export default defineComponent({
             postText.value = postTextTemp.value;
             loadFlag.value = false;
         }
-        console.log(props.post)
+        // console.log(props.post)
         let date: Date =new Date(Date.parse(props.post.createdAt.toString()));
         const time = ref(date.getHours() + ':' + date.getMinutes());
 
