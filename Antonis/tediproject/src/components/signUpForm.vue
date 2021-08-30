@@ -1,31 +1,33 @@
 <template>
   <div id="all">
-    <div id="inputs">
-      <input v-model="fName" @blur="blurfName" :class="{ nonerror: !fNameError }" type="text" size="25" placeholder="First Name" />
-      <span id="errors" v-if="fNameError">*First name field cant be empty</span>
-      <input v-model="lName" @blur="blurlName" :class="{ nonerror: !lNameError }" type="text" size="25" placeholder="Last Name" />
-      <span id="errors" v-if="lNameError">*Last name field cant be empty</span>
-      <input v-model="email" @blur="blurEmail" :class="{ nonerror: !emailError && !emailErrorB }" type="email" size="25" placeholder="Email" />
-      <span id="errors" v-if="emailError">*Email field cant be empty</span>
-      <span id="errors" v-if='emailErrorB'>*Wrong email</span>
-      <input v-model="pass" @blur="blurPass" :class="{ nonerror: !PassError }" type="password" size="25" placeholder="Password" />
-      <span id="errors" v-if="PassError">*Password field cant be empty</span>
-      <!-- <span id="errors" v-if='errorFlag'>*Use better password</span> -->
-      <input v-model="vPass" @blur="blurVPass" :class="{ nonerror: !vPassError && !vPassErrorB }" type="password" size="25" placeholder="Verify Password" />
-      <span id="errors" v-if="vPassError">*Please verify the password</span>
-      <span id="errors" v-if='vPassErrorB'>*Password and verified password are diffrent</span>
-      <input v-model="phoneNumber" @blur="blurPhoneNumber" :class="{ nonerror: !phoneNumberError }" type="tel" size="25" placeholder="Phone Number" />
-      <span id="errors" v-if="phoneNumberError">*Phone number field cant be empty</span>
-      <!-- <span id="errors" v-if='errorFlag'>*Wrong phone number format</span> -->
+    <form @submit.prevent="submit()" novalidate>
+      <div id="inputs">
+        <input v-model="fName" @blur="blurfName" :class="{ nonerror: !fNameError }" type="text" size="25" placeholder="First Name" />
+        <span id="errors" v-if="fNameError">*First name field cant be empty</span>
+        <input v-model="lName" @blur="blurlName" :class="{ nonerror: !lNameError }" type="text" size="25" placeholder="Last Name" />
+        <span id="errors" v-if="lNameError">*Last name field cant be empty</span>
+        <input v-model="email" @blur="blurEmail" :class="{ nonerror: !emailError && !emailErrorB }" type="email" size="25" placeholder="Email" />
+        <span id="errors" v-if="emailError">*Email field cant be empty</span>
+        <span id="errors" v-if='emailErrorB'>*Email already registered</span>
+        <input v-model="pass" @blur="blurPass" :class="{ nonerror: !PassError }" type="password" size="25" placeholder="Password" />
+        <span id="errors" v-if="PassError">*Password field cant be empty</span>
+        <!-- <span id="errors" v-if='errorFlag'>*Use better password</span> -->
+        <input v-model="vPass" @blur="blurVPass" :class="{ nonerror: !vPassError && !vPassErrorB }" type="password" size="25" placeholder="Verify Password" />
+        <span id="errors" v-if="vPassError">*Please verify the password</span>
+        <span id="errors" v-if='vPassErrorB'>*Password and verified password are diffrent</span>
+        <input v-model="phoneNumber" @blur="blurPhoneNumber" :class="{ nonerror: !phoneNumberError }" type="tel" size="25" placeholder="Phone Number" />
+        <span id="errors" v-if="phoneNumberError">*Phone number field cant be empty</span>
+        <!-- <span id="errors" v-if='errorFlag'>*Wrong phone number format</span> -->
 
-      <input @change="selectedFile" @blur="blurPhoto" type="file" name="file" id="file" class="inputfile" accept="image/*" />
-      <label for="file" id="fileLabel" :class="{ nonerror: !photoError }">Choose a file</label>
-      <span id="fileName" v-if="photo" :title="photo.name">{{ fileName }}</span>
-      <span id="errors" v-if="photoError">*Please select an image</span>
-    </div>
-    <div id="button">
-      <button @click="submit">Register</button>
-    </div>
+        <input @change="selectedFile" @blur="blurPhoto" type="file" name="file" id="file" class="inputfile" accept="image/*" />
+        <label for="file" id="fileLabel" :class="{ nonerror: !photoError }">Choose a file</label>
+        <span id="fileName" v-if="photo" :title="photo.name">{{ fileName }}</span>
+        <span id="errors" v-if="photoError">*Please select an image</span>
+      </div>
+      <div id="button">
+        <button type="submit">Register</button>
+      </div>
+    </form>
   </div>
 
 
@@ -35,7 +37,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from "@vue/runtime-core"
-import { InputHTMLAttributes } from "@vue/runtime-dom";
 import axios from 'axios'
 
 export default defineComponent({
@@ -124,31 +125,29 @@ export default defineComponent({
     })
 
     const submit = async () => {
-      blurfName();blurlName();blurPass();blurVPass();blurEmail();blurPhoneNumber();//blurPhoto();
+      blurfName();blurlName();blurPass();blurVPass();blurEmail();blurPhoneNumber();blurPhoto();
       if(fNameError.value || lNameError.value || PassError.value || emailError.value || vPassError.value || phoneNumberError.value || photoError.value){
 
       }else{
         if(pass.value != vPass.value && !PassError.value){
           vPassErrorB.value = true
         }else{
-          // const fd = new FormData();
-          // fd.append('photo', photo.value, photo.value.name)
+          const fd = new FormData();
+          fd.append('photo', photo.value!, photo.value!.name)
           try {
             const response = await axios.post('https://localhost:8000/users', {
-            // const response = await axios.post('https://jsonplaceholder.typicode.com/posts', {
               "firstname": fName.value,
               "lastname": lName.value,
               "email": email.value,
               "password": pass.value,
-              // "ProfilePic": fd,
-              // title: 'sftest',
-              // body: 'bar',
-              // userId: 1,
+              "phonenum": phoneNumber.value,
+              "ProfilePic": fd,
             })
             const data = response.data
+            if(!data.boolean){
+              emailErrorB.value = true;
+            }
             console.log(data)
-            //if server responded with email already inside
-            // emailErrorB.value = true
           }catch (e){
             console.error(e)
           }
@@ -162,7 +161,6 @@ export default defineComponent({
           console.log('error image more than 50k') //TODO
         }else{
           photo.value = ((event.target as HTMLInputElement).files as FileList)[0]
-          // console.log(photo.value)
           fileName.value = photo.value.name.substring(0,16)
         }
       }

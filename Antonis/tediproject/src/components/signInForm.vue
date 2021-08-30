@@ -1,24 +1,23 @@
 <template>
   <div id="all">
-    <div id="inputs">
-      <input v-model="email" @blur="blurEmail" :class="{ nonerror: !emailError }" type="email" placeholder="Email" />
-      <span id="errors" v-if="emailError">*Email address cant be empty</span>
-      <input v-model="pass" @blur="blurPass" type="password" :class="{ nonerror: !passErrorA && !passErrorB }" placeholder="Password" />
-      <span id="errors" v-if="passErrorA">*Password cant be empty</span>
-      <span id="errors" v-if="passErrorB">*Wrong email or password</span>
-    </div>
-    <div id="button">
-      <button @click="submit()">Sign in!</button>
-    </div>
+    <form @submit.prevent="submit()" novalidate>
+      <div id="inputs">
+        <input v-model="email" @blur="blurEmail" :class="{ nonerror: !emailError }" type="email" placeholder="Email"/>
+        <span id="errors" v-if="emailError">*Email address cant be empty</span>
+        <input v-model="pass" @blur="blurPass" type="password" :class="{ nonerror: !passErrorA && !passErrorB }" placeholder="Password" />
+        <span id="errors" v-if="passErrorA">*Password cant be empty</span>
+        <span id="errors" v-if="passErrorB">*Wrong email or password</span>
+      </div>
+      <div id="button">
+        <button type="submit">Sign in!</button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, watch } from "@vue/runtime-core";
-import axios from "axios";
-import { Store, useStore } from "vuex";
-import router from '../router/index'
-import { login } from '../jsLibs/auth';
+import { login } from '../tsLibs/auth';
 
 export default defineComponent({
   name: "signInForm",
@@ -48,8 +47,6 @@ export default defineComponent({
           error(1)
         }
       }else{
-        //check if server returned error
-        //if yes:
         login(email.value, pass.value).then(data => {
           console.log(data);
           error(data);

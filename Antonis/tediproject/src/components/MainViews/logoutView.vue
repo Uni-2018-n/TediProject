@@ -3,7 +3,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { logout } from '../../jsLibs/auth'
+import { logout } from '../../tsLibs/auth'
 
 export default defineComponent({
     name: "logoutView",

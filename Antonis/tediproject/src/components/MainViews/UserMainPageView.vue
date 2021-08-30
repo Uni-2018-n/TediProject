@@ -25,7 +25,7 @@ import userPost from "../userMainPage/userPost.vue";
 import userPostInput from "../userMainPage/userPostInput.vue";
 import userLeftCompartment from "../userMainPage/userLeftCompartment.vue";
 import userPostList from "../../components/userMainPage/userPostList.vue"
-import { loginCheck, givenType } from "../../jsLibs/auth"
+import { loginCheck, givenType } from "../../tsLibs/auth"
 
 export default defineComponent({
     name: "UserMainPageView",

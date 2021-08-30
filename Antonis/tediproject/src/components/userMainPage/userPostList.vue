@@ -9,7 +9,7 @@
 import axios from 'axios';
 import { defineComponent, ref } from 'vue'
 import userPost from "./userPost.vue";
-import { loginCheck, givenType, postType } from "../../jsLibs/auth"
+import { loginCheck, givenType, postType } from "../../tsLibs/auth"
 
 export default defineComponent({
     name: "userPostList",

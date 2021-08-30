@@ -60,7 +60,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import userComments from '../userMainPage/userComments.vue'
-import { postType } from "../../jsLibs/auth"
+import { postType } from "../../tsLibs/auth"
 
 
 export default defineComponent({
