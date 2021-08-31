@@ -1,7 +1,7 @@
 <template>
     <div class="outer">
         <div class="inner">
-            <div class="top">
+            <div class="top" @click.self="focus()">
                 <img
                 src="@/assets/blank-profile-picture.png"
                 width="55"
@@ -12,7 +12,7 @@
                 </div>
             </div>
             <textarea v-model="text" id="postTextArea" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
-            <div class="icons">
+            <div class="icons" @click.self="focus()">
                 <input multiple @change="selectPhotos" type="file" name="photoFile" id="photoFile" class="inputfile" accept="image/*" />
                 <label for="photoFile" id="fileLabel"><img src="@/assets/outline_collections_black_24dp.png"></label>
                 
@@ -198,6 +198,10 @@ export default defineComponent({
         }
 
         const post = async () => {
+            if(!text.value || !allCount.value){
+
+                return;
+            }
             loadingFlag.value=true;
             const fd = new FormData();
             fd.append('author', JSON.stringify({id: props.id}));
@@ -260,21 +264,30 @@ export default defineComponent({
     background-color: rgb(248, 248, 248);
 }
 .top {
-    /* margin-bottom: 5px; */
     padding: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.inner:hover {
+    cursor:text;
 }
 .top img {
     border-radius: 30px;
-    float: left;
     margin-right: 5px;
+    -webkit-user-drag: none;
 }
-.text {
-    margin-top: 13px;
+.top img:hover {
+    cursor:default;
 }
+
 .text span {
     font-size: 15px;
     font-family: "Poppins", Arial, sans-serif;
     font-weight: bolder;
+}
+.text span:hover {
+    cursor: pointer;
 }
 
 textarea {
@@ -295,6 +308,7 @@ textarea:focus {
 }
 .icons img {
     padding: 5px;
+    -webkit-user-drag: none;
 }
 
 .inputfile {
@@ -319,5 +333,26 @@ textarea:focus {
 
 .media {
     margin-top: 10px;
+}
+
+.postButton {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+.postButton button {
+    border: none;
+    background-color: rgb(25, 119, 242);
+    color: white;
+    width: 80%;
+    padding: 1.5%;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 19px;
+    transition: all 0.25s;
+}
+.postButton button:hover{
+    background-color: rgb(20, 95, 192);
+    cursor: pointer;
 }
 </style>

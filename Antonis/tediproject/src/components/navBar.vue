@@ -2,7 +2,7 @@
     <div class="outer">
         <div class="inner">
             <div class="logo">
-                <span class="text">LinkedIn</span>
+                <router-link class="routerLink" to="/user">LinkedIn</router-link>
             </div>
             <div class="right">
                 <div class="search">
@@ -98,7 +98,7 @@ export default defineComponent({
     align-items: center;
     justify-content: space-between;
 }
-.logo .text {
+.logo > .routerLink {
     font-weight: bold;
     font-size: 25px;
     padding: 5px 0 5px 0;

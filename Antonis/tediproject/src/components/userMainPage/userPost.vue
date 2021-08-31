@@ -8,8 +8,10 @@
                 height="55"
                 />
                 <div class="text">
-                    <span>{{ post.name }}</span>
-                    <span class="time">{{ time }}</span>
+                    <div class="info">
+                        <span>{{ post.name }}</span>
+                        <span class="time">{{ time }}</span>
+                    </div>
                 </div>
                 <div class="middle">
                     <span>
@@ -86,7 +88,7 @@ export default defineComponent({
         }
         // console.log(props.post)
         let date: Date =new Date(Date.parse(props.post.createdAt.toString()));
-        const time = ref(date.getHours() + ':' + date.getMinutes());
+        const time = ref(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes());
 
         const resize = (e: Event) => {
             (e.target as HTMLTextAreaElement).style.height = 'auto';
@@ -119,22 +121,25 @@ export default defineComponent({
     border-radius: 30px;
     float: left;
     margin-right: 5px;
+    -webkit-user-drag: none;
 }
 .text {
-    margin-top: 13px;
+    margin: 13px 0px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
-.text span {
+.info span {
     font-size: 15px;
     font-family: "Poppins", Arial, sans-serif;
     font-weight: bolder;
 }
-.text .time {
+.info .time {
     font-size: 11px;
     font-weight: 100;
     opacity: 70%;
     margin-left: 5px;
 }
-
 .middle {
     padding: 7px;
     min-height: 20px;

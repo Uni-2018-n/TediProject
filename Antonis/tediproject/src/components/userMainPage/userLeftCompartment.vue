@@ -59,6 +59,7 @@ export default defineComponent({
     border-radius: 100px;
     margin-bottom: 20px;
     margin-top: 20px;
+    -webkit-user-drag: none;
 }
 .text {
     margin: 0px 15px 0px 15px;
@@ -73,6 +74,9 @@ export default defineComponent({
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-align: center;
     margin-bottom: 5px;
+}
+.name:hover {
+    cursor: pointer;
 }
 .inf {
     font-size: 13px;
