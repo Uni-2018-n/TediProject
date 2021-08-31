@@ -16,6 +16,7 @@ router.post('/', upload.fields([{name: 'photos'},{name: 'videos'}, {name: 'voice
 
     console.log(req.body)//TODO: TEST
     console.log(req.files)
+    res.sendStatus(200);
     // const user = await NewUser.findById({_id: req.body.author.id})
     // const Post = new Posts({
     //     author: req.body.author,

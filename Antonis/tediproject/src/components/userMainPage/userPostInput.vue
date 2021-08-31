@@ -31,12 +31,14 @@
         </div>
     </div>
     <imgSlideShow v-if="imgFlag" :src="totalURL" :indx="indx" :closeTriger="() => imgCloseTriger()"/>
+    <loading v-if="loadingFlag"/>
 </template>
 <script lang="ts">
 import axios from 'axios';
 import { defineComponent, reactive, ref, watch } from 'vue'
 import imgSlideShow from "../imgSlideShow.vue"
 import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
+import loading from "../loading.vue"
 
 export default defineComponent({
     name: "userPostInput",
@@ -47,18 +49,20 @@ export default defineComponent({
     components: {
         imgSlideShow,
         userUnderPostImg,
+        loading,
     },
     setup(props) {
         const text = ref("");
+        const loadingFlag = ref(false);
 
         const photos = ref<File[]>([]);
         const videos = ref<File[]>([]);
         const voices = ref<File[]>([]);
-        const photosURL = reactive<{}[]>([]);
-        const videosURL = reactive<{}[]>([]);
-        const voicesURL = reactive<{}[]>([]);
+        const photosURL = ref<{}[]>([]);
+        const videosURL = ref<{}[]>([]);
+        const voicesURL = ref<{}[]>([]);
         
-        const totalURL = reactive<{}[]>([]);
+        const totalURL = ref<{}[]>([]);
 
         const allCount = ref(photos.value.length + videos.value.length + voices.value.length);
 
@@ -71,6 +75,26 @@ export default defineComponent({
 
         const imgFlag = ref(false);
 
+        const reset = () => {
+            text.value= "";
+            photos.value.splice(0,photos.value.length);
+            videos.value.splice(0,videos.value.length);
+            voices.value.splice(0,voices.value.length);
+
+            photosURL.value.splice(0,photosURL.value.length);
+            videosURL.value.splice(0,videosURL.value.length);
+            voicesURL.value.splice(0,voicesURL.value.length);
+
+            totalURL.value.splice(0,totalURL.value.length);
+            only.value = false;
+            first.value = false;
+            imgElse.value = false;
+            imgLast.value = false;
+            n.value = 0;
+            indx.value = 0;
+            imgFlag.value = false;
+        }
+
         const resize = (e: Event) => {
             (e.target as HTMLTextAreaElement).style.height = 'auto';
             (e.target as HTMLTextAreaElement).style.height = (e.target as HTMLTextAreaElement).scrollHeight +'px';
@@ -82,20 +106,20 @@ export default defineComponent({
         const selectPhotos = (event: Event) => {
             if(event){
                 photos.value.splice(0);
-                photosURL.splice(0);
+                photosURL.value.splice(0);
                 for (let photo of ((event.target as HTMLInputElement).files as FileList)) {
                     if(photo.size > 10000000){
                         console.log("error image too big");
                     }else{
-                        photosURL.push({photo: URL.createObjectURL(photo), t: 0});
+                        photosURL.value.push({photo: URL.createObjectURL(photo), t: 0});
                         photos.value.push(photo);
                     }
                 }
             }
-            totalURL.splice(0, totalURL.length);
-            totalURL.push(...videosURL);
-            totalURL.push(...photosURL);
-            allCount.value = totalURL.length;
+            totalURL.value.splice(0, totalURL.value.length);
+            totalURL.value.push(...videosURL.value);
+            totalURL.value.push(...photosURL.value);
+            allCount.value = totalURL.value.length;
 
 
         }
@@ -103,31 +127,31 @@ export default defineComponent({
         const selectVideos = (event: Event) => {
             if(event){
                 videos.value.splice(0);
-                videosURL.splice(0);
+                videosURL.value.splice(0);
                 for (let video of ((event.target as HTMLInputElement).files as FileList)) {
                     if(video.size > 100000000){
                         console.log("error image too big");
                     }else{
-                        videosURL.push({video: URL.createObjectURL(video), t:1});
+                        videosURL.value.push({video: URL.createObjectURL(video), t:1});
                         videos.value.push(video);
                     }
                 }
             }
-            totalURL.splice(0, totalURL.length);
-            totalURL.push(...videosURL);
-            totalURL.push(...photosURL);
-            allCount.value = totalURL.length;
+            totalURL.value.splice(0, totalURL.value.length);
+            totalURL.value.push(...videosURL.value);
+            totalURL.value.push(...photosURL.value);
+            allCount.value = totalURL.value.length;
         }
 
         const selectVoices = (event: Event) => {
             if(event){
                 voices.value.splice(0);
-                voicesURL.splice(0);
+                voicesURL.value.splice(0);
                 for (let voice of ((event.target as HTMLInputElement).files as FileList)) {
                     if(voice.size > 1000000){
                         console.log("error image too big");
                     }else{
-                        voicesURL.push(URL.createObjectURL(voice));
+                        voicesURL.value.push(URL.createObjectURL(voice));
                         voices.value.push(voice);
                     }
                 }
@@ -174,7 +198,7 @@ export default defineComponent({
         }
 
         const post = async () => {
-
+            loadingFlag.value=true;
             const fd = new FormData();
             fd.append('author', JSON.stringify({id: props.id}));
             fd.append('text', text.value);
@@ -197,15 +221,18 @@ export default defineComponent({
                     'Content-Type': 'multipart/form-data'
                 }
                 })
+                reset();
+                loadingFlag.value=false;
                 // const data = response.data
                 // console.log(data)
             }catch (e){
+                loadingFlag.value=false;
                 console.log("**USER INPUT POST ERROR**");
                 console.error(e);
             }
         }
 
-        return { text, resize, focus,
+        return { text, loadingFlag, resize, focus,
          selectPhotos, selectVideos, selectVoices,
           photos, videos, voices,
           photosURL, videosURL, voicesURL, totalURL,
