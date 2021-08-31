@@ -10,10 +10,12 @@ const Posts = new mongoose.Schema({
         type: String,
         required: true
     },
-    picture: {
-        type: String,
-        required: false
-    },
+    picture:[ 
+      {
+          type: String,
+          required: false
+      }
+    ],
     video: {
         type: String,
         required: false

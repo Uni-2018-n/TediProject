@@ -2,6 +2,11 @@
 + fix zoomed images in posts
 
 
+TODO: 
+check author id and curr user id for POST EDIT placement
+
+
+
 TODO:
 user:
 left compartment needs to get() the school

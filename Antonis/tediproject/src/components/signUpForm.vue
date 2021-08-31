@@ -133,15 +133,17 @@ export default defineComponent({
           vPassErrorB.value = true
         }else{
           const fd = new FormData();
-          fd.append('photo', photo.value!, photo.value!.name)
+          fd.append('firstname', fName.value)
+          fd.append('lastname', lName.value)
+          fd.append('email', email.value)
+          fd.append('password', pass.value)
+          fd.append('phonenum', phoneNumber.value)
+          fd.append('file', photo.value!)
           try {
-            const response = await axios.post('https://localhost:8000/users', {
-              "firstname": fName.value,
-              "lastname": lName.value,
-              "email": email.value,
-              "password": pass.value,
-              "phonenum": phoneNumber.value,
-              "ProfilePic": fd,
+            const response = await axios.post('https://localhost:8000/users', fd, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
             })
             const data = response.data
             if(!data.boolean){
@@ -149,7 +151,7 @@ export default defineComponent({
             }
             console.log(data)
           }catch (e){
-            console.error(e)
+            console.log("**USER SIGNUP ERROR**")
           }
         }
       }

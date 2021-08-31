@@ -52,6 +52,9 @@ const getUser = (req, res) => {
 
 const createUser = (req, res) => {
     let securePassword;
+    //let  pp
+    console.log(req.body)
+    console.log(req.file)
 
     const used = NewUser.findOne({ email: req.body.email })
     .then((result) => {

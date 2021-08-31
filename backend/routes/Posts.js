@@ -11,27 +11,29 @@ const router = express.Router();
 //all routes are starting with /posts
 
 // @desc Create a new post
-router.post('/', async (req, res) => {
+router.post('/', upload.fields([{name: 'photos'},{name: 'videos'}, {name: 'voices'}]), async (req, res) => {
     // Dont forget to check if post is valid (check library validator)
 
-    const user = await NewUser.findById({_id: req.body.author.id})
-    const Post = new Posts({
-        author: req.body.author.id,
-        text: req.body.text,
-        picture: req.body.picture,
-        video: req.body.video,
-        voice_recording: req.body.voice_recording,
-        name: user.firstname.concat(" ", user.lastname),
-        avatar: req.body.avatar
-    });
+    console.log(req.body)//TODO: TEST
+    console.log(req.files)
+    // const user = await NewUser.findById({_id: req.body.author.id})
+    // const Post = new Posts({
+    //     author: req.body.author,
+    //     text: req.body.text,
+    //     picture: req.body.picture,
+    //     video: req.body.video,
+    //     voice_recording: req.body.voice_recording,
+    //     name: user.firstname.concat(" ", user.lastname),
+    //     avatar: req.body.avatar
+    // });
 
-    Post.save()
-    .then(
-        post => res.json(post)
-    )
-    .catch((err) => {
-        res.json(err);
-    });
+    // Post.save()
+    // .then(
+    //     post => res.json(post)
+    // )
+    // .catch((err) => {
+    //     res.json(err);
+    // });
 })
 
 // @desc HomePage - Get all the Posts of the Users friends and others

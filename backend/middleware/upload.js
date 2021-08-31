@@ -32,7 +32,25 @@ const storage = new GridFsStorage({
     //       resolve(fileInfo);
     //     });
     //   });
-    }
+    },
+    // photo: (req, file) => {
+    //     return {
+    //         bucketName: "uploads",
+    //         filename: `${Date.now()}-any-name-${file.originalname}`
+    //     }
+    // },
+    // video: (req, file) => {
+    //     return {
+    //         bucketName: "uploads",
+    //         filename: `${Date.now()}-any-name-${file.originalname}`
+    //     }
+    // },
+    // voice: (req, file) => {
+    //     return {
+    //         bucketName: "uploads",
+    //         filename: `${Date.now()}-any-name-${file.originalname}`
+    //     }
+    // }
   });
 
 module.exports = multer({storage});

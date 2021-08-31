@@ -7,7 +7,7 @@
             </div>
             <div class="other">
                 <div class="postInput">
-                    <userPostInput :userName="user.firstname + ' ' + user.lastname" />
+                    <userPostInput :id="user._id" :userName="user.firstname + ' ' + user.lastname" />
                 </div>
                 <div class="posts">
                     <userPostList />
