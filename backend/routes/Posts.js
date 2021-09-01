@@ -14,27 +14,28 @@ const router = express.Router();
 router.post('/', upload.fields([{name: 'photos'},{name: 'videos'}, {name: 'voices'}]), async (req, res) => {
     // Dont forget to check if post is valid (check library validator)
 
-    console.log(req.body)//TODO: TEST
-    console.log(req.files)
-    res.sendStatus(200);
-    // const user = await NewUser.findById({_id: req.body.author.id})
-    // const Post = new Posts({
-    //     author: req.body.author,
-    //     text: req.body.text,
-    //     picture: req.body.picture,
-    //     video: req.body.video,
-    //     voice_recording: req.body.voice_recording,
-    //     name: user.firstname.concat(" ", user.lastname),
-    //     avatar: req.body.avatar
-    // });
+    console.log(req.files.photos)
+    // res.sendStatus(200);
+    const user = await NewUser.findById({_id: req.body.author})
+    const Post = new Posts({
+        author: req.body.author,
+        text: req.body.text,
+        pictures: JSON.stringify(req.files.photos),//TODO:
+        videos: JSON.stringify(req.files.videos),
+        voice_recordings: JSON.stringify(req.files.voices),
+        name: user.firstname.concat(" ", user.lastname),
+        avatar: req.body.avatar
+    });
 
-    // Post.save()
-    // .then(
-    //     post => res.json(post)
-    // )
-    // .catch((err) => {
-    //     res.json(err);
-    // });
+    console.log(Post);
+    Post.save()
+    .then(
+        post => {res.json(post);console.log("YES");}
+    )
+    .catch((err) => {
+        console.log(err);
+        res.json(err);
+    });
 })
 
 // @desc HomePage - Get all the Posts of the Users friends and others

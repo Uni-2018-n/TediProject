@@ -28,7 +28,6 @@ export default defineComponent({
     },
     name: "userLeftCompartment",
     setup() {
-
         return {  }
     },
 })

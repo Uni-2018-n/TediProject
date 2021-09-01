@@ -67,7 +67,11 @@ export const loginCheck = async (): Promise<givenType> =>{
                     'authorization': 'Bearer ' + user.token
                 }
             })
-            user.ProfilePic = "https://localhost:8000/upload/files/"+user.ProfilePic
+            if(user.ProfilePic){
+                user.ProfilePic = "https://localhost:8000/upload/files/"+user.ProfilePic
+            }else{
+                user.ProfilePic = require("@/assets/blank-profile-picture.png")
+            }
             return user;
         } catch(errors) {
             localStorage.clear();
