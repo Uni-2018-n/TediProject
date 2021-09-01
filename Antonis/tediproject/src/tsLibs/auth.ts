@@ -6,6 +6,7 @@ export type givenType = {
     token: String,
     firstname: String,
     lastname: String,
+    ProfilePic: String,
     _id: String
 }
 
@@ -38,6 +39,7 @@ export const login = async (email: string, pass: string): Promise<Number> =>{
         }else{
             if(response.data.token) {
                 localStorage.setItem('user', JSON.stringify(response.data));
+                console.log(response.data)
                 router.push('/user');
                 return -1;
             }
@@ -65,6 +67,7 @@ export const loginCheck = async (): Promise<givenType> =>{
                     'authorization': 'Bearer ' + user.token
                 }
             })
+            user.ProfilePic = "https://localhost:8000/upload/files/"+user.ProfilePic
             return user;
         } catch(errors) {
             localStorage.clear();

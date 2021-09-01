@@ -3,7 +3,7 @@
         <div class="internal">
             <div class="information">
                 <img
-                    src="@/assets/blank-profile-picture.png"
+                    :src="ProfilePic"
                     width="90"
                     height="90"
                 />
@@ -24,6 +24,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
     props: {
         userName: {type: String, required: true},
+        ProfilePic: {type: String, required: true},
     },
     name: "userLeftCompartment",
     setup() {

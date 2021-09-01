@@ -3,11 +3,11 @@
         <navBar />
         <div class="middle">
             <div class="left">
-                <userLeftCompartment :userName="user.firstname + ' ' + user.lastname" />
+                <userLeftCompartment :userName="user.firstname + ' ' + user.lastname" :ProfilePic="user.ProfilePic" />
             </div>
             <div class="other">
                 <div class="postInput">
-                    <userPostInput :id="user._id" :userName="user.firstname + ' ' + user.lastname" />
+                    <userPostInput :id="user._id" :userName="user.firstname + ' ' + user.lastname" :ProfilePic="user.ProfilePic" />
                 </div>
                 <div class="posts">
                     <userPostList />
@@ -41,6 +41,7 @@ export default defineComponent({
         const user = ref<givenType>();
         await loginCheck().then((data: givenType) =>{
             user.value = data;
+        // console.log(user.value.ProfilePic)
         })
 
         return { user }

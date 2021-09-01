@@ -43,7 +43,12 @@ const getUser = (req, res) => {
     const {id} = req.params;
     NewUser.findById(id)
     .then((result) => {
-        res.send(result);
+        res.json({
+                _id: result._id,
+                firstname: result.firstname,
+                lastname: result.lastname,
+                ProfilePic: result.ProfilePic
+            });
     })
     .catch((err) => {
         console.log(err);

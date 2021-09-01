@@ -3,7 +3,7 @@
         <div class="inner">
             <div class="top" @click.self="focus()">
                 <img
-                src="@/assets/blank-profile-picture.png"
+                :src="ProfilePic"
                 width="55"
                 height="55"
                 />
@@ -44,6 +44,7 @@ export default defineComponent({
     name: "userPostInput",
     props: {
         userName: {type: String, required: true},
+        ProfilePic: {type: String, required: true},
         id: {type: String, required: true},
     },
     components: {
@@ -204,7 +205,7 @@ export default defineComponent({
             }
             loadingFlag.value=true;
             const fd = new FormData();
-            fd.append('author', JSON.stringify({id: props.id}));
+            fd.append('author', props.id);
             fd.append('text', text.value);
             // fd.append('files', photos.value[0]);
             for(let i =0;i < photos.value.length ; i++){
