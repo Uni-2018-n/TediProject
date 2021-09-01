@@ -16,16 +16,20 @@ export type likeType = {
 }
 
 export type postType = {
-    _id: String,
     author: String,
-    text: String,
-    name: String,
-    likes: Array<likeType>,
+    avatar: String,
     comments: Array<likeType>,
-    date: String,
     createdAt: String,
+    date: String,
+    likes: Array<likeType>,
+    name: String,
+    pictures: Array<String>,
+    text: String,
     updatedAt: String,
+    videos: Array<String>,
+    voice_recordings: Array<String>,
     __v: Number
+    _id: String,
 }
 
 export const login = async (email: string, pass: string): Promise<Number> =>{
@@ -39,7 +43,6 @@ export const login = async (email: string, pass: string): Promise<Number> =>{
         }else{
             if(response.data.token) {
                 localStorage.setItem('user', JSON.stringify(response.data));
-                console.log(response.data)
                 router.push('/user');
                 return -1;
             }

@@ -3,14 +3,14 @@
         <div class="inner">
             <div class="top">
                 <img
-                src="@/assets/blank-profile-picture.png"
+                :src="profilePic"
                 width="55"
                 height="55"
                 />
                 <div class="text">
                     <div class="info">
                         <span>{{ post.name }}</span>
-                        <span class="time">{{ time }}</span>
+                        <span class="time" :title="full">{{ time }}</span>
                     </div>
                 </div>
                 <div class="middle">
@@ -19,6 +19,9 @@
                     </span>
                     <span class="load" @click="postText = postTextTemp;loadFlag = false;" v-if=loadFlag>Load More...</span>
                 </div>
+            </div>
+            <div class="media">
+                <userUnderPostImg :imgOpenTriger="imgOpenTriger" :allCount="allCount" :voicesURL="voicesURL" :totalURL="totalURL" />
             </div>
             <div class="bottom">
                 <div class="tophalf">
@@ -58,11 +61,14 @@
             </div>
         </div>
     </div>
+    <imgSlideShow v-if="imgFlag" :src="totalURL" :closeTriger="() => imgCloseTriger()"/>
 </template>
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import userComments from '../userMainPage/userComments.vue'
 import { postType } from "../../tsLibs/auth"
+import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
+import imgSlideShow from "../imgSlideShow.vue"
 
 
 export default defineComponent({
@@ -72,6 +78,8 @@ export default defineComponent({
     },
     components: {
         userComments,
+        userUnderPostImg,
+        imgSlideShow,
     },
     setup(props) {
         const flag = ref(false);
@@ -79,6 +87,10 @@ export default defineComponent({
         const loadFlag = ref(false);
         const commentFlag = ref(false);
         const postText = ref("")
+
+        console.log(props.post)
+
+        const profilePic = ref(((props.post.avatar) ? "https://localhost:8000/upload/files/"+props.post.avatar : require("@/assets/blank-profile-picture.png")))
         if(postTextTemp.value.length > 300){
             postText.value = postTextTemp.value.substring(0,300) + "...";
             loadFlag.value = true;
@@ -86,9 +98,9 @@ export default defineComponent({
             postText.value = postTextTemp.value;
             loadFlag.value = false;
         }
-        // console.log(props.post)
         let date: Date =new Date(Date.parse(props.post.createdAt.toString()));
-        const time = ref(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes());
+        const time = ref(date.getHours() + ':' + date.getMinutes());
+        const full = ref(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes());
 
         const resize = (e: Event) => {
             (e.target as HTMLTextAreaElement).style.height = 'auto';
@@ -97,8 +109,36 @@ export default defineComponent({
         const focus = () => {
             document.getElementById('commentTextArea')!.focus();
         }
+
+        const allCount = ref(props.post.pictures.length + props.post.videos.length + props.post.voice_recordings.length)
+
+        const voicesURL = ref<String[]>([])
+        props.post.voice_recordings.forEach(element => {
+            totalURL.value.push("https://localhost:8000/upload/files/"+element);
+        })
+
+        const totalURL = ref<String[]>([])
+        props.post.videos.forEach(element => {
+            totalURL.value.push("https://localhost:8000/upload/files/"+element);
+        })
+        props.post.pictures.forEach(element => {
+            totalURL.value.push("https://localhost:8000/upload/files/"+element);
+        })
+
+        const imgFlag = ref(false);
+
+        const imgCloseTriger = () => {
+            imgFlag.value = false;
+            document.body.classList.remove("popupOpen");
+        }
+
+        const imgOpenTriger = (index: number) => {
+            imgFlag.value=true;
+            document.body.classList.add("popupOpen");
+        }
         
-        return { loadFlag, flag, postText, postTextTemp, resize, commentFlag, focus, time }
+        return { loadFlag, flag, postText, postTextTemp, resize, commentFlag, focus, time, full, profilePic,
+        allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger }
     },
 })
 </script>

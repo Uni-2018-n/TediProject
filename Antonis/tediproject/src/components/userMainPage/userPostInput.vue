@@ -24,13 +24,13 @@
             </div>
         </div>
         <div class="media">
-            <userUnderPostImg :imgOpenTriger="imgOpenTriger" :only="only" :first="first" :imgElse="imgElse" :imgLast="imgLast" :n="n" :indx="indx" :allCount="allCount" :voicesURL="voicesURL" :totalURL="totalURL" />
+            <userUnderPostImg :imgOpenTriger="imgOpenTriger" :allCount="allCount" :voicesURL="voicesURL" :totalURL="totalURL" :resetFlag="resetFlag"/>
         </div>
         <div class="postButton">
             <button @click="post()">Post!</button>
         </div>
     </div>
-    <imgSlideShow v-if="imgFlag" :src="totalURL" :indx="indx" :closeTriger="() => imgCloseTriger()"/>
+    <imgSlideShow v-if="imgFlag" :src="totalURL" :closeTriger="() => imgCloseTriger()"/>
     <loading v-if="loadingFlag"/>
 </template>
 <script lang="ts">
@@ -67,14 +67,8 @@ export default defineComponent({
 
         const allCount = ref(photos.value.length + videos.value.length + voices.value.length);
 
-        const only = ref(false);
-        const first = ref(false);
-        const imgElse = ref(false);
-        const imgLast = ref(false);
-        const n = ref(0);
-        const indx= ref(0);
-
         const imgFlag = ref(false);
+        const resetFlag = ref(false);
 
         const reset = () => {
             text.value= "";
@@ -87,13 +81,8 @@ export default defineComponent({
             voicesURL.value.splice(0,voicesURL.value.length);
 
             totalURL.value.splice(0,totalURL.value.length);
-            only.value = false;
-            first.value = false;
-            imgElse.value = false;
-            imgLast.value = false;
-            n.value = 0;
-            indx.value = 0;
             imgFlag.value = false;
+            resetFlag.value = !resetFlag.value
         }
 
         const resize = (e: Event) => {
@@ -158,42 +147,12 @@ export default defineComponent({
                 }
             }
         }
-
-        watch(allCount, () => {
-            if(allCount.value == 1){
-                first.value = false;
-                only.value = true;
-                imgElse.value = false;
-                imgLast.value = false;
-                n.value=4;
-            }else if(allCount.value % 2 != 0){
-                if(allCount.value == 3){
-                    first.value = true;
-                    imgElse.value = false;
-                }else{
-                    first.value = false;
-                    imgElse.value = true;
-                }
-                only.value = false;
-                imgLast.value = false;
-            }else {
-                first.value = false;
-                only.value = false;
-                imgElse.value = true;
-                imgLast.value = false;
-            }
-            if(allCount.value > 4){
-                imgLast.value = true;
-            }
-        })
-
         const imgCloseTriger = () => {
             imgFlag.value = false;
             document.body.classList.remove("popupOpen");
         }
 
         const imgOpenTriger = (index: number) => {
-            indx.value=index;
             imgFlag.value=true;
             document.body.classList.add("popupOpen");
         }
@@ -228,8 +187,6 @@ export default defineComponent({
                 })
                 reset();
                 loadingFlag.value=false;
-                // const data = response.data
-                // console.log(data)
             }catch (e){
                 loadingFlag.value=false;
                 console.log("**USER INPUT POST ERROR**");
@@ -241,9 +198,8 @@ export default defineComponent({
          selectPhotos, selectVideos, selectVoices,
           photos, videos, voices,
           photosURL, videosURL, voicesURL, totalURL,
-          allCount, only, first, imgElse, imgLast, n,
-          imgFlag, indx, imgCloseTriger, imgOpenTriger,
-          post };
+          allCount, imgFlag, imgCloseTriger, imgOpenTriger,
+          post, resetFlag };
     },
 })
 </script>

@@ -48,7 +48,6 @@ export default defineComponent({
         }
       }else{
         login(email.value, pass.value).then(data => {
-          console.log(data);
           error(data);
         });
       }

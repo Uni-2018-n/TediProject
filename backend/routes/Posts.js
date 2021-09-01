@@ -27,10 +27,9 @@ router.post('/', upload.fields([{name: 'photos'},{name: 'videos'}, {name: 'voice
         avatar: req.body.avatar
     });
 
-    console.log(Post);
     Post.save()
     .then(
-        post => {res.json(post);console.log("YES");}
+        post => {res.json(post);}
     )
     .catch((err) => {
         console.log(err);

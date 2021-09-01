@@ -27,7 +27,10 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
     name: "imgSlideShow",
-    props: ["src", "indx", "closeTriger"],
+    props: {
+        src: {type: Array, required: true},
+        closeTriger: {type: Function, required: true},
+    },
     setup() {
         
     }

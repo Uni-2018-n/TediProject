@@ -32,25 +32,64 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 
 export default defineComponent({
     name: "userUnderPostImg",
     props: {
         imgOpenTriger: {type: Function, required: true},
-        only: {type: Boolean, required: true},
-        first: {type: Boolean, required: true},
-        imgElse: {type: Boolean, required: true},
-        imgLast: {type: Boolean, required: true},
-        n: {type: Number, required: true},
-        indx: {type: Number, required: true},
         allCount: {type: Number, required: true},
         voicesURL: {type: Array , required: true},
         totalURL: {type: Array, required: true},
+        resetFlag: {type: Boolean},
     },
-    setup() {
-        
-    },
+    setup(props) {
+        const only = ref(false);
+        const first = ref(false);
+        const imgElse = ref(false);
+        const imgLast = ref(false);
+        const n = ref(0);
+
+
+        watch(() => props.resetFlag, () => {
+            only.value = false;
+            first.value = false;
+            imgElse.value = false;
+            imgLast.value = false;
+            n.value = 0;
+        })
+
+        watch(() => props.allCount, () => {
+            if(props.allCount == 1){
+                first.value = false;
+                only.value = true;
+                imgElse.value = false;
+                imgLast.value = false;
+                n.value=4;
+            }else if(props.allCount % 2 != 0){
+                if(props.allCount == 3){
+                    first.value = true;
+                    imgElse.value = false;
+                }else{
+                    first.value = false;
+                    imgElse.value = true;
+                }
+                only.value = false;
+                imgLast.value = false;
+            }else {
+                first.value = false;
+                only.value = false;
+                imgElse.value = true;
+                imgLast.value = false;
+            }
+            if(props.allCount > 4){
+                imgLast.value = true;
+            }
+        })
+        return {
+            only, first, imgElse, imgLast, n
+        }
+    }
 })
 </script>
 <style scoped>

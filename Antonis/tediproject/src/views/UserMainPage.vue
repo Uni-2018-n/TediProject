@@ -41,7 +41,6 @@ export default defineComponent({
         const user = ref<givenType>();
         await loginCheck().then((data: givenType) =>{
             user.value = data;
-        // console.log(user.value.ProfilePic)
         })
 
         return { user }
