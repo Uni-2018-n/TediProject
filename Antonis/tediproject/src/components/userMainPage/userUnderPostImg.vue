@@ -32,14 +32,14 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, watch, watchEffect } from 'vue'
 
 export default defineComponent({
     name: "userUnderPostImg",
     props: {
         imgOpenTriger: {type: Function, required: true},
         allCount: {type: Number, required: true},
-        voicesURL: {type: Array , required: true},
+        voicesURL: {type: Array, required: true},
         totalURL: {type: Array, required: true},
         resetFlag: {type: Boolean},
     },
@@ -58,8 +58,7 @@ export default defineComponent({
             imgLast.value = false;
             n.value = 0;
         })
-
-        watch(() => props.allCount, () => {
+        watchEffect(() => {
             if(props.allCount == 1){
                 first.value = false;
                 only.value = true;
@@ -185,5 +184,7 @@ export default defineComponent({
     object-fit: contain;
     width: auto;
     height: 100px;
+    filter: drop-shadow(1px 1px 15px rgb(255, 255, 255)) ;
+    -webkit-filter: drop-shadow(1px 1px 15 rgb(255, 255, 255));
 }
 </style>

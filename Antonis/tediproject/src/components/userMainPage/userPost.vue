@@ -88,7 +88,7 @@ export default defineComponent({
         const commentFlag = ref(false);
         const postText = ref("")
 
-        console.log(props.post)
+        // console.log(props.post)
 
         const profilePic = ref(((props.post.avatar) ? "https://localhost:8000/upload/files/"+props.post.avatar : require("@/assets/blank-profile-picture.png")))
         if(postTextTemp.value.length > 300){
@@ -110,24 +110,24 @@ export default defineComponent({
             document.getElementById('commentTextArea')!.focus();
         }
 
-        const allCount = ref(props.post.pictures.length + props.post.videos.length + props.post.voice_recordings.length)
+        const allCount = ref(props.post.pictures.length + props.post.videos.length)
 
-        const voicesURL = ref<String[]>([])
+        const voicesURL = ref<{}[]>([]);
         props.post.voice_recordings.forEach(element => {
             // console.log(element)
             voicesURL.value.push("https://localhost:8000/upload/files/"+element.toString());
         })
 
-        const totalURL = ref<String[]>([])
+        const totalURL = ref<{}[]>([]);
         // console.log(totalURL)
 
         props.post.videos.forEach(element => {
             // console.log(element)
-            totalURL.value.push("https://localhost:8000/upload/files/"+element.toString());
+            totalURL.value.push({video: "https://localhost:8000/upload/files/"+element.toString(), t: 1});
         })
         props.post.pictures.forEach(element => {
             // console.log(element)
-            totalURL.value.push("https://localhost:8000/upload/files/"+element.toString());
+            totalURL.value.push({photo: "https://localhost:8000/upload/files/"+element.toString(), t: 0});
         })
 
         const imgFlag = ref(false);
