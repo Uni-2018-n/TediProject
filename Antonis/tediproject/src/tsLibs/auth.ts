@@ -15,10 +15,18 @@ export type likeType = {
     user: String
 }
 
+export type commentType = {
+    user: String,
+    text: String,
+    name: String,
+    avatar: String,
+    date: String,
+}
+
 export type postType = {
     author: String,
     avatar: String,
-    comments: Array<likeType>,
+    comments: Array<commentType>,
     createdAt: String,
     date: String,
     likes: Array<likeType>,

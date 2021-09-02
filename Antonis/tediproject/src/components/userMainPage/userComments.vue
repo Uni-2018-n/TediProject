@@ -1,14 +1,14 @@
 <template>
     <div class="comments">
         <img
-        src="@/assets/blank-profile-picture.png"
+        :src="profilePic"
         width="35"
         height="35"
         />
         <div class="data">
             <div class="name">
-                <span>Antonis Kalamakis</span>
-                <span class="time">10:00pm</span>
+                <span>{{ src.name }}</span>
+                <span class="time" :title="full">{{ time }}</span>
             </div>
             <div class="text">
                 <span>
@@ -20,12 +20,16 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-
+import { defineComponent, PropType, ref } from 'vue'
+import {commentType } from '../../tsLibs/auth'
 export default defineComponent({
     name: "userComments",
-    setup() {
-        const commentTextTemp = ref("Wrote water woman of ");
+    props: {
+        src: {type: Object as PropType<commentType>, required:true},
+    },
+    setup(props) {
+        const profilePic = ref(((props.src.avatar) ? "https://localhost:8000/upload/files/"+props.src.avatar : require("@/assets/blank-profile-picture.png")))
+        const commentTextTemp = ref(props.src.text.toString());
         const loadFlag = ref(false);
         const commentText = ref("")
         if(commentTextTemp.value.length > 200){
@@ -35,7 +39,13 @@ export default defineComponent({
             commentText.value = commentTextTemp.value;
             loadFlag.value = false;
         }
-        return { commentTextTemp, loadFlag, commentText };
+
+        let date: Date =new Date(Date.parse(props.src.date.toString()));
+        const time = ref(date.getHours() + ':' + date.getMinutes());
+        const full = ref(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes());
+
+
+        return { commentTextTemp, loadFlag, commentText, time, full, profilePic };
     },
 })
 </script>
@@ -52,6 +62,7 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     text-align: left;
+    max-width: 90%;
 }
 .name span{
     font-size: 12px;
@@ -75,6 +86,7 @@ export default defineComponent({
     font-size: 12px;
     font-family: "Poppins", Arial, sans-serif;
     /* font-weight: bold; */
+    overflow-wrap: break-word;
 }
 
 .middle .load {

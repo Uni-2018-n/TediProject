@@ -154,7 +154,7 @@ router.post('/comment/:id', async (req, res) => {
 
       // Add a new comment to the array
       Post.comments.push(newComment);
-      Post.save().then(Post => res.json(Post))
+      Post.save().then(Post => res.json(Post.comments))
     })
     .catch(err => res.status(404).json({post: 'No post found'}));
 })

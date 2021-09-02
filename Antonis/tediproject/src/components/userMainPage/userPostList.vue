@@ -2,7 +2,7 @@
     <div ref='scrollComponent'>
         <ul>
             <li v-for="post in posts" :key="post">
-                <userPost :post="post" :userId="user._id"/>
+                <userPost :post="post" :user="user"/>
             </li>
         </ul>
     </div>

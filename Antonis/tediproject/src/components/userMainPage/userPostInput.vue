@@ -11,7 +11,7 @@
                     <span>{{ userName }}</span>
                 </div>
             </div>
-            <textarea v-model="text" id="postTextArea" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
+            <textarea v-model="text" id="postTextArea" rows="1" placeholder="Type Here..."></textarea>
             <div class="icons" @click.self="focus()">
                 <input multiple @change="selectPhotos" type="file" name="photoFile" id="photoFile" class="inputfile" accept="image/*" />
                 <label for="photoFile" id="fileLabel"><img src="@/assets/outline_collections_black_24dp.png"></label>
@@ -85,10 +85,16 @@ export default defineComponent({
             resetFlag.value = !resetFlag.value
         }
 
-        const resize = (e: Event) => {
-            (e.target as HTMLTextAreaElement).style.height = 'auto';
-            (e.target as HTMLTextAreaElement).style.height = (e.target as HTMLTextAreaElement).scrollHeight +'px';
-        };
+        watch(text, () =>{
+            const e = document.getElementById('postTextArea') as HTMLTextAreaElement;
+            if(text.value == ""){
+                e.style.height = 'initial'
+            }else{
+                e.style.height = 'auto';
+                e.style.height = e.scrollHeight +'px';
+            }
+        })
+
         const focus = () => {
             document.getElementById('postTextArea')!.focus();
         }
@@ -166,7 +172,6 @@ export default defineComponent({
             const fd = new FormData();
             fd.append('author', props.id);
             fd.append('text', text.value);
-            // fd.append('files', photos.value[0]);
             for(let i =0;i < photos.value.length ; i++){
                 fd.append('photos', photos.value[i]);
             }
@@ -181,9 +186,9 @@ export default defineComponent({
 
             try {
                 const response = await axios.post('https://localhost:8000/posts', fd, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
                 })
                 reset();
                 loadingFlag.value=false;
@@ -194,7 +199,7 @@ export default defineComponent({
             }
         }
 
-        return { text, loadingFlag, resize, focus,
+        return { text, loadingFlag, focus,
          selectPhotos, selectVideos, selectVoices,
           photos, videos, voices,
           photosURL, videosURL, voicesURL, totalURL,

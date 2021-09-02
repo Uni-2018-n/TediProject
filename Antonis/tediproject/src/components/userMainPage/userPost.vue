@@ -47,16 +47,20 @@
                 <div v-if="commentFlag" class="comments">
                     <div class="inputComment">
                         <img
-                        src="@/assets/blank-profile-picture.png"
+                        :src="user.ProfilePic"
                         width="35"
                         height="35"
                         />
                         <div class="textArea" @click="focus()">
-                            <textarea id="commentTextArea" @input="resize($event)" rows="1" placeholder="Type heree..."></textarea>
+                            <textarea @keyup.enter.prevent="submitComment()" v-model="commentText" id="commentTextArea" rows="1" placeholder="Type here..."></textarea>
                         </div>
                     </div>
+                    <ul class="commentUL">
+                        <li v-for="(comment, index) in post.comments" :key="index">
+                            <userComments :src="comment" />
+                        </li>
+                    </ul>
                     <span>Load Previous...</span>
-                    <userComments />
                 </div>
             </div>
         </div>
@@ -64,9 +68,9 @@
     <imgSlideShow v-if="imgFlag" :src="totalURL" :closeTriger="() => imgCloseTriger()"/>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import userComments from '../userMainPage/userComments.vue'
-import { postType } from "../../tsLibs/auth"
+import { postType, givenType } from "../../tsLibs/auth"
 import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
 import imgSlideShow from "../imgSlideShow.vue"
 import axios from 'axios'
@@ -76,7 +80,7 @@ export default defineComponent({
     name: "userPost",
     props: {
         post: {type: Object as PropType<postType>, required: true},
-        userId: {type: String, required: true},
+        user: {type: Object as PropType<givenType>, required: true},
     },
     components: {
         userComments,
@@ -84,11 +88,12 @@ export default defineComponent({
         imgSlideShow,
     },
     setup(props) {
-        const flag = ref(props.post.likes.filter(likes => likes.user.toString() === props.userId).length > 0 );
+        const flag = ref(props.post.likes.filter(likes => likes.user.toString() === props.user._id).length > 0 );
         const postTextTemp = ref<string>(props.post.text.toString());
         const loadFlag = ref(false);
         const commentFlag = ref(false);
         const postText = ref("");
+        const commentText = ref("");
 
         const profilePic = ref(((props.post.avatar) ? "https://localhost:8000/upload/files/"+props.post.avatar : require("@/assets/blank-profile-picture.png")))
         if(postTextTemp.value.length > 300){
@@ -102,10 +107,16 @@ export default defineComponent({
         const time = ref(date.getHours() + ':' + date.getMinutes());
         const full = ref(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes());
 
-        const resize = (e: Event) => {
-            (e.target as HTMLTextAreaElement).style.height = 'auto';
-            (e.target as HTMLTextAreaElement).style.height = (e.target as HTMLTextAreaElement).scrollHeight +'px';
-        };
+        watch(commentText, () => {
+            const e = document.getElementById('commentTextArea') as HTMLTextAreaElement;
+            if(commentText.value == ""){
+                console.log("test")
+                e.style.height = 'initial'
+            }else{
+                e.style.height = 'auto';
+                e.style.height = e.scrollHeight +'px';
+            }
+        })
         const focus = () => {
             document.getElementById('commentTextArea')!.focus();
         }
@@ -114,19 +125,15 @@ export default defineComponent({
 
         const voicesURL = ref<{}[]>([]);
         props.post.voice_recordings.forEach(element => {
-            // console.log(element)
             voicesURL.value.push("https://localhost:8000/upload/files/"+element.toString());
         })
 
         const totalURL = ref<{}[]>([]);
-        // console.log(totalURL)
 
         props.post.videos.forEach(element => {
-            // console.log(element)
             totalURL.value.push({video: "https://localhost:8000/upload/files/"+element.toString(), t: 1});
         })
         props.post.pictures.forEach(element => {
-            // console.log(element)
             totalURL.value.push({photo: "https://localhost:8000/upload/files/"+element.toString(), t: 0});
         })
 
@@ -144,20 +151,38 @@ export default defineComponent({
 
         const like = async () => {
             try{
-                const response = await axios.post("https://localhost:8000/posts/like/"+ props.userId + '/' + props.post._id)
+                const response = await axios.post("https://localhost:8000/posts/like/"+ props.user._id + '/' + props.post._id)
                 if(!flag.value){
-                    props.post.likes.push({_id: props.post._id, user: props.userId})
+                    props.post.likes.push({_id: props.post._id, user: props.user._id})
                 }else{
-                    props.post.likes.splice(props.post.likes.findIndex(item => item.user == props.userId))
+                    props.post.likes.splice(props.post.likes.findIndex(item => item.user == props.user._id))
                 }
                 flag.value=!flag.value;
             } catch(error) {
                 console.log("**LIKE ERROR**")
             }
         }
+        const commentReset=  () =>{
+            commentText.value = "";
+        }
 
-        return { loadFlag, flag, postText, postTextTemp, resize, commentFlag, focus, time, full, profilePic,
-        allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger, like }
+        const submitComment = async () =>{
+            if(commentText.value){
+                try{
+                    const response = await axios.post("https://localhost:8000/posts/comment/"+props.post._id, {
+                        user: props.user._id,
+                        text: commentText.value,
+                    })
+                    commentReset();
+                    props.post.comments = response.data;
+                }catch(error){
+                    console.log("**COMMENT ERROR**")
+                }
+            }
+        }
+
+        return { loadFlag, flag, postText, postTextTemp, commentFlag, focus, time, full, profilePic,
+        allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger, like, commentText, submitComment }
     },
 })
 </script>
@@ -203,6 +228,9 @@ export default defineComponent({
     padding: 7px;
     min-height: 20px;
     font-size: 15px;
+}
+.middle span {
+    overflow-wrap: break-word;
 }
 .middle .load {
     font-weight: bold;
@@ -338,4 +366,11 @@ export default defineComponent({
 .comments .inputComment textarea:focus {
     outline: none !important;
 }
+
+.commentUL {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
 </style>
