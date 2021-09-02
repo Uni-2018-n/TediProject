@@ -36,7 +36,7 @@
                 </div>
                 <div class="bothalf">
                     <ul>
-                        <li @click="flag=!flag;" :class="{ liked: flag }">
+                        <li @click="like()" :class="{ liked: flag }">
                             <span>Like</span>
                         </li>
                         <li @click="commentFlag = !commentFlag;">
@@ -69,12 +69,14 @@ import userComments from '../userMainPage/userComments.vue'
 import { postType } from "../../tsLibs/auth"
 import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
 import imgSlideShow from "../imgSlideShow.vue"
+import axios from 'axios'
 
 
 export default defineComponent({
     name: "userPost",
     props: {
         post: {type: Object as PropType<postType>, required: true},
+        userId: {type: String, required: true},
     },
     components: {
         userComments,
@@ -82,13 +84,11 @@ export default defineComponent({
         imgSlideShow,
     },
     setup(props) {
-        const flag = ref(false);
+        const flag = ref(props.post.likes.filter(likes => likes.user.toString() === props.userId).length > 0 );
         const postTextTemp = ref<string>(props.post.text.toString());
         const loadFlag = ref(false);
         const commentFlag = ref(false);
-        const postText = ref("")
-
-        // console.log(props.post)
+        const postText = ref("");
 
         const profilePic = ref(((props.post.avatar) ? "https://localhost:8000/upload/files/"+props.post.avatar : require("@/assets/blank-profile-picture.png")))
         if(postTextTemp.value.length > 300){
@@ -142,8 +142,22 @@ export default defineComponent({
             document.body.classList.add("popupOpen");
         }
 
+        const like = async () => {
+            try{
+                const response = await axios.post("https://localhost:8000/posts/like/"+ props.userId + '/' + props.post._id)
+                if(!flag.value){
+                    props.post.likes.push({_id: props.post._id, user: props.userId})
+                }else{
+                    props.post.likes.splice(props.post.likes.findIndex(item => item.user == props.userId))
+                }
+                flag.value=!flag.value;
+            } catch(error) {
+                console.log("**LIKE ERROR**")
+            }
+        }
+
         return { loadFlag, flag, postText, postTextTemp, resize, commentFlag, focus, time, full, profilePic,
-        allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger }
+        allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger, like }
     },
 })
 </script>
