@@ -27,7 +27,6 @@ const getUsersFiles = async (req, res) => {
     if (req.params === undefined) { fileN = req.filename }
     else { fileN = req.params.filename };
     
-    console.log(fileN);
     const file = await gfs.files.findOne({ filename: fileN });
     // File exists
     const readStream = gfs.createReadStream(file.filename);

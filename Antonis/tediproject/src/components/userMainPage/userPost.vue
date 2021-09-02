@@ -114,15 +114,20 @@ export default defineComponent({
 
         const voicesURL = ref<String[]>([])
         props.post.voice_recordings.forEach(element => {
-            totalURL.value.push("https://localhost:8000/upload/files/"+element);
+            // console.log(element)
+            voicesURL.value.push("https://localhost:8000/upload/files/"+element.toString());
         })
 
         const totalURL = ref<String[]>([])
+        // console.log(totalURL)
+
         props.post.videos.forEach(element => {
-            totalURL.value.push("https://localhost:8000/upload/files/"+element);
+            // console.log(element)
+            totalURL.value.push("https://localhost:8000/upload/files/"+element.toString());
         })
         props.post.pictures.forEach(element => {
-            totalURL.value.push("https://localhost:8000/upload/files/"+element);
+            // console.log(element)
+            totalURL.value.push("https://localhost:8000/upload/files/"+element.toString());
         })
 
         const imgFlag = ref(false);
@@ -136,7 +141,7 @@ export default defineComponent({
             imgFlag.value=true;
             document.body.classList.add("popupOpen");
         }
-        
+
         return { loadFlag, flag, postText, postTextTemp, resize, commentFlag, focus, time, full, profilePic,
         allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger }
     },

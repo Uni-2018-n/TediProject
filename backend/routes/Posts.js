@@ -14,17 +14,23 @@ const router = express.Router();
 router.post('/', upload.fields([{name: 'photos'},{name: 'videos'}, {name: 'voices'}]), async (req, res) => {
     // Dont forget to check if post is valid (check library validator)
 
-    console.log(req.files.photos)
+    // console.log(req.files.photos)
     // res.sendStatus(200);
+    let pics = [];
+    let vids = [];
+    let voice = [];
+    if(req.files.photos) await req.files.photos.forEach((pic) => {pics.push(pic.filename)})
+    if(req.files.videos) await req.files.videos.forEach((vid) => {vids.push(vid.filename)})
+    if(req.files.voices) await req.files.voices.forEach((voic) => {voice.push(voic.filename)})
     const user = await NewUser.findById({_id: req.body.author})
     const Post = new Posts({
         author: req.body.author,
         text: req.body.text,
-        pictures: JSON.stringify(req.files.photos),//TODO:
-        videos: JSON.stringify(req.files.videos),
-        voice_recordings: JSON.stringify(req.files.voices),
+        pictures: pics,
+        videos: vids,
+        voice_recordings: voice,
         name: user.firstname.concat(" ", user.lastname),
-        avatar: req.body.avatar
+        avatar: user.ProfilePic
     });
 
     Post.save()
@@ -134,14 +140,16 @@ router.post('/like/:User_id/:Post_id', async (req, res) => {
 })
 
 // @desc Comment on a Users Post
-router.post('/comment/:id', (req, res) => {
-    Posts.findById({_id: req.params.id})
+router.post('/comment/:id', async (req, res) => {
+    const user = await NewUser.findById({_id: req.body.user})
+    console.log(user._id);
+    await Posts.findById({_id: req.params.id})
     .then(Post => {
       const newComment = {
-        user: req.body.user.id,
+        user: req.body.user,
         text: req.body.text,
-        name: req.body.name,
-        avatar: req.body.avatar
+        name: user.firstname.concat(" ", user.lastname),
+        avatar: user.ProfilePic
       }
 
       // Add a new comment to the array

@@ -158,7 +158,7 @@ export default defineComponent({
         }
 
         const post = async () => {
-            if(!text.value || !allCount.value){
+            if(!text.value && !allCount.value){
 
                 return;
             }
