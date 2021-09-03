@@ -1,5 +1,5 @@
 const express  = require("express");
-const Chat   = require('../models/Chat.js');
+const Chat     = require('../models/Chat.js');
 const mongoose = require("mongoose");
 
 const router = express.Router();

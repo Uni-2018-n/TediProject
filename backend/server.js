@@ -22,13 +22,14 @@ const options = {
 
 const methodOverride = require('method-override');
 
-const connection    = require('./db.js');
-const UserInDb      = require('./models/SignUp.js');
+const connection     = require('./db.js');
+const UserInDb       = require('./models/SignUp.js');
 // const LogInRoutes   = require('./routes/LogIn.js');
-const SignUpRoutes  = require('./routes/SignUp.js');
-const UploadRoutes  = require('./routes/Uploads.js');
-const PostsRoutes   = require('./routes/Posts.js');
-const ChatRoutes    = require('./routes/Chat.js');
+const SignUpRoutes   = require('./routes/SignUp.js');
+const UploadRoutes   = require('./routes/Uploads.js');
+const PostsRoutes    = require('./routes/Posts.js');
+const ChatRoutes     = require('./routes/Chat.js');
+const JobRoutes      = require('./routes/Jobs.js');
 
 const app = express();
 
@@ -98,6 +99,7 @@ app.use('/users', SignUpRoutes);
 app.use('/upload', UploadRoutes);
 app.use('/posts', PostsRoutes);
 app.use('/chat', ChatRoutes);
+app.use('/jobs', JobRoutes);
 
 /////////////////////////////// LOGIN ROUTES
 
