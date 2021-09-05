@@ -55,12 +55,7 @@
                             <textarea @keyup.enter.prevent="submitComment()" v-model="commentText" id="commentTextArea" rows="1" placeholder="Type here..."></textarea>
                         </div>
                     </div>
-                    <ul class="commentUL">
-                        <li v-for="(comment, index) in post.comments" :key="index">
-                            <userComments :src="comment" />
-                        </li>
-                    </ul>
-                    <span>Load Previous...</span>
+                    <userCommentList :src="postComments"/>
                 </div>
             </div>
         </div>
@@ -68,12 +63,13 @@
     <imgSlideShow v-if="imgFlag" :src="totalURL" :closeTriger="() => imgCloseTriger()"/>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType, reactive, ref, watch } from 'vue'
 import userComments from '../userMainPage/userComments.vue'
 import { postType, givenType } from "../../tsLibs/auth"
 import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
 import imgSlideShow from "../imgSlideShow.vue"
 import axios from 'axios'
+import userCommentList from './userCommentList.vue'
 
 
 export default defineComponent({
@@ -86,8 +82,11 @@ export default defineComponent({
         userComments,
         userUnderPostImg,
         imgSlideShow,
+        userCommentList
     },
     setup(props) {
+        const postComments = ref(props.post.comments)
+        // console.log(postComments)
         const flag = ref(props.post.likes.filter(likes => likes.user.toString() === props.user._id).length > 0 );
         const postTextTemp = ref<string>(props.post.text.toString());
         const loadFlag = ref(false);
@@ -174,7 +173,13 @@ export default defineComponent({
                         text: commentText.value,
                     })
                     commentReset();
-                    props.post.comments = response.data;
+                    postComments.value.splice(0, postComments.value.length+1, ...response.data);
+                    console.log(postComments)
+                    // props.post.comments = response.data.slice(0);
+                    // props.post.comments.splice(0, props.post.comments.length)
+                    // console.log(props.post.comments)
+                    // props.post.comments.splice(0, response.data.length, ...response.data)
+                    // console.log(props.post.comments)
                 }catch(error){
                     console.log("**COMMENT ERROR**")
                 }
@@ -182,7 +187,7 @@ export default defineComponent({
         }
 
         return { loadFlag, flag, postText, postTextTemp, commentFlag, focus, time, full, profilePic,
-        allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger, like, commentText, submitComment }
+        allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger, like, commentText, submitComment, postComments }
     },
 })
 </script>

@@ -61,7 +61,6 @@ router.post('/message/:id', (req, res) => {
         // Check if sender is in chat
         if (chat.chaters.filter(id => id.toString() == req.body.sender).length === 0) {
             return res.status(404).json({chat: 'Sender not found'})
-            
         }
         // Add a new message to the array
         chat.messages.push(newMessage);

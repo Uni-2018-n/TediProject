@@ -144,6 +144,10 @@ const connectUser = (req, res) => {
     .catch(err => res.send(err));
 }
 
+const getConnected = (req, res) => {
+    NewUser.findById({_id: req.params.id})
+}
+
 module.exports = {
     getUsers, getUser, createUser, deleteUser, updateUser, connectUser
 }

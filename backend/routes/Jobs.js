@@ -14,9 +14,9 @@ router.get('/:User_id', JobController.getJobs);
 // @desc List a new Job
 router.post('/', JobController.createJob);
 
-router.get('/:id', JobController.getJob);
+// router.get('/:id', JobController.getJob);
 
-router.delete('/:id', JobController.deleteJob);
+// router.delete('/:id', JobController.deleteJob);
 
 // router.patch('/:id', JobController.updateJob);
 

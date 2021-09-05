@@ -21,6 +21,7 @@ export type commentType = {
     name: String,
     avatar: String,
     date: String,
+    _id: String,
 }
 
 export type postType = {

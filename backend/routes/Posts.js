@@ -142,7 +142,7 @@ router.post('/like/:User_id/:Post_id', async (req, res) => {
 // @desc Comment on a Users Post
 router.post('/comment/:id', async (req, res) => {
     const user = await NewUser.findById({_id: req.body.user})
-    console.log(user._id);
+
     await Posts.findById({_id: req.params.id})
     .then(Post => {
       const newComment = {
@@ -153,7 +153,7 @@ router.post('/comment/:id', async (req, res) => {
       }
 
       // Add a new comment to the array
-      Post.comments.push(newComment);
+      Post.comments.unshift(newComment);
       Post.save().then(Post => res.json(Post.comments))
     })
     .catch(err => res.status(404).json({post: 'No post found'}));

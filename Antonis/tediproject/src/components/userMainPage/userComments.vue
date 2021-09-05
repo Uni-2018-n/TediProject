@@ -28,6 +28,7 @@ export default defineComponent({
         src: {type: Object as PropType<commentType>, required:true},
     },
     setup(props) {
+        // console.log(props.src)
         const profilePic = ref(((props.src.avatar) ? "https://localhost:8000/upload/files/"+props.src.avatar : require("@/assets/blank-profile-picture.png")))
         const commentTextTemp = ref(props.src.text.toString());
         const loadFlag = ref(false);
