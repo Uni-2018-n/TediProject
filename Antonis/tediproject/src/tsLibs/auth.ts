@@ -41,6 +41,16 @@ export type postType = {
     _id: String,
 }
 
+export type networkUserType = {
+    avatar: String,
+    id: String,
+    name: String,
+    professional_position: String,
+    Employment_institution: String
+}
+
+
+
 export const login = async (email: string, pass: string): Promise<Number> =>{
     try {
         const response = await axios.post("https://localhost:8000/login", {

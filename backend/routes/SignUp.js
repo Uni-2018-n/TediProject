@@ -19,6 +19,9 @@ router.delete('/:id', UserController.deleteUser);
 router.patch('/:id', UserController.updateUser);
 
 // @desc Connect or disconnect with a User
-router.post('/connect/:id/:connect_id', UserController.connectUser)
+router.post('/connect/:id/:connect_id', UserController.connectUser);
+
+// @desc Get connected Users
+router.get('/connect/:id', UserController.getConnected);
 
 module.exports = router;

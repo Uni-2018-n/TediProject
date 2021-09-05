@@ -1,6 +1,6 @@
 <template>
     <ul class="commentUL">
-        <li v-for="comment in src" :key="comment._id"></li>
+        <li v-for="comment in src" :key="comment._id">
             <userComments :src="comment" />
         </li>
     </ul>

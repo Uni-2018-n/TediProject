@@ -3,27 +3,38 @@
         <div class="card-Internal">
             <div class="img">
                 <img
-                    src="@/assets/blank-profile-picture.png"
+                   :src="src.avatar"
                     width="85"
                     height="85"
                 />
             </div>
             <div class="text">
-                <span>Antonis Kalamakis</span>
+                <span>{{ src.name }}</span>
                 <div class="text-internal">
-                    <span>Antonis Kalamakis</span>
-                    <span>Antonis Kalamakis</span>
+                    <span v-if="src.professional_position">{{ src.professional_position }}</span>
+                    <span v-if="src.Employment_institution">{{ src.Employment_institution }}</span>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
+import { PropType } from '@vue/runtime-core'
 import { defineComponent } from 'vue'
+import { networkUserType } from "../../tsLibs/auth"
 
 export default defineComponent({
     name: "networkUserCard",
-    setup() {
+    props: {
+        src: {type: Object as PropType<networkUserType>, required: true},
+    },
+    setup(props) {
+        console.log(props.src)
+        if(props.src.avatar){
+            props.src.avatar = "https://localhost:8000/upload/files/"+props.src.avatar
+        }else{
+            props.src.avatar = require("@/assets/blank-profile-picture.png")
+        }
         return {  }
     },
 })

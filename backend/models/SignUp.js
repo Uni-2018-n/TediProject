@@ -25,6 +25,14 @@ const NewUser = new mongoose.Schema({
         type: String,
         required: false
     },
+    professional_position: {
+        type: String,
+        required: false
+    },
+    Employment_institution: {
+        type: String,
+        required: false
+    },
     Connected_users: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'NewUser'

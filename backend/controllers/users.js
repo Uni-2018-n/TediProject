@@ -69,13 +69,15 @@ const createUser = (req, res) => {
                 void async function() {
                     securePassword = await bcrypt.hash(req.body.password, 10)
     
+                    let filename = '';
+                    if (req.file) filename = req.file.filename;
                     const post = new NewUser ({
                         firstname: req.body.firstname,
                         lastname: req.body.lastname,
                         email: req.body.email,
                         number: req.body.number,
                         password: securePassword,
-                        ProfilePic: req.file.filename
+                        ProfilePic: filename
                     });
                 
                     post.save()
@@ -127,27 +129,51 @@ const updateUser = (req, res) => {
 
 const connectUser = (req, res) => {
     NewUser.findById({_id: req.params.id})
-    .then(User => {
+    .then(async User => {
+        const other_user = await NewUser.findById({_id: req.params.connect_id});
         if (User.Connected_users.filter(connected_users => connected_users._id.toString() === req.params.connect_id).length > 0) {
             // Disconnect if already connected with this User
             const Index = User.Connected_users.map(item => item._id.toString()).indexOf(req.params.connect_id);
+            const sencond_Index = other_user.Connected_users.map(item => item._id.toString()).indexOf(req.params.id);
 
             // Splice it out of the array
             User.Connected_users.splice(Index, 1);
+            other_user.Connected_users.splice(sencond_Index, 1);
         } else {
             // Add the User to the connected list
             User.Connected_users.unshift(req.params.connect_id);
+            other_user.Connected_users.unshift(req.params.id);
         }
 
         User.save().then(User => res.json(User));
+        other_user.save();
     })
     .catch(err => res.send(err));
 }
 
 const getConnected = (req, res) => {
     NewUser.findById({_id: req.params.id})
+    .then(async User => {
+        let connected = [];
+        try {
+            for (const id of User.Connected_users) {
+                const user = await NewUser.findById(id);
+                connected.push({
+                    id: user._id,
+                    name: user.firstname.concat(" ", user.lastname),
+                    avatar: user.ProfilePic,
+                    professional_position: user.professional_position,
+                    Employment_institution: user.Employment_institution
+                })
+            }
+            res.json(connected)
+        }catch(error){
+            console.log("Test")
+        }
+    })
+    .catch(err => res.send(err));
 }
 
 module.exports = {
-    getUsers, getUser, createUser, deleteUser, updateUser, connectUser
+    getUsers, getUser, createUser, deleteUser, updateUser, connectUser, getConnected
 }

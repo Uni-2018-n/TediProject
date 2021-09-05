@@ -5,7 +5,7 @@
             <div class="internal" v-if="users.length">
                 <ul>
                     <li v-for="user in users" :key="user">
-                        <networkUserCard />
+                        <networkUserCard :src="user" />
                     </li>
                 </ul>
             </div>
@@ -21,6 +21,8 @@ import { defineComponent, reactive, ref } from 'vue'
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
 import networkUserCard from "../components/networkPage/networkUserCard.vue"
+import { loginCheck, givenType, networkUserType } from "../tsLibs/auth"
+import axios from 'axios';
 
 export default defineComponent({
     name: "Network",
@@ -29,20 +31,21 @@ export default defineComponent({
         Footer,
         networkUserCard,
     },
-    setup() {
-        const users = reactive([{"id":1,"first_name":"Derron","last_name":"Brickell"},
-{"id":2,"first_name":"Alica","last_name":"Moline"},
-{"id":3,"first_name":"Shana","last_name":"Cheeney"},
-{"id":4,"first_name":"Wald","last_name":"Beccles"},
-{"id":5,"first_name":"Lindsey","last_name":"Godfroy"},
-{"id":6,"first_name":"Suzanna","last_name":"Bouzek"},
-{"id":7,"first_name":"Maribel","last_name":"Gut"},
-{"id":8,"first_name":"Roy","last_name":"Brumbie"},
-{"id":9,"first_name":"Vance","last_name":"Connold"},
-{"id":10,"first_name":"Fredric","last_name":"Lander"},
-{"id":11,"first_name":"Monti","last_name":"Tithecote"},
-{"id":12,"first_name":"Claire","last_name":"Yexley"}])
-        return { users }
+    async setup() {
+        const user = ref<givenType>();
+        await loginCheck().then((data: givenType) =>{
+            user.value = data;
+        })
+        const users = ref<networkUserType[]>()
+        if(user.value)
+        try {
+            const response = await axios.get("https://localhost:8000/users/connect/"+user.value._id);
+            users.value = response.data
+        }catch(error){
+            console.log("**NETWORK ERROR**")
+        }
+
+        return { user, users }
     },
 })
 </script>
