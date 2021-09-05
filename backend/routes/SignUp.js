@@ -18,8 +18,17 @@ router.delete('/:id', UserController.deleteUser);
 
 router.patch('/:id', UserController.updateUser);
 
-// @desc Connect or disconnect with a User
+// @desc Send Connect Request or disconnect with a User
 router.post('/connect/:id/:connect_id', UserController.connectUser);
+
+// @desc Get Connect Request
+router.get('/connect_request/:id', UserController.getRequest);
+
+// @desc Accept Connect Request
+router.post('/connect/accept/:id/:connect_id', UserController.acceptRequest);
+
+// @desc Reject Connect Request
+router.post('/connect/reject/:id/:connect_id', UserController.rejectRequest);
 
 // @desc Get connected Users
 router.get('/connect/:id', UserController.getConnected);

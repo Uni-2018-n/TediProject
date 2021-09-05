@@ -7,44 +7,23 @@
                     <div class="friend-requests" >
                         <span class="headline">Connection Requests</span>
                         <ul v-if="requests.length">
-                            <li v-for="request in requests" :key="request">
-                                <img
-                                    src="@/assets/blank-profile-picture.png"
-                                    width="75"
-                                    height="75"
-                                />
-                                <div class="info">
-                                    <span> {{ request.name }} </span>
-                                    <div v-if="request.flag" class="btns">
-                                        <button class="btn accept">Accept</button>
-                                        <button class="btn reject">Reject</button>
-                                    </div>
-                                </div>
+                            <li v-for="request in requests" :key="request.id">
+                                <requestCard :src="request" :userId="user._id"/>
                             </li>
                         </ul>
                         <div class="else" v-else>
-                            <span>No information available</span>
+                            <span>No new requests</span>
                         </div>
                     </div>
                     <div class="other-notifications">
                         <span class="headline">Other Notifications</span>
                         <ul v-if="notifications.length">
                             <li v-for="notification in notifications" :key="notification">
-                                <img
-                                    src="@/assets/blank-profile-picture.png"
-                                    width="75"
-                                    height="75"
-                                />
-                                <div class="txt" v-if="notification.action === 'like'">
-                                    <span>Connected user {{ notification.name }} liked your post!</span>
-                                </div>
-                                <div class="txt" v-else-if="notification.action === 'comment'">
-                                    <span>Connected user {{ notification.name }} added a comment on your post!</span>
-                                </div>
+                                <notificationCard :src="notification"/>
                             </li>
                         </ul>
                         <div class="else" v-else>
-                            <span>No information available</span>
+                            <span>No new notifications</span>
                         </div>
                     </div>
                 </div>
@@ -54,28 +33,41 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
+import { loginCheck, givenType, notificationRequestType, notificationNotificationsType } from "../tsLibs/auth"
+import axios from 'axios';
+import notificationCard from '../components/notificationPage/notificationCard.vue'
+import requestCard from '../components/notificationPage/requestCard.vue'
 
 export default defineComponent({
     name: "NotificationPage",
     components: {
         navBar,
         Footer,
+        requestCard,
+        notificationCard,
     },
-    setup() {
-        const requests = reactive([
-            {
-                name: "Antonis Kalamakis",
-                flag: true,
-            },
-            {
-                name: "Antonis Kalamakis2",
-                flag: true,
-            }
-        ]);
-        const notifications = reactive([
+    async setup() {
+        const user = ref<givenType>();
+        await loginCheck().then((data: givenType) =>{
+            user.value = data;
+        })
+
+
+
+        const requests = ref<notificationRequestType[]>();
+
+        if(user.value)
+        try {
+            const response = await axios.get("https://localhost:8000/users/connect_request/"+user.value._id);
+            requests.value = response.data
+        }catch(error){
+            console.log("**REQUEST ERROR**")
+        }
+
+        const notifications = ref<notificationNotificationsType[]>([
             {
                 name: "Antonis Kalamakis",
                 type: "post",
@@ -98,7 +90,7 @@ export default defineComponent({
             }
         ])
         // const requests = reactive([]);
-        return { requests, notifications }
+        return { user,requests, notifications }
     },
 })
 </script>
@@ -173,41 +165,6 @@ export default defineComponent({
     background-color: rgb(240, 240, 240);
     border-radius: 50px;
 }
-.friend-requests li img {
-    border-radius: 50px;
-}
-.info {
-    margin-top: 10px;
-    margin-left: 15px;
-}
-.info span {
-    font-size: 18px;
-    font-weight: 600;
-}
-.btns {
-    margin: 10px 10px 0px 30px;
-}
-.btn {
-    margin: 0px 5px;
-    background-color: lightgray;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 10px;
-}
-.accept{
-    border: solid;
-    background-color: rgba(66, 101, 255, 0.404);
-    border-color: rgba(66, 101, 255, 0.663);
-    border-width: 2px;
-}
-.accept:hover {
-    background-color: rgba(66, 101, 255, 0.663);
-    cursor: pointer;
-}
-.reject:hover {
-    background-color: rgb(173, 173, 173);
-    cursor: pointer;
-}
 
 .other-notifications {
     margin-top: 15px;
@@ -243,8 +200,4 @@ export default defineComponent({
     cursor: pointer;
 }
 
-.other-notifications ul li img {
-    border-radius: 50px;
-    margin-right: 10px;   
-}
 </style>

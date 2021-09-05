@@ -49,7 +49,23 @@ export type networkUserType = {
     Employment_institution: String
 }
 
+export type notificationRequestType = {
+    avatar: String,
+    id: String,
+    name: String,
+}
 
+export type notificationNotificationsType = {
+    name: String,
+    type: String,
+    action: String,
+}
+
+export type userListType = {
+    name: String,
+    id: String,
+    avatar: String,
+}
 
 export const login = async (email: string, pass: string): Promise<Number> =>{
     try {

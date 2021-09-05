@@ -141,12 +141,39 @@ const connectUser = (req, res) => {
             other_user.Connected_users.splice(sencond_Index, 1);
         } else {
             // Add the User to the connected list
-            User.Connected_users.unshift(req.params.connect_id);
-            other_user.Connected_users.unshift(req.params.id);
+            const id = other_user.Pending_requests.find(id => id.toString() === req.params.id)
+            if (!id) other_user.Pending_requests.unshift(req.params.id);
         }
 
         User.save().then(User => res.json(User));
         other_user.save();
+    })
+    .catch(err => res.send(err));
+}
+
+const acceptRequest = (req, res) => {
+    NewUser.findById({_id: req.params.id})
+    .then(async User => {
+        const other_user = await NewUser.findById({_id: req.params.connect_id});
+        
+        // Add the User to the connected list
+        User.Connected_users.unshift(req.params.connect_id);
+        other_user.Connected_users.unshift(req.params.id);
+        User.Pending_requests.shift(req.params.connect_id);
+
+        User.save().then(User => res.status(200));
+        other_user.save();
+    })
+    .catch(err => res.send(err));
+}
+
+const rejectRequest = (req, res) => {
+    NewUser.findById({_id: req.params.id})
+    .then(async User => {        
+        // Add the User to the connected list
+        User.Pending_requests.shift(req.params.connect_id);
+
+        User.save().then(User => res.status(200));
     })
     .catch(err => res.send(err));
 }
@@ -174,6 +201,28 @@ const getConnected = (req, res) => {
     .catch(err => res.send(err));
 }
 
+const getRequest = (req, res) => {
+    NewUser.findById({_id: req.params.id})
+    .then(async User => {
+        let pending = [];
+        try {
+            for (const id of User.Pending_requests) {
+                const user = await NewUser.findById(id);
+                pending.push({
+                    id: user._id,
+                    name: user.firstname.concat(" ", user.lastname),
+                    avatar: user.ProfilePic,
+                })
+            }
+            res.json(pending)
+        }catch(error){
+            console.log("Test")
+        }
+    })
+    .catch(err => res.send(err));
+}
+
 module.exports = {
-    getUsers, getUser, createUser, deleteUser, updateUser, connectUser, getConnected
+    getUsers, getUser, createUser, deleteUser, updateUser, connectUser,
+    getConnected, acceptRequest, rejectRequest, getRequest
 }

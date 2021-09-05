@@ -6,7 +6,7 @@
             </div>
             <div class="right">
                 <div class="search">
-                    <searchBar />
+                    <searchBar :request="request"/>
                 </div>
                 <div class="navbar">
                     <ul>
@@ -20,7 +20,9 @@
     </div>
 </template>
 <script lang="ts">
+import axios from 'axios'
 import { defineComponent, reactive } from 'vue'
+import router from '../router'
 import searchBar from './searchBar.vue'
 
 export default defineComponent({
@@ -63,7 +65,17 @@ export default defineComponent({
                 to: "/logout",
             },
         ])
-        return { list }
+
+        const request = async() => {
+            try {
+                const response = await axios.post("https://localhost:8000/");
+                console.log(response.data)
+                // router.push({name: "userList", params: { src: JSON.stringify(response.data) }})
+            }catch(error){
+                console.log("**SEARCH ERROR**")
+            }
+        }
+        return { list, request }
     },
 })
 </script>

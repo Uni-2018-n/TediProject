@@ -5,14 +5,7 @@
             <div class="internal">
                 <ul>
                     <li v-for="user in searchCurr" :key="user">
-                        <img
-                            src="@/assets/blank-profile-picture.png"
-                            width="75"
-                            height="75"
-                        />
-                        <div class="text">
-                            <span class="name">{{user.name}}</span>
-                        </div>
+                        <userCard :src="user"/>
                     </li>
                 </ul>
             </div>
@@ -21,24 +14,25 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
+import userCard from "../components/userListPage/userCard.vue"
+import {userListType} from '../tsLibs/auth'
 
 export default defineComponent({
     name: "UserList",
+    props: {
+        src: {type: String, required: true}
+    },
     components: {
         navBar,
         Footer,
+        userCard,
     },
-    setup() {
-        const searchCurr = reactive([
-{"_id":1,"name":"Bibbie Mougenel"},
-{"_id":2,"name":"Bordie Gillise"},
-{"_id":3,"name":"Kiley Washtell"},
-{"_id":4,"name":"Immanuel Clemoes"},
-]);
-
+    setup(props) {
+        const searchCurr = ref<userListType[]>(JSON.parse(props.src));
+        
 
         return { searchCurr }
     },

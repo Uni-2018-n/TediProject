@@ -37,6 +37,10 @@ const NewUser = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'NewUser'
     },
+    Pending_requests: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'NewUser'
+    },
     Liked_Posts: [
         {
           post: {

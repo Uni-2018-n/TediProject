@@ -29,7 +29,7 @@ export default defineComponent({
         src: {type: Object as PropType<networkUserType>, required: true},
     },
     setup(props) {
-        console.log(props.src)
+        // console.log(props.src)
         if(props.src.avatar){
             props.src.avatar = "https://localhost:8000/upload/files/"+props.src.avatar
         }else{

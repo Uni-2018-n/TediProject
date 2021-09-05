@@ -2,7 +2,7 @@
    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <div class="searchBox">
         <button class="searchButton" type="submit">
-            <i @click="updateQuery(query)" class="material-icons"> search </i>
+            <i @click="request()" class="material-icons"> search </i>
         </button>
         <input class="searchInput" type="search" name="q" placeholder="Type to search...">
     </div>
@@ -12,7 +12,13 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "searchBar",
-  setup() {},
+  props: {
+      request: {type: Function, required: true},
+  },
+  setup() {
+
+      return {  }
+  },
 });
 </script>
 <style scoped>

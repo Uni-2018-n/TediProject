@@ -67,7 +67,8 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/userList',
     name: 'userList',
-    component: userList
+    component: userList,
+    props: true,
   },
   {
     path: '/profileOther',
