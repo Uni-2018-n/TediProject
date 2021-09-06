@@ -66,11 +66,11 @@ export default defineComponent({
             },
         ])
 
-        const request = async() => {
+        const request = async(input: String) => {
             try {
-                const response = await axios.post("https://localhost:8000/");
-                console.log(response.data)
-                // router.push({name: "userList", params: { src: JSON.stringify(response.data) }})
+                const response = await axios.post("https://localhost:8000/search/"+input.toString());
+                // console.log(response.data)
+                router.push({name: "userList", params: { src: JSON.stringify(response.data) }})
             }catch(error){
                 console.log("**SEARCH ERROR**")
             }

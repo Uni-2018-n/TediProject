@@ -62,9 +62,10 @@ export type notificationNotificationsType = {
 }
 
 export type userListType = {
-    name: String,
-    id: String,
-    avatar: String,
+    firstname: String,
+    lastname: String,
+    _id: String,
+    ProfilePic: String,
 }
 
 export const login = async (email: string, pass: string): Promise<Number> =>{

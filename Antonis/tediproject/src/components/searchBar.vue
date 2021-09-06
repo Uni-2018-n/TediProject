@@ -2,13 +2,13 @@
    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <div class="searchBox">
         <button class="searchButton" type="submit">
-            <i @click="request()" class="material-icons"> search </i>
+            <i @click="request(txt)" class="material-icons"> search </i>
         </button>
-        <input class="searchInput" type="search" name="q" placeholder="Type to search...">
+        <input class="searchInput" v-model="txt" type="search" name="q" placeholder="Type to search...">
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "searchBar",
@@ -16,8 +16,8 @@ export default defineComponent({
       request: {type: Function, required: true},
   },
   setup() {
-
-      return {  }
+      const txt = ref("");
+      return { txt }
   },
 });
 </script>
