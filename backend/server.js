@@ -30,7 +30,7 @@ const UploadRoutes   = require('./routes/Uploads.js');
 const PostsRoutes    = require('./routes/Posts.js');
 const ChatRoutes     = require('./routes/Chat.js');
 const JobRoutes      = require('./routes/Jobs.js');
-// const SearchRoutes   = require('./routes/Search.js');
+const SearchRoutes   = require('./routes/Search.js');
 
 const app = express();
 
@@ -100,7 +100,7 @@ app.use('/upload', UploadRoutes);
 app.use('/posts', PostsRoutes);
 app.use('/chat', ChatRoutes);
 app.use('/jobs', JobRoutes);
-// app.use('/search', SearchRoutes);
+app.use('/search', SearchRoutes);
 
 /////////////////////////////// LOGIN ROUTES
 

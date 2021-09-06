@@ -35,7 +35,7 @@ router.get("/:User_Id", async (req, res) => {
     }
 })
 
-// Get one Chat
+// @desc Get one Chat
 router.get("/:User_Id/:Friend_Id", async (req, res) => {
     try {
         const result = await Chat.find({ chaters: {

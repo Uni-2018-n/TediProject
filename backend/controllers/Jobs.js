@@ -40,6 +40,8 @@ const getJobs = async (req, res) => {
     }
 }
 
+const applyJob = async (req, res) => {}
+
 module.exports = {
-    createJob, getJobs//, getUser, deleteUser, updateUser, connectUser
+    createJob, getJobs, applyJob// getUser, deleteUser, updateUser, connectUser
 }
