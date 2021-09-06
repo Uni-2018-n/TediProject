@@ -68,6 +68,23 @@ export type userListType = {
     ProfilePic: String,
 }
 
+export type chatsMessagesType = {
+    sender: String,
+    text: String,
+    avatar: String,
+    date: String,
+}
+
+export type chatsListType = {
+    chaters: Array<String>,
+    createdAt: String,
+    messages: Array<chatsMessagesType>,
+    updatedAt: String,
+    __v: Number,
+    _id: String,
+}
+
+
 export const login = async (email: string, pass: string): Promise<Number> =>{
     try {
         const response = await axios.post("https://localhost:8000/login", {

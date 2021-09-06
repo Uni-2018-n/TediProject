@@ -34,6 +34,7 @@ export default defineComponent({
     name: "chat",
     props: {
         id: {type: String, required: true},
+        msg_id: {type: String, required: true},
     },
     components: {
         Bubles,

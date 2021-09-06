@@ -15,9 +15,10 @@ router.get("/search/:query", function (req, res) {
 });
 
 // @desc Search for Users
-router.post("/:name", SearchController.getUsers);
+router.get("/:name", SearchController.getUsers);
 
-// router.get('/:id', JobController.getJob);
+// @desc Search for Users Friends
+router.get("/:id/:name", SearchController.getUsers_Friends);
 
 // router.delete('/:id', JobController.deleteJob);
 
