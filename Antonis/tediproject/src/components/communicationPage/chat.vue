@@ -3,16 +3,16 @@
         <div class="inside">
             <div class="top">
                 <img
-                src="@/assets/blank-profile-picture.png"
+                :src="getPic(other.id.ProfilePic)"
                 width="55"
                 height="55"
                 />
                 <div class="text">
-                    <span class="name">Antonis Kalamakis {{ msg_id }}</span>
+                    <span class="name">{{ other.id.firstname }} {{ other.id.lastname }}</span>
                 </div>
             </div>
             <div class="chat">
-                <Bubles :src="msgs" :me="myId" :myAvatar="avatar"/>
+                <Bubles :src="other.msgs" :me="myId" :myAvatar="avatar" :otherAvatar="other.id.ProfilePic"/>
             </div>
             <div class="input">
                 <textarea id="postTextArea" v-model="currText" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
@@ -31,22 +31,22 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import Bubles from "../communicationPage/bubles.vue"
-import { chatsMessagesType } from "../../tsLibs/auth";
+import { currType } from "../../tsLibs/auth";
 import axios from 'axios';
+import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
     name: "chat",
     props: {
         myId: {type: String, required: true},
-        id: {type: String, required: true},
-        msg_id: {type: String, required: true},
-        msgs: {type: Array as PropType<Array<chatsMessagesType>>, required: true},
         avatar: {type: String, required: true},
+        other: {type: Object as PropType<currType>, required: true},
     },
     components: {
         Bubles,
     },
-    async setup(props) {
+    async setup(props){
+        // console.log(props.other.id)
         const currText = ref("");
         const resize = (e: Event) => {
             (e.target as HTMLTextAreaElement).style.height = 'auto';
@@ -55,25 +55,25 @@ export default defineComponent({
 
         const sendMessage = async() =>{
             try {
-                const response = await axios.post("https://localhost:8000/chat/message/"+props.msg_id, {
+                const response = await axios.post("https://localhost:8000/chat/message/"+props.other.msg_id, {
                     sender: props.myId,
-                    text: currText,
+                    text: currText.value,
                     avatar: props.avatar,
                 })
-                console.log(response.data)
             }catch(error){
                 console.log("**NEW MSG ERROR**")
             }
         }
 
 
-        return { resize, currText, sendMessage }
+        return { resize, currText, sendMessage, getPic }
     },
 })
 </script>
 <style scoped>
 .external {
     height: 100%;
+    width: 100%;
     min-height: 0px;
     background-color: white;
     /* border: solid; */
@@ -86,6 +86,7 @@ export default defineComponent({
 .inside {
     padding: 2px;
     height: 100%;
+    width: 100%;
     min-height: 0px;
     display: flex;
     flex-direction: column;
@@ -114,7 +115,7 @@ export default defineComponent({
 .chat {
     flex: 1;
     min-height: 0px;
-
+    min-width: 0px;
 }
 .input {
     padding: 0px 10px 15px 10px;

@@ -1,6 +1,6 @@
 <template>
     <img
-        :src="src.avatar"
+        :src="getPic(src.avatar)"
         width="75"
         height="75"
     />
@@ -17,6 +17,7 @@ import { PropType, ref } from '@vue/runtime-core'
 import axios from 'axios'
 import { defineComponent } from 'vue'
 import { notificationRequestType } from "../../tsLibs/auth"
+import { getPic } from "../../tsLibs/funcs";
 
 
 export default defineComponent({
@@ -29,11 +30,6 @@ export default defineComponent({
         
     },
     setup(props) {
-        if(props.src.avatar){
-            props.src.avatar = "https://localhost:8000/upload/files/"+props.src.avatar
-        }else{
-            props.src.avatar = require("@/assets/blank-profile-picture.png")
-        }
         const flag = ref(true);
 
         const accept = async () => {
@@ -56,7 +52,7 @@ export default defineComponent({
             }
         }
 
-        return { flag, accept, reject }
+        return { flag, accept, reject, getPic }
     },
 })
 </script>

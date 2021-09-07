@@ -3,16 +3,16 @@
         <div class="internal">
             <ul>
                 <li v-for="user in users" :key="user">
-                    <userChats @click="load(chatter(user), user._id)" :user="chatter(user)" :selected="chatter(user) === current.id" />
+                    <userChats @click="load(chatter(user), user._id, user.messages)" :user="chatter(user)" :selected="findOther(user.chaters) === current"/>
                 </li>
             </ul>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, ref, onMounted } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 import userChats from '../communicationPage/userChats.vue'
-import { chatsListType, currType, chatsMessagesType } from "../../tsLibs/auth"
+import { chatsListType, currType, chatsMessagesType, userListType } from "../../tsLibs/auth"
 import axios from 'axios'
 
 export default defineComponent({
@@ -25,24 +25,37 @@ export default defineComponent({
     components: {
         userChats,
     },
-    setup(props) {
-        const chatter = (user: chatsListType) => {
+    async setup(props) {
+        const chatter = async(user: chatsListType) => {
             if(user.chaters[0] === props.id){
-                return user.chaters[1]
+                try {
+                    const response = await axios.get("https://localhost:8000/users/"+user.chaters[1])
+                    return response.data
+                }catch(err){
+                    console.log("**LEFT USER ERROR**")
+                }
             }else{
-                return user.chaters[0]
+                try {
+                    const response = await axios.get("https://localhost:8000/users/"+user.chaters[0])
+                    return response.data
+                }catch(err){
+                    console.log("**LEFT USER ERROR**")
+                }
             }
         }
-        
-        const current = ref<currType>({id: chatter(props.users[0]), msg_id:props.users[0]._id, msgs: props.users[0].messages});
-        onMounted(() => {
-            props.loaded(current.value);
-        });
-        const load = (id: string, msg_id: string, msgs: Array<chatsMessagesType>) =>{
-            current.value = {id: id, msg_id: msg_id, msgs: msgs}
-            props.loaded(current.value);
+        const findOther = (chatters: Array<String>) =>{
+            return chatters[0] === props.id ? chatters[1] : chatters[0]
         }
-        return {current, load, chatter }
+        
+        const current = ref(findOther(props.users[0].chaters))
+        const load = async(other: Promise<userListType>, msg_id: string, msgs: Array<chatsMessagesType>) =>{
+            other.then(data =>{
+                current.value = data._id;
+                props.loaded({id: data, msg_id: msg_id, msgs: msgs})
+            })
+        }
+        load(chatter(props.users[0]), props.users[0]._id.toString(), props.users[0].messages)
+        return {current, load, chatter, findOther }
     },
 })
 </script>

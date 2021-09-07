@@ -3,7 +3,7 @@
         <div class="inner">
             <div class="top" @click.self="focus()">
                 <img
-                :src="ProfilePic"
+                :src="getPic(ProfilePic)"
                 width="55"
                 height="55"
                 />
@@ -39,6 +39,7 @@ import { defineComponent, reactive, ref, watch } from 'vue'
 import imgSlideShow from "../imgSlideShow.vue"
 import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
 import loading from "../loading.vue"
+import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
     name: "userPostInput",
@@ -204,7 +205,7 @@ export default defineComponent({
           photos, videos, voices,
           photosURL, videosURL, voicesURL, totalURL,
           allCount, imgFlag, imgCloseTriger, imgOpenTriger,
-          post, resetFlag };
+          post, resetFlag, getPic };
     },
 })
 </script>

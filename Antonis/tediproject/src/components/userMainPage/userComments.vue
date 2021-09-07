@@ -1,7 +1,7 @@
 <template>
     <div class="comments">
         <img
-        :src="profilePic"
+        :src="getPic(src.avatar)"
         width="35"
         height="35"
         />
@@ -22,14 +22,14 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import {commentType } from '../../tsLibs/auth'
+import { getPic } from "../../tsLibs/funcs";
+
 export default defineComponent({
     name: "userComments",
     props: {
         src: {type: Object as PropType<commentType>, required:true},
     },
     setup(props) {
-        // console.log(props.src)
-        const profilePic = ref(((props.src.avatar) ? "https://localhost:8000/upload/files/"+props.src.avatar : require("@/assets/blank-profile-picture.png")))
         const commentTextTemp = ref(props.src.text.toString());
         const loadFlag = ref(false);
         const commentText = ref("")
@@ -46,7 +46,7 @@ export default defineComponent({
         const full = ref(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes());
 
 
-        return { commentTextTemp, loadFlag, commentText, time, full, profilePic };
+        return { commentTextTemp, loadFlag, commentText, time, full, getPic };
     },
 })
 </script>

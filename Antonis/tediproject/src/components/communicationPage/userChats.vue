@@ -3,12 +3,12 @@
         <div class="internal">
             <div :class="{ selected: selected}" class="tag">
                 <img
-                :src="chatter.ProfilePic"
+                :src="getPic(curr.ProfilePic)"
                 width="55"
                 height="55"
                 />
                 <div class="text">
-                    <span class="name">{{ chatter.firstname }} {{ chatter.lastname }}</span>
+                    <span class="name">{{curr.firstname}} {{ curr.lastname }}</span>
                     <!-- <div class="lastmsg">
                         <span class="msg">{{ text }}</span>
                     </div> -->
@@ -21,29 +21,18 @@
 import axios from 'axios'
 import { defineComponent, PropType, ref } from 'vue'
 import { loginCheck, givenType, chatsListType, userListType } from "../../tsLibs/auth"
+import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
     name: "userChats",
     props: {
-        user: {type: String, required: true},
+        user: {type: Object as PropType<Promise<userListType>>, required: true},
         selected: {type: Boolean, required: true}
     },
     async setup(props) {
-        const chatter = ref<userListType>()
-        try {
-            const response = await axios("https://localhost:8000/users/"+props.user)
-            chatter.value = response.data
-            if(chatter.value)
-            if(chatter.value.ProfilePic){
-                chatter.value.ProfilePic = "https://localhost:8000/upload/files/"+chatter.value.ProfilePic
-            }else{
-                chatter.value.ProfilePic = require("@/assets/blank-profile-picture.png")
-            }
-        }catch(err){
-            console.log("**LEFT USER ERROR**")
-        }
+        const curr = await props.user;
 
-        return { chatter}
+        return { curr, getPic}
     },
 })
 </script>

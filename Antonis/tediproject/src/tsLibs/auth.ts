@@ -85,7 +85,7 @@ export type chatsListType = {
 }
 
 export type currType = {
-    id: String,
+    id: userListType,
     msg_id: String,
     msgs: Array<chatsMessagesType>,
 }
@@ -129,11 +129,6 @@ export const loginCheck = async (): Promise<givenType> =>{
                     'authorization': 'Bearer ' + user.token
                 }
             })
-            if(user.ProfilePic){
-                user.ProfilePic = "https://localhost:8000/upload/files/"+user.ProfilePic
-            }else{
-                user.ProfilePic = require("@/assets/blank-profile-picture.png")
-            }
             return user;
         } catch(errors) {
             localStorage.clear();

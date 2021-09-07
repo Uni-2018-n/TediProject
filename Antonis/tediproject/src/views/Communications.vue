@@ -14,7 +14,7 @@
                 <chats :id="user._id" :loaded="loaded" :users="temp" />
             </div>
             <div class="right">
-                <chat v-if="current" :myId="user._id" :avatar="user.ProfilePic" :id="current.id" :msg_id="current.msg_id" :msgs="current.msgs"/>
+                <chat v-if="current" :myId="user._id" :avatar="user.ProfilePic" :other="current"/>
             </div>
         </div>
         <Footer />
@@ -29,7 +29,7 @@ import chats from '../components/communicationPage/chats.vue';
 import chat from '../components/communicationPage/chat.vue';
 import popupSearch from '../components/communicationPage/popupSearch.vue';
 import axios from 'axios';
-import { loginCheck, givenType, chatsListType, chatsMessagesType } from "../tsLibs/auth";
+import { loginCheck, givenType, chatsListType, chatsMessagesType, currType } from "../tsLibs/auth";
 
 export default defineComponent({
     name: "Communications",
@@ -51,14 +51,13 @@ export default defineComponent({
         if(user.value)
         try {
           const response = await axios("https://localhost:8000/chat/"+user.value._id)
-        //   console.log(response.data)
           temp.value = response.data;
         }catch(err){
           console.log("**CHATS LEFT ERROR**");
         }
 
-        const current = ref<chatsMessagesType>()
-        const loaded = (temp: chatsMessagesType) =>{
+        const current = ref<currType>()
+        const loaded = (temp: currType) =>{
             current.value = temp
         }
 
@@ -70,6 +69,7 @@ export default defineComponent({
 <style scoped>
 .big {
     height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -80,13 +80,13 @@ export default defineComponent({
     height: 100%;
     min-height: 0px;
     display: flex;
+    flex-direction: row;
 }
 .left {
     background-color: white;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     width: max-content;
-
     display: flex;
     flex-direction: column;
 }
@@ -95,7 +95,7 @@ export default defineComponent({
     margin-left: 5px;
     height: 100%;
     min-height: 0px;
-    display: flex;
+    min-width: 0px;
 }
 .top {
     padding: 10px;

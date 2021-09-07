@@ -8,7 +8,7 @@
                             <span>{{ message.text }}</span>
                         </div>
                         <img
-                        :src="meAvatar"
+                        :src="getPic(myAvatar)"
                         width="35"
                         height="35"
                         style="margin-left: 4px;"
@@ -18,7 +18,7 @@
                 <div v-else class="other">
                     <div class="in">
                         <img
-                        :src="pickImg(message)"
+                        :src="getPic(otherAvatar)"
                         width="35"
                         height="35"
                         style="margin-right: 4px;"
@@ -35,6 +35,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import { chatsMessagesType } from "../../tsLibs/auth";
+import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
     name: "Bubles",
@@ -42,17 +43,10 @@ export default defineComponent({
         me: {type: String, required: true},
         src: {type: Array as PropType<Array<chatsMessagesType>>, required: true},
         myAvatar: {type: String, required: true},
+        otherAvatar: {type: String, required: true},
     },
-    setup(props) {
-        const meAvatar = ref(((props.myAvatar) ? "https://localhost:8000/upload/files/"+props.myAvatar : require("@/assets/blank-profile-picture.png")))
-        const pickImg = (msg: chatsMessagesType) =>{
-            if(msg.avatar){
-                return "https://localhost:8000/upload/files/"+msg.avatar
-            }else{
-                return require("@/assets/blank-profile-picture.png")
-            }
-        }
-        return { meAvatar, pickImg }
+    async setup(props) {
+        return { getPic }
     },
 })
 </script>
@@ -89,5 +83,10 @@ ul {
     padding: 5px;
     background-color: rgb(235, 235, 235);
     border-radius: 10px;
+}
+.span span {
+    
+    display: inline-block;
+    overflow-wrap: break-word;
 }
 </style>

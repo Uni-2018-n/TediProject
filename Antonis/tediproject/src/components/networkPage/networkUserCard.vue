@@ -3,7 +3,7 @@
         <div class="card-Internal">
             <div class="img">
                 <img
-                   :src="src.avatar"
+                   :src="getPic(src.avatar)"
                     width="85"
                     height="85"
                 />
@@ -22,6 +22,7 @@
 import { PropType } from '@vue/runtime-core'
 import { defineComponent } from 'vue'
 import { networkUserType } from "../../tsLibs/auth"
+import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
     name: "networkUserCard",
@@ -29,13 +30,7 @@ export default defineComponent({
         src: {type: Object as PropType<networkUserType>, required: true},
     },
     setup(props) {
-        // console.log(props.src)
-        if(props.src.avatar){
-            props.src.avatar = "https://localhost:8000/upload/files/"+props.src.avatar
-        }else{
-            props.src.avatar = require("@/assets/blank-profile-picture.png")
-        }
-        return {  }
+        return { getPic }
     },
 })
 </script>

@@ -3,7 +3,7 @@
         <div class="internal">
             <div class="information">
                 <img
-                    :src="ProfilePic"
+                    :src="getPic(ProfilePic)"
                     width="90"
                     height="90"
                 />
@@ -20,6 +20,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
     props: {
@@ -28,7 +29,7 @@ export default defineComponent({
     },
     name: "userLeftCompartment",
     setup() {
-        return {  }
+        return { getPic }
     },
 })
 </script>

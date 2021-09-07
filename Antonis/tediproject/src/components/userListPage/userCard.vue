@@ -1,6 +1,6 @@
 <template>
     <img
-        :src="src.ProfilePic"
+        :src="getPic(src.ProfilePic)"
         width="75"
         height="75"
     />
@@ -12,6 +12,7 @@
 import { PropType } from '@vue/runtime-core'
 import { defineComponent } from 'vue'
 import {userListType} from '../../tsLibs/auth'
+import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
     name: "userCard",
@@ -19,11 +20,7 @@ export default defineComponent({
         src: {type: Object as PropType<userListType>, required: true},
     },
     setup(props) {
-        if(props.src.ProfilePic){
-            props.src.ProfilePic = "https://localhost:8000/upload/files/"+props.src.ProfilePic
-        }else{
-            props.src.ProfilePic = require("@/assets/blank-profile-picture.png")
-        }
+        return { getPic }
     },
 })
 </script>

@@ -3,7 +3,7 @@
         <div class="inner">
             <div class="top">
                 <img
-                :src="profilePic"
+                :src="getPic(post.avatar)"
                 width="55"
                 height="55"
                 />
@@ -47,7 +47,7 @@
                 <div v-if="commentFlag" class="comments">
                     <div class="inputComment">
                         <img
-                        :src="user.ProfilePic"
+                        :src="getPic(user.ProfilePic)"
                         width="35"
                         height="35"
                         />
@@ -70,6 +70,7 @@ import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
 import imgSlideShow from "../imgSlideShow.vue"
 import axios from 'axios'
 import userCommentList from './userCommentList.vue'
+import { getPic } from "../../tsLibs/funcs";
 
 
 export default defineComponent({
@@ -94,7 +95,6 @@ export default defineComponent({
         const postText = ref("");
         const commentText = ref("");
 
-        const profilePic = ref(((props.post.avatar) ? "https://localhost:8000/upload/files/"+props.post.avatar : require("@/assets/blank-profile-picture.png")))
         if(postTextTemp.value.length > 300){
             postText.value = postTextTemp.value.substring(0,300) + "...";
             loadFlag.value = true;
@@ -186,7 +186,7 @@ export default defineComponent({
             }
         }
 
-        return { loadFlag, flag, postText, postTextTemp, commentFlag, focus, time, full, profilePic,
+        return { loadFlag, flag, postText, postTextTemp, commentFlag, focus, time, full, getPic,
         allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger, like, commentText, submitComment, postComments }
     },
 })

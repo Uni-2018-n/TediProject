@@ -50,6 +50,7 @@ router.get("/:User_Id/:Friend_Id", async (req, res) => {
 
 // @desc New message
 router.post('/message/:id', (req, res) => {
+    // console.log(req.body)
     Chat.findById({_id: req.params.id})
     .then(chat => {
         const newMessage = {
