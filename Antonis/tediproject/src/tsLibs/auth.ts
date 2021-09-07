@@ -84,6 +84,12 @@ export type chatsListType = {
     _id: String,
 }
 
+export type currType = {
+    id: String,
+    msg_id: String,
+    msgs: Array<chatsMessagesType>,
+}
+
 
 export const login = async (email: string, pass: string): Promise<Number> =>{
     try {

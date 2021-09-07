@@ -3,7 +3,7 @@
         <div class="internal">
             <ul>
                 <li v-for="user in users" :key="user">
-                    <userChats @click="load(chatter(user), user._id)" :user="chatter(user)" :selected="chatter(user) === current" />
+                    <userChats @click="load(chatter(user), user._id)" :user="chatter(user)" :selected="chatter(user) === current.id" />
                 </li>
             </ul>
         </div>
@@ -12,7 +12,8 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted } from 'vue'
 import userChats from '../communicationPage/userChats.vue'
-import { chatsListType } from "../../tsLibs/auth"
+import { chatsListType, currType, chatsMessagesType } from "../../tsLibs/auth"
+import axios from 'axios'
 
 export default defineComponent({
     name: "chats",
@@ -33,16 +34,14 @@ export default defineComponent({
             }
         }
         
-        const current = ref(chatter(props.users[0]));
+        const current = ref<currType>({id: chatter(props.users[0]), msg_id:props.users[0]._id, msgs: props.users[0].messages});
         onMounted(() => {
             props.loaded(current.value);
         });
-        const load = (id: string) =>{
-            current.value = id;
+        const load = (id: string, msg_id: string, msgs: Array<chatsMessagesType>) =>{
+            current.value = {id: id, msg_id: msg_id, msgs: msgs}
             props.loaded(current.value);
         }
-
-
         return {current, load, chatter }
     },
 })

@@ -2,13 +2,13 @@
     <div class="outside-ul">
         <ul>
             <li v-for="message in src" :key="message">
-                <div v-if="message.me" class="me">
+                <div v-if="message.sender === me" class="me">
                     <div class="in">
                         <div class="span" style="margin-left: 39px;">
-                            <span>{{ message.message }}</span>
+                            <span>{{ message.text }}</span>
                         </div>
                         <img
-                        src="@/assets/blank-profile-picture.png"
+                        :src="meAvatar"
                         width="35"
                         height="35"
                         style="margin-left: 4px;"
@@ -18,13 +18,13 @@
                 <div v-else class="other">
                     <div class="in">
                         <img
-                        src="@/assets/blank-profile-picture.png"
+                        :src="pickImg(message)"
                         width="35"
                         height="35"
                         style="margin-right: 4px;"
                         />
                         <div class="span" style="margin-right: 39px;">
-                            <span>{{ message.message }}</span>
+                            <span>{{ message.text }}</span>
                         </div>
                     </div>
                 </div>
@@ -33,13 +33,26 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
+import { chatsMessagesType } from "../../tsLibs/auth";
 
 export default defineComponent({
     name: "Bubles",
-    props: ["src"],
-    setup() {
-        return {  }
+    props: {
+        me: {type: String, required: true},
+        src: {type: Array as PropType<Array<chatsMessagesType>>, required: true},
+        myAvatar: {type: String, required: true},
+    },
+    setup(props) {
+        const meAvatar = ref(((props.myAvatar) ? "https://localhost:8000/upload/files/"+props.myAvatar : require("@/assets/blank-profile-picture.png")))
+        const pickImg = (msg: chatsMessagesType) =>{
+            if(msg.avatar){
+                return "https://localhost:8000/upload/files/"+msg.avatar
+            }else{
+                return require("@/assets/blank-profile-picture.png")
+            }
+        }
+        return { meAvatar, pickImg }
     },
 })
 </script>

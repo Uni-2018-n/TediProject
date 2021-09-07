@@ -14,7 +14,7 @@
                 <chats :id="user._id" :loaded="loaded" :users="temp" />
             </div>
             <div class="right">
-                <chat v-if="current" :id="current.id" :msg_id="current.msg_id"/>
+                <chat v-if="current" :myId="user._id" :avatar="user.ProfilePic" :id="current.id" :msg_id="current.msg_id" :msgs="current.msgs"/>
             </div>
         </div>
         <Footer />
@@ -22,19 +22,14 @@
     <popupSearch v-if="popupSearchFlag" :close="()=>{popupSearchFlag=false;}"/>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, ref } from 'vue';
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
-import chats from '../components/communicationPage/chats.vue'
-import chat from '../components/communicationPage/chat.vue'
-import popupSearch from '../components/communicationPage/popupSearch.vue'
+import chats from '../components/communicationPage/chats.vue';
+import chat from '../components/communicationPage/chat.vue';
+import popupSearch from '../components/communicationPage/popupSearch.vue';
 import axios from 'axios';
-import { loginCheck, givenType, chatsListType } from "../tsLibs/auth"
-
-type curr = {
-  id: String,
-  msg_id: String
-}
+import { loginCheck, givenType, chatsListType, chatsMessagesType } from "../tsLibs/auth";
 
 export default defineComponent({
     name: "Communications",
@@ -56,14 +51,15 @@ export default defineComponent({
         if(user.value)
         try {
           const response = await axios("https://localhost:8000/chat/"+user.value._id)
+        //   console.log(response.data)
           temp.value = response.data;
         }catch(err){
           console.log("**CHATS LEFT ERROR**");
         }
 
-        const current = ref<curr>()
-        const loaded = (id: string, msg_id:string) =>{
-            current.value = {id, msg_id};
+        const current = ref<chatsMessagesType>()
+        const loaded = (temp: chatsMessagesType) =>{
+            current.value = temp
         }
 
         const popupSearchFlag = ref(false);
