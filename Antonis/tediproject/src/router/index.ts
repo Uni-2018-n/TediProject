@@ -65,7 +65,7 @@ const routes: Array<RouteRecordRaw> = [
     component: jobsPage
   },
   {
-    path: '/userList',
+    path: '/userList/:input',
     name: 'userList',
     component: userList,
     props: true,

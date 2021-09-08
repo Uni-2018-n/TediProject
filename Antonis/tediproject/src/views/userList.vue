@@ -14,26 +14,32 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
 import userCard from "../components/userListPage/userCard.vue"
 import {userListType} from '../tsLibs/auth'
+import axios from 'axios';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
     name: "UserList",
-    props: {
-        src: {type: String, required: true}
-    },
     components: {
         navBar,
         Footer,
         userCard,
     },
-    setup(props) {
-        const searchCurr = ref<userListType[]>(JSON.parse(props.src));
-        
-
+    async setup(props) {
+        const route = useRoute();
+        const searchCurr = ref<userListType[]>([])
+        watchEffect(async() => {
+            try { 
+                const response = await axios.get("https://localhost:8000/search/"+route.params.input);
+                searchCurr.value = response.data;
+            }catch(error){
+                console.log("**SEARCH ERROR**")
+            }  
+        })
         return { searchCurr }
     },
 })

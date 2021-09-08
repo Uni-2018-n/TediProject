@@ -39,9 +39,11 @@ export default defineComponent({
         const users = ref<networkUserType[]>()
         if(user.value)
         try {
+            console.log(user.value._id)
             const response = await axios.get("https://localhost:8000/users/connect/"+user.value._id);
+            console.log(response.data)
             users.value = response.data
-        }catch(error){
+        }catch(err){
             console.log("**NETWORK ERROR**")
         }
 

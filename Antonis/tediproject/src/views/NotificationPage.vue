@@ -56,12 +56,12 @@ export default defineComponent({
         })
 
 
-
         const requests = ref<notificationRequestType[]>();
 
         if(user.value)
         try {
             const response = await axios.get("https://localhost:8000/users/connect_request/"+user.value._id);
+        console.log("test")
             requests.value = response.data
         }catch(error){
             console.log("**REQUEST ERROR**")
