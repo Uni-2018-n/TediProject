@@ -64,7 +64,7 @@ router.post('/message/:id', (req, res) => {
             return res.status(404).json({chat: 'Sender not found'})
         }
         // Add a new message to the array
-        chat.messages.push(newMessage);
+        chat.messages.unshift(newMessage);
         chat.save().then(chat => res.json(chat));
     })
     .catch(err => res.status(404).json({chat: 'No chat found'}));

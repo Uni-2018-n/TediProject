@@ -1,17 +1,17 @@
 <template>
     <div class="external">
         <div class="internal">
-            <searchBar />
+            <searchBar :request="request" />
             <div class="list">
                 <ul>
                     <li v-for="user in searchCurr" :key="user">
                         <img
-                            src="@/assets/blank-profile-picture.png"
+                            :src="getPic(user.ProfilePic)"
                             width="75"
                             height="75"
                         />
                         <div class="text">
-                            <span class="name">{{user.name}}</span>
+                            <span class="name">{{user.firstname}} {{ user.lastname }}</span>
                         </div>
                     </li>
                 </ul>
@@ -21,27 +21,36 @@
     </div>
 </template>
 <script lang="ts">
+import axios from 'axios';
 import { defineComponent, reactive, ref } from 'vue'
 import searchBar from '../searchBar.vue'
+import { userListType } from "../../tsLibs/auth";
+import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
     name: "editEducation",
     props: {
+        id: {type: String, required: true},
         close: {type: Function, required: true},
     },
     components: {
         searchBar,
     },
-    setup() {
-        const searchCurr = reactive([
-{"_id":1,"name":"Bibbie Mougenel"},
-{"_id":2,"name":"Bordie Gillise"},
-{"_id":3,"name":"Kiley Washtell"},
-{"_id":4,"name":"Immanuel Clemoes"},
-]);
+    setup(props) {
+        const searchCurr = ref<userListType[]>([]);
 
 
-        return { searchCurr }
+        const request = async(input: String) => {
+            try {
+                const response = await axios.get("https://localhost:8000/search/"+props.id+"/"+input.toString());
+                // console.log(response.data)
+                searchCurr.value = response.data;
+            }catch(error){
+                console.log("**SEARCH ERROR**")
+            }
+        }
+
+        return { searchCurr, request, getPic }
     },
 })
 </script>

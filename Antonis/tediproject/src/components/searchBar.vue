@@ -4,7 +4,7 @@
         <button class="searchButton" type="submit">
             <i @click="request(txt)" class="material-icons"> search </i>
         </button>
-        <input class="searchInput" v-model="txt" type="search" name="q" placeholder="Type to search...">
+        <input @keyup.enter.prevent="request(txt)" class="searchInput" v-model="txt" type="search" name="q" placeholder="Type to search...">
     </div>
 </template>
 <script lang="ts">

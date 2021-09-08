@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="chat">
-                <Bubles :src="other.msgs" :me="myId" :myAvatar="avatar" :otherAvatar="other.id.ProfilePic"/>
+                <Bubles :src="other.msgs" :me="myId" :otherId="other.id._id" :myAvatar="avatar" :otherAvatar="other.id.ProfilePic"/>
             </div>
             <div class="input">
                 <textarea id="postTextArea" v-model="currText" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
@@ -46,7 +46,7 @@ export default defineComponent({
         Bubles,
     },
     async setup(props){
-        // console.log(props.other.id)
+        // props.other.id._id
         const currText = ref("");
         const resize = (e: Event) => {
             (e.target as HTMLTextAreaElement).style.height = 'auto';

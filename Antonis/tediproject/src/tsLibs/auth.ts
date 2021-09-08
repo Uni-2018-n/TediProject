@@ -73,6 +73,7 @@ export type chatsMessagesType = {
     text: String,
     avatar: String,
     date: String,
+    _id: String,
 }
 
 export type chatsListType = {

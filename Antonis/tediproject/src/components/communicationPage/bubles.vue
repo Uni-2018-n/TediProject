@@ -1,7 +1,7 @@
 <template>
     <div class="outside-ul">
         <ul>
-            <li v-for="message in src" :key="message">
+            <li v-for="message in tempSrc" :key="message._id">
                 <div v-if="message.sender === me" class="me">
                     <div class="in" style="margin-left: 39px;">
                         <div class="span">
@@ -33,20 +33,35 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
-import { chatsMessagesType } from "../../tsLibs/auth";
+import axios from 'axios';
+import { defineComponent, onBeforeUnmount, PropType, ref } from 'vue'
+import { chatsMessagesType, chatsListType } from "../../tsLibs/auth";
 import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
     name: "Bubles",
     props: {
         me: {type: String, required: true},
+        otherId: {type: String, required: true},
         src: {type: Array as PropType<Array<chatsMessagesType>>, required: true},
         myAvatar: {type: String, required: true},
         otherAvatar: {type: String, required: true},
     },
     async setup(props) {
-        return { getPic }
+        const tempSrc = ref<chatsMessagesType[]>(props.src)
+        var t = setInterval(async () => {
+            try {
+                const response = await axios.get("https://localhost:8000/chat/"+props.me+"/"+props.otherId)
+                tempSrc.value = response.data[0].messages
+            }catch(error) {
+                console.log("**ERROR CHAT REFRESH**")
+            }
+        }, 500)
+
+        onBeforeUnmount(()=>{
+            clearInterval(t)
+        })
+        return { getPic, tempSrc }
     },
 })
 </script>

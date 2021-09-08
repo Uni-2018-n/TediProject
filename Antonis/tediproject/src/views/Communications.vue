@@ -19,7 +19,7 @@
         </div>
         <Footer />
     </div>
-    <popupSearch v-if="popupSearchFlag" :close="()=>{popupSearchFlag=false;}"/>
+    <popupSearch v-if="popupSearchFlag" :id="user._id" :close="()=>{popupSearchFlag=false;}"/>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
