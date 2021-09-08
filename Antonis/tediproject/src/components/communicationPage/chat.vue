@@ -18,7 +18,7 @@
                 <textarea id="postTextArea" v-model="currText" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
                 <div class="send">
                     <img
-                    @click="sendMessage()"
+                    @click="sendMessage();currText='';"
                     src="@/assets/outline_send_black_24dp.png"
                     width="25"
                     height="25"
