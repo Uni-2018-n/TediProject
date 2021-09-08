@@ -3,8 +3,8 @@
         <ul>
             <li v-for="message in src" :key="message">
                 <div v-if="message.sender === me" class="me">
-                    <div class="in">
-                        <div class="span" style="margin-left: 39px;">
+                    <div class="in" style="margin-left: 39px;">
+                        <div class="span">
                             <span>{{ message.text }}</span>
                         </div>
                         <img
@@ -16,14 +16,14 @@
                     </div>
                 </div>
                 <div v-else class="other">
-                    <div class="in">
+                    <div class="in" style="margin-right: 39px;">
                         <img
                         :src="getPic(otherAvatar)"
                         width="35"
                         height="35"
                         style="margin-right: 4px;"
                         />
-                        <div class="span" style="margin-right: 39px;">
+                        <div class="span">
                             <span>{{ message.text }}</span>
                         </div>
                     </div>
@@ -72,21 +72,21 @@ ul {
     justify-content: flex-start;
 }
 .in {
+    margin-bottom: 5px;
     display: flex;
+    justify-content: space-around;
     align-items: center;
+    min-height: 0px;
 }
 .in img {
     border-radius: 25px;
     vertical-align: middle;
+    flex-shrink: 0;
 }
 .span {
     padding: 5px;
     background-color: rgb(235, 235, 235);
     border-radius: 10px;
-}
-.span span {
-    
-    display: inline-block;
-    overflow-wrap: break-word;
+    word-break: break-all;
 }
 </style>

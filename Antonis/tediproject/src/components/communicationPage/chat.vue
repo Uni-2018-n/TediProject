@@ -115,7 +115,7 @@ export default defineComponent({
 .chat {
     flex: 1;
     min-height: 0px;
-    min-width: 0px;
+    /* min-width: 0px; */
 }
 .input {
     padding: 0px 10px 15px 10px;
