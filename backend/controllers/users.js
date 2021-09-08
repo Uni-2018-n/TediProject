@@ -113,10 +113,13 @@ const updateUser = (req, res) => {
     const {id} = req.params;
     // The new data we want to patch
     NewUser.findByIdAndUpdate(id, req.body)
-    .then((result) => {
+    .then(async (result) => {
         if (req.body.firstname) result.firstname = req.body.firstname;
         if (req.body.lastname) result.lastname = req.body.lastname;
         if (req.body.age) result.age = req.body.age;
+        if (req.body.ProfilePic) result.ProfilePic = req.body.ProfilePic;
+        if (req.body.email) result.email = req.body.email;
+        if (req.body.password) result.password = await bcrypt.hash(req.body.password, 10);
         if (req.body.Education) result.Education = req.body.Education;
         if (req.body.Skills) result.Skills = req.body.Skills;
 
