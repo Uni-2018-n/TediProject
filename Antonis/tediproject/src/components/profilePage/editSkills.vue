@@ -9,38 +9,56 @@
                 </li>
             </ul>
             <input v-model="checked" id="check" type="checkbox" /><label class="label" for="check">Information <span v-if="checked">Public</span><span v-else>Private</span></label>
-            <button>Update</button>
+            <button @click="update()">Update</button>
         </div>
     <a @click="close" class="close" />
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, reactive, ref } from 'vue'
+import axios from 'axios';
+import { defineComponent, PropType, ref } from 'vue'
+import router from "../../router/index"
 
 export default defineComponent({
     name: "editSkills",
     props: {
+        id: {type: String, required: true},
+        private: {type: Boolean, required: true},
         curr: {type: Array as PropType<Array<string>>, required: true},
         close: {type: Function, required: true},
     },
     setup(props) {
-        const checked = ref(true);
-        const toAppend = reactive<string []>([]);
-        const tempAppend = reactive(toAppend.concat(props.curr));
+        const checked = ref(!props.private);
+        const toAppend = ref<string []>([]);
+        const tempAppend = ref(toAppend.value.concat(props.curr));
         const temp= ref("");
         const append = () => {
-            if(toAppend.includes(temp.value)) {
+            if(toAppend.value.includes(temp.value)) {
                 temp.value = "";
             }else{
-                toAppend.push(temp.value);
-                tempAppend.push(temp.value);
+                toAppend.value.push(temp.value);
+                tempAppend.value.push(temp.value);
                 temp.value ="";
             }
         }
         const remove = (ind: number) => {
-            tempAppend.splice(ind, 1);
+            tempAppend.value.splice(ind, 1);
         }
-        return { checked, temp, append, tempAppend, remove }
+
+        const update = async() =>{
+            try {
+                const response = await axios.patch("https://localhost:8000/users/"+props.id, {
+                    Skills: {
+                        private: !(checked.value),
+                        skills: tempAppend.value,
+                    }
+                })
+                router.go(0)
+            }catch(error){
+                console.log("**UPDATE ERROR**")
+            }
+        }
+        return { checked, temp, append, tempAppend, remove, update }
     },
 })
 </script>

@@ -29,7 +29,7 @@ import chats from '../components/communicationPage/chats.vue';
 import chat from '../components/communicationPage/chat.vue';
 import popupSearch from '../components/communicationPage/popupSearch.vue';
 import axios from 'axios';
-import { loginCheck, givenType, chatsListType, chatsMessagesType, currType } from "../tsLibs/auth";
+import { loginCheck, givenType, chatsListType, currType } from "../tsLibs/auth";
 
 export default defineComponent({
     name: "Communications",

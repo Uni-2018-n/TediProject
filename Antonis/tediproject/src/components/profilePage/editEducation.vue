@@ -1,24 +1,44 @@
 <template>
     <div class="external">
         <div class="internal">
-            <input type="text" autocomplete="off" id="text" placeholder="Enter New Email"/>
+            <input type="text" v-model="txt" autocomplete="off" id="text" placeholder="Update Education"/>
             <input v-model="checked" id="check" type="checkbox" /><label class="label" for="check">Information <span v-if="checked">Public</span><span v-else>Private</span></label>
-            <button>Update</button>
+            <button @click="update()">Update</button>
         </div>
     <a @click="close" class="close" />
     </div>
 </template>
 <script lang="ts">
+import axios from 'axios';
 import { defineComponent, ref } from 'vue'
+import router from "../../router/index"
+
 
 export default defineComponent({
     name: "editEducation",
     props: {
+        id: {type: String, required: true},
+        curr: {type: String, required: true},
+        private: {type: Boolean, required: true},
         close: {type: Function, required: true},
     },
-    setup() {
-        const checked = ref(true);
-        return { checked }
+    setup(props) {
+        const checked = ref(!props.private);
+        const txt = ref(props.curr)
+        const update = async() =>{
+            try {
+                const response = await axios.patch("https://localhost:8000/users/"+props.id, {
+                    Education: {
+                        string: txt.value,
+                        private: !(checked.value)
+                    }
+                })
+                router.go(0)
+            }catch(error){
+                console.log("**UPDATE ERROR**")
+            }
+        }
+        return { checked, update, txt }
     },
 })
 </script>

@@ -6,14 +6,14 @@
                 <div class="top">
                     <label for="img">
                     <img
-                        src="@/assets/blank-profile-picture.png"
+                        :src="getPic(user.ProfilePic)"
                         width="185"
                         height="185"
                     />
                     </label>
                     <input type="file" id="img" accept="image/*"/>
                     <div class="top-text">
-                        <span>Antonis Kalamakis</span>
+                        <span>{{ user.firstname }} {{ user.lastname }}</span>
                     </div>
                 </div>
                 <div class="middle">
@@ -24,7 +24,8 @@
                                 width="35"
                                 height="35"
                             />
-                            <span>Student at National & Kapodistrian University of Athens</span>
+                            <span v-if="education">{{ education }}</span>
+                            <span v-else>No Information</span>
                         </div>
                         <div class="edit">
                             <img @click="educationFlag=true;"
@@ -41,11 +42,12 @@
                                 width="35"
                                 height="35"
                             />
-                            <ul>
+                            <ul v-if="skills.length">
                                 <li v-for="skill in skills" :key="skill">
                                     {{ skill }}
                                 </li>
                             </ul>
+                            <span v-else>No information</span>
                         </div>
                         <div class="edit">
                             <img @click="skillsFlag=true;"
@@ -60,8 +62,8 @@
         </div>
         <Footer />
     </div>
-    <editEducation v-if="educationFlag" :close="()=>{educationFlag=false;}"/>
-    <editSkills v-if="skillsFlag" :close="()=>{skillsFlag=false;}" :curr="skills"/>
+    <editEducation v-if="educationFlag" :id="user._id" :private="educationPrivate" :curr="education" :close="()=>{educationFlag=false;}"/>
+    <editSkills v-if="skillsFlag" :id="user._id" :private="skillsPrivate" :close="()=>{skillsFlag=false;}" :curr="skills"/>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
@@ -69,6 +71,9 @@ import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
 import editEducation from "../components/profilePage/editEducation.vue"
 import editSkills from "../components/profilePage/editSkills.vue"
+import { loginCheck, givenType } from "../tsLibs/auth";
+import { getPic } from "../tsLibs/funcs";
+import axios from 'axios';
 
 export default defineComponent({
     name: "Profile",
@@ -78,12 +83,30 @@ export default defineComponent({
         editEducation,
         editSkills
     },
-    setup() {
+    async setup() {
+        const user = ref<givenType>();
+        await loginCheck().then((data: givenType) =>{
+            user.value = data;
+        })
+        const skills = ref<String[]>([]);
+        const skillsPrivate = ref<Boolean>();
+        const education = ref("");
+        const educationPrivate = ref<Boolean>();
+        if(user.value)
+        try {
+            const response = await axios.get("https://localhost:8000/users/"+user.value._id+"/"+user.value._id)
+            // console.log(response.data)
+            skills.value = response.data.Skills.skills;
+            skillsPrivate.value = response.data.Skills.private;
+            education.value = response.data.Education.string;
+            educationPrivate.value = response.data.Education.private;
+        }catch(error){
+            console.log("**GET DATA ERROR**")
+        }
+        
         const educationFlag = ref(false);
         const skillsFlag = ref(false);
-        const skills = reactive(["second", "third", "forth", "first", "second", "third", "forth", "first", "second", "third", "forth", "first", "second", "third", "forth"]);
-        // const skills = reactive(["second", "third", "forth", "first", "second"]);
-        return { skills, educationFlag, skillsFlag }
+        return { user, education, educationPrivate, skills, skillsPrivate, educationFlag, skillsFlag, getPic }
     },
 })
 </script>
@@ -180,6 +203,11 @@ export default defineComponent({
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+.tags-curr span {
+    font-size: 18px;
+    font-weight: bold;
+    opacity: 0.9;
 }
 .tags-curr img {
     /* background-color: rgb(240, 240, 240); */

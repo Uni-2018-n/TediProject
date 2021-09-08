@@ -114,11 +114,11 @@ const updateUser = (req, res) => {
     // The new data we want to patch
     NewUser.findByIdAndUpdate(id, req.body)
     .then((result) => {
-        const {firstname, lastname, age} = req.body;
-
-        if (firstname) result.firstname = firstname;
-        if (lastname) result.lastname = lastname;
-        if (age) result.age = age;
+        if (req.body.firstname) result.firstname = req.body.firstname;
+        if (req.body.lastname) result.lastname = req.body.lastname;
+        if (req.body.age) result.age = req.body.age;
+        if (req.body.Education) result.Education = req.body.Education;
+        if (req.body.Skills) result.Skills = req.body.Skills;
 
         res.send(`Your Account has been updated`);
     })
@@ -222,7 +222,31 @@ const getRequest = (req, res) => {
     .catch(err => res.send(err));
 }
 
+const getProfile = (req, res) => {
+    NewUser.findById(req.params.id)
+    .then((result) => {
+        if (req.params.id.toString() == req.params.UserId.toString()) {
+            res.json({
+                Education: result.Education,
+                Skills: result.Skills
+            });
+        } else {
+            let education = undefined;
+            let skills = undefined;
+            if (!result.Education.private) education = result.Education
+            if (!result.Skills.private) skills = result.Skills
+            res.json({
+                Education: education,
+                Skills: skills
+            });
+        }
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+}
+
 module.exports = {
     getUsers, getUser, createUser, deleteUser, updateUser, connectUser,
-    getConnected, acceptRequest, rejectRequest, getRequest
+    getConnected, acceptRequest, rejectRequest, getRequest, getProfile
 }

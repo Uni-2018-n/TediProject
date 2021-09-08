@@ -46,7 +46,6 @@ export default defineComponent({
         Bubles,
     },
     async setup(props){
-        // props.other.id._id
         const currText = ref("");
         const resize = (e: Event) => {
             (e.target as HTMLTextAreaElement).style.height = 'auto';
