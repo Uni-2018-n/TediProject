@@ -5,13 +5,15 @@
             <div class="list">
                 <ul>
                     <li v-for="user in searchCurr" :key="user">
-                        <img
-                            :src="getPic(user.ProfilePic)"
-                            width="75"
-                            height="75"
-                        />
-                        <div class="text">
-                            <span class="name">{{user.firstname}} {{ user.lastname }}</span>
+                        <div class="inner" @click="chose(user._id)">
+                            <img
+                                :src="getPic(user.ProfilePic)"
+                                width="75"
+                                height="75"
+                            />
+                            <div class="text">
+                                <span class="name">{{user.firstname}} {{ user.lastname }}</span>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -32,6 +34,7 @@ export default defineComponent({
     props: {
         id: {type: String, required: true},
         close: {type: Function, required: true},
+        chooseNew: {type: Function, required: true},
     },
     components: {
         searchBar,
@@ -50,7 +53,12 @@ export default defineComponent({
             }
         }
 
-        return { searchCurr, request, getPic }
+        const chose = (chosen: String) =>{
+            props.chooseNew(chosen);
+            props.close()
+        }
+
+        return { searchCurr, request, getPic, chose }
     },
 })
 </script>
@@ -114,7 +122,7 @@ export default defineComponent({
     flex-direction: column;
     width: 100%;
 }
-.internal ul li {
+.inner {
     display: flex;
     flex-direction: row;
     padding: 15px;
@@ -127,7 +135,7 @@ export default defineComponent({
     transition: all 0.15s ease-in-out;
 }
 
-.internal ul li:hover {
+.inner:hover {
     background-color: white;
     color: black;
     cursor: pointer;
@@ -135,7 +143,7 @@ export default defineComponent({
     border-bottom-right-radius: 25px;
 }
 
-.internal ul li img {
+.inner img {
     border-radius: 40px;
     margin-right: 15px;
 }

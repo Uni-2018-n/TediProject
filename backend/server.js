@@ -24,7 +24,7 @@ const methodOverride = require('method-override');
 
 const connection     = require('./db.js');
 const UserInDb       = require('./models/SignUp.js');
-// const LogInRoutes   = require('./routes/LogIn.js');
+const LogInRoutes    = require('./routes/LogIn.js');
 const SignUpRoutes   = require('./routes/SignUp.js');
 const UploadRoutes   = require('./routes/Uploads.js');
 const PostsRoutes    = require('./routes/Posts.js');
@@ -101,6 +101,9 @@ app.use('/posts', PostsRoutes);
 app.use('/chat', ChatRoutes);
 app.use('/jobs', JobRoutes);
 app.use('/search', SearchRoutes);
+app.get('/get/:id', (res, req) =>{
+    console.log("test")
+});
 
 /////////////////////////////// LOGIN ROUTES
 

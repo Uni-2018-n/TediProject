@@ -15,7 +15,7 @@ router.post('/', upload.single('file'), UserController.createUser);
 router.get('/:id', UserController.getUser);
 
 // @desc Get Users Profile
-router.get('/:id/:UserId', UserController.getProfile);
+router.get('/profile/:id/:UserId', UserController.getProfile);
 
 router.delete('/:id', UserController.deleteUser);
 

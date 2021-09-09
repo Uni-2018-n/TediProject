@@ -19,7 +19,7 @@
         </div>
         <Footer />
     </div>
-    <popupSearch v-if="popupSearchFlag" :id="user._id" :close="()=>{popupSearchFlag=false;}"/>
+    <popupSearch v-if="popupSearchFlag" :id="user._id" :chooseNew="setCurr" :close="()=>{popupSearchFlag=false;}"/>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
@@ -50,7 +50,7 @@ export default defineComponent({
 
         if(user.value)
         try {
-          const response = await axios("https://localhost:8000/chat/"+user.value._id)
+          const response = await axios.get("https://localhost:8000/chat/"+user.value._id)
           temp.value = response.data;
         }catch(err){
           console.log("**CHATS LEFT ERROR**");
@@ -61,8 +61,29 @@ export default defineComponent({
             current.value = temp
         }
 
+        const setCurr = async(curr: String) =>{
+            if(user.value)
+            try {
+                const response = await axios.get("https://localhost:8000/chat/"+user.value._id+"/"+curr)
+                if(response.data){
+                    const thirdResponse = await axios.get("https://localhost:8000/chat/"+user.value._id)
+                    temp.value = thirdResponse.data
+                }else {
+                    const secondResponse = await axios.post("https://localhost:8000/chat", {
+                        senderId: user.value._id,
+                        receiverId: curr,
+                    })
+                    const thirdResponse = await axios.get("https://localhost:8000/chat/"+user.value._id)
+                    temp.value = thirdResponse.data
+                }
+            }catch(err){
+                console.log("***ERROR***")
+            }
+
+        }
+
         const popupSearchFlag = ref(false);
-        return { user, temp, current, loaded, popupSearchFlag }
+        return { user, temp, current, loaded, popupSearchFlag, setCurr }
     },
 })
 </script>

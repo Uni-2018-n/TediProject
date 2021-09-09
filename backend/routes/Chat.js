@@ -38,11 +38,24 @@ router.get("/:User_Id", async (req, res) => {
 // @desc Get one Chat
 router.get("/:User_Id/:Friend_Id", async (req, res) => {
     try {
-        const result = await Chat.find({ chaters: {
+        const chat = new Chat();
+        result = await Chat.findOneAndDelete({ chaters: {
             $in: [mongoose.Types.ObjectId(req.params.User_Id)],
             $in: [mongoose.Types.ObjectId(req.params.Friend_Id)]
         }});
-        res.json(result);
+
+        if (result) {
+            chat.chaters = result.chaters;
+            chat.messages = result.messages;
+
+            chat.save()
+            .then(
+                chat => res.json(chat)
+            )
+            .catch ((err) => {
+                res.status(400).json(err)
+            });
+        } else res.send(undefined);
     } catch (error) {
         res.status(400).json(error)
     }
