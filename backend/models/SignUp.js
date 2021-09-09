@@ -44,7 +44,7 @@ const NewUser = new mongoose.Schema({
         },
         required: false
     },
-    Skills:{
+    Skills: {
         private: {
             type: Boolean,
             required: false

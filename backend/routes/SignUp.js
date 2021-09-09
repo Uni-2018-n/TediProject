@@ -19,7 +19,7 @@ router.get('/profile/:id/:UserId', UserController.getProfile);
 
 router.delete('/:id', UserController.deleteUser);
 
-router.patch('/:id', UserController.updateUser);
+router.patch('/:id', upload.single('file'), UserController.updateUser);
 
 // @desc Send Connect Request or disconnect with a User
 router.post('/connect/:id/:connect_id', UserController.connectUser);

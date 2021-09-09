@@ -61,38 +61,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 
-// Passport.js
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.serializeUser(function (user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function (id, done) {
-    UserInDb.findById(id, function(err, user) {
-        done(err ,user);
-    });
-});
-
-passport.use(new localStrategy(function (email, password, done) {
-    UserInDb.findOne({ email: email }, function (err, user) {
-        if (err) return done(err);
-        if (!user) return done(null, false, { message: 'Incorrect email.' });
-
-        bcrypt.compare(password, user.password, function (err, res) {
-            if (err) return done(err);
-            if (res == false) return done(null, false, {message: 'Incorrect password.' });
-
-            return done(null, user);
-        });
-
-        // IF THE EMAIL IS THE ADMINS THEN REDIRECT TO /users AND GET ALL USERS
-        if (email == "admin") return true;
-        else return false;
-    });
-}));
-
 ////////////////////////
 
 app.use('/users', SignUpRoutes);
@@ -101,9 +69,6 @@ app.use('/posts', PostsRoutes);
 app.use('/chat', ChatRoutes);
 app.use('/jobs', JobRoutes);
 app.use('/search', SearchRoutes);
-app.get('/get/:id', (res, req) =>{
-    console.log("test")
-});
 
 /////////////////////////////// LOGIN ROUTES
 
@@ -137,6 +102,7 @@ app.post('/login', async (req, res) => {
             _id: user._id,
             firstname: user.firstname,
             lastname: user.lastname,
+            email: user.email,
             ProfilePic: user.ProfilePic
         });
     });

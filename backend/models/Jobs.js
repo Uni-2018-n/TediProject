@@ -12,22 +12,14 @@ const Job = mongoose.Schema({
     avatar: {
         type: String
     },
-    job_title: {
+    Description: {
         type: String,
         required: true
     },
-    company: {
+    Skills: [{
         type: String,
         required: true
-    },
-    job_location: {
-        type: String,
-        required: true
-    },
-    employment_type: {
-        type: String,
-        required: true
-    }
+    }]
 }, {timestamps: true});
 
 const model = mongoose.model('Job', Job);

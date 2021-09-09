@@ -6,12 +6,13 @@
                 <div class="top">
                     <label for="img">
                     <img
-                        :src="getPic(user.ProfilePic)"
+                        :src="currPic"
                         width="185"
                         height="185"
                     />
                     </label>
-                    <input type="file" id="img" accept="image/*"/>
+                    <button @click="updatePic()">update photo</button>
+                    <input @change="selectedFile" type="file" name="file" id="img" accept="image/*"/>
                     <div class="top-text">
                         <span>{{ user.firstname }} {{ user.lastname }}</span>
                     </div>
@@ -71,9 +72,10 @@ import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
 import editEducation from "../components/profilePage/editEducation.vue"
 import editSkills from "../components/profilePage/editSkills.vue"
-import { loginCheck, givenType } from "../tsLibs/auth";
+import { loginCheck, givenType, updateUser } from "../tsLibs/auth";
 import { getPic } from "../tsLibs/funcs";
 import axios from 'axios';
+import router from "../router/index"
 
 export default defineComponent({
     name: "Profile",
@@ -88,6 +90,9 @@ export default defineComponent({
         await loginCheck().then((data: givenType) =>{
             user.value = data;
         })
+        const currPic = ref(getPic(user.value!.ProfilePic));
+        const photo = ref<File>()
+
         const skills = ref<String[]>([]);
         const skillsPrivate = ref<Boolean>();
         const education = ref("");
@@ -105,7 +110,40 @@ export default defineComponent({
         
         const educationFlag = ref(false);
         const skillsFlag = ref(false);
-        return { user, education, educationPrivate, skills, skillsPrivate, educationFlag, skillsFlag, getPic }
+
+        const updatePic = async () =>{
+            if(photo.value){
+                const fd = new FormData();
+                fd.append('file', photo.value!)
+                if(user.value)
+                try {
+                    const response = await axios.patch("https://localhost:8000/users/"+user.value._id, fd, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    // console.log(response.data)
+                    console.log("test")
+                    user.value = updateUser(response.data)
+                    router.go(0)
+                }catch(error){
+                    console.log("**UPDATE ERROR**")
+                }
+            }
+        }
+
+        const selectedFile = (event: Event) => {
+            if(event){
+                if(((event.target as HTMLInputElement).files as FileList)[0].size > 100000){
+                    console.log('error image more than 50k') //TODO
+                }else{
+                    photo.value = ((event.target as HTMLInputElement).files as FileList)[0]
+                    currPic.value = URL.createObjectURL(photo.value);
+                }
+            }
+        }
+
+        return { user, education, educationPrivate, skills, skillsPrivate, educationFlag, skillsFlag, getPic, updatePic, currPic, selectedFile }
     },
 })
 </script>

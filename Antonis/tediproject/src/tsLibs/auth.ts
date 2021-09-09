@@ -7,7 +7,8 @@ export type givenType = {
     firstname: String,
     lastname: String,
     ProfilePic: String,
-    _id: String
+    _id: String,
+    email: String,
 }
 
 export type likeType = {
@@ -138,4 +139,11 @@ export const loginCheck = async (): Promise<givenType> =>{
         }
     }
     return user;
+}
+
+export const updateUser = (updated: givenType): givenType =>{
+    localStorage.clear();
+    localStorage.setItem('user', JSON.stringify(updated));
+    router.go(0);
+    return updated
 }

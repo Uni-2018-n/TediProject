@@ -6,12 +6,12 @@
                 <div class="top">
                     <label for="img">
                         <img
-                            src="@/assets/blank-profile-picture.png"
+                            :src="photoURL"
                             width="180"
                             height="180"
                         />
                     </label>
-                    <input type="file" id="img" accept="image/*"/>
+                    <input @change="selectedFile" type="file" name="file" id="img" accept="image/*"/>
                 </div>
                 <div class="rest">
                     <div class="email">
@@ -22,13 +22,13 @@
                     </div>
                     <div class="pass">
                         <span>Update Password:</span>
-                        <input />
+                        <input v-model="pass" />
                         <span>Verify Password:</span>
-                        <input />
+                        <input v-model="vpass" />
                     </div>
                     <div class="btn">
-                        <button>Reset</button>
-                        <button>Update</button>
+                        <button @click="reset()">Reset</button>
+                        <button @click="update()">Update</button>
                     </div>
                 </div>
             </div>
@@ -40,6 +40,9 @@
 import { defineComponent, ref } from 'vue'
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
+import { loginCheck, updateUser, givenType } from "../tsLibs/auth"
+import axios from 'axios';
+import { getPic } from "../tsLibs/funcs";
 
 export default defineComponent({
     name: "Settings",
@@ -47,8 +50,19 @@ export default defineComponent({
         navBar,
         Footer,
     },
-    setup() {
-        const currEmail = ref("email@hotmail.com")
+    async setup() {
+        const user = ref<givenType>();
+        await loginCheck().then((data: givenType) =>{
+            user.value = data;
+        })
+        const pass = ref("")
+        const vpass = ref("")
+        const photo = ref<File>()
+        const oldPhoto = ref(user.value!.ProfilePic)
+        const photoURL = ref(getPic(user.value!.ProfilePic))
+        const oldEmail = ref(user.value!.email.toString())
+
+        const currEmail = ref(oldEmail.value)
         const emailDisabled = ref(true);
         const atClick = () => {
             emailDisabled.value=false;
@@ -57,7 +71,52 @@ export default defineComponent({
                 (document.getElementById("email") as HTMLInputElement).focus();
             }, 0); 
         }
-        return { currEmail, emailDisabled, atClick }
+
+        const selectedFile = (event: Event) => {
+            if(event){
+                if(((event.target as HTMLInputElement).files as FileList)[0].size > 100000){
+                    console.log('error image more than 50k') //TODO
+                }else{
+                    photo.value = ((event.target as HTMLInputElement).files as FileList)[0]
+                    photoURL.value = URL.createObjectURL(photo.value);
+                }
+            }
+        }
+
+        const update = async() => {
+            const fd = new FormData();
+            if(pass.value != ""){
+                if(pass.value === vpass.value){
+                    fd.append('password', pass.value)
+                }
+            }
+            if(currEmail.value != "" && currEmail.value != oldEmail.value){
+                fd.append('email', currEmail.value)
+            }
+            if(photo.value){
+                fd.append('file', photo.value!)
+            }
+            if(user.value)
+            try {
+                const response = await axios.patch('https://localhost:8000/users/'+user.value._id, fd, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                user.value = updateUser(response.data);
+            }catch (e){
+                console.log("**USER SIGNUP ERROR**")
+            }
+        }
+
+        const reset = () => {
+            currEmail.value = oldEmail.value;
+            emailDisabled.value = true;
+            pass.value =""
+            vpass.value =""
+            photoURL.value = getPic(oldPhoto.value.toString())
+        }
+        return { currEmail, emailDisabled, atClick, update, reset, pass, vpass, selectedFile, photoURL, getPic }
     },
 })
 </script>

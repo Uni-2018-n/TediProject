@@ -2,6 +2,7 @@
 const NewUser           = require('../models/SignUp.js');
 const UploadController  = require('../controllers/Upload.js');
 const bcrypt            = require('bcryptjs');
+const jwt               = require('jsonwebtoken');
 
 const getUsers = async (req, res) => {
     try {
@@ -113,19 +114,30 @@ const deleteUser = (req, res) => {
 
 const updateUser = (req, res) => {
     const {id} = req.params;
+    console.log(req.file)
     // The new data we want to patch
     NewUser.findByIdAndUpdate(id, req.body)
     .then(async (result) => {
         if (req.body.firstname) result.firstname = req.body.firstname;
         if (req.body.lastname) result.lastname = req.body.lastname;
         if (req.body.age) result.age = req.body.age;
-        if (req.body.ProfilePic) result.ProfilePic = req.body.ProfilePic;
+        if (req.body.ProfilePic) result.ProfilePic = req.file.filename;
         if (req.body.email) result.email = req.body.email;
         if (req.body.password) result.password = await bcrypt.hash(req.body.password, 10);
         if (req.body.Education) result.Education = req.body.Education;
         if (req.body.Skills) result.Skills = req.body.Skills;
 
-        res.send(`Your Account has been updated`);
+        jwt.sign({result: result}, 'secretkey', (err, token) => {
+            res.json({
+                flag: true,
+                token,
+                _id: result._id,
+                firstname: result.firstname,
+                lastname: result.lastname,
+                email: result.email,
+                ProfilePic: result.ProfilePic
+            });
+        });
     })
     .catch((err) => {
         console.log(err);
