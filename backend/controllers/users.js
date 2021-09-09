@@ -166,8 +166,8 @@ const acceptRequest = (req, res) => {
         other_user.Connected_users.unshift(req.params.id);
         User.Pending_requests.shift(req.params.connect_id);
 
-        User.save().then(User => res.status(200));
         other_user.save();
+        User.save().then(User => res.status(200).send());
     })
     .catch(err => res.send(err));
 }
@@ -178,7 +178,7 @@ const rejectRequest = (req, res) => {
         // Add the User to the connected list
         User.Pending_requests.shift(req.params.connect_id);
 
-        User.save().then(User => res.status(200));
+        User.save().then(User => res.status(200).send());
     })
     .catch(err => res.send(err));
 }

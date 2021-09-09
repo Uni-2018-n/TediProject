@@ -35,7 +35,6 @@ export default defineComponent({
         const accept = async () => {
             try {
                 const response = await axios.post("https://localhost:8000/users/connect/accept/"+props.userId+"/"+props.src.id)
-                console.log("accepted")
                 flag.value = false;
             }catch(error){
                 console.log("**ACCEPT ERROR**")
@@ -45,7 +44,6 @@ export default defineComponent({
         const reject = async () => {
             try {
                 const response = await axios.post("https://localhost:8000/users/connect/reject/"+props.userId+"/"+props.src.id)
-                console.log("rejected")
                 flag.value = false;
             }catch(error){
                 console.log("**REJECT ERROR**")
