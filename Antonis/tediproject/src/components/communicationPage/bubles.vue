@@ -51,8 +51,8 @@ export default defineComponent({
         const tempSrc = ref<chatsMessagesType[]>(props.src)
         var t = setInterval(async () => {
             try {
-                const response = await axios.get("https://localhost:8000/chat/"+props.me+"/"+props.otherId)
-                tempSrc.value = response.data[0].messages
+                const response = await axios.post("https://localhost:8000/chat/get/"+props.me+"/"+props.otherId)
+                tempSrc.value = response.data.messages
             }catch(error) {
                 console.log("**ERROR CHAT REFRESH**")
             }

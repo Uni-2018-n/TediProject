@@ -64,18 +64,9 @@ export default defineComponent({
         const setCurr = async(curr: String) =>{
             if(user.value)
             try {
-                const response = await axios.get("https://localhost:8000/chat/"+user.value._id+"/"+curr)
-                if(response.data){
-                    const thirdResponse = await axios.get("https://localhost:8000/chat/"+user.value._id)
-                    temp.value = thirdResponse.data
-                }else {
-                    const secondResponse = await axios.post("https://localhost:8000/chat", {
-                        senderId: user.value._id,
-                        receiverId: curr,
-                    })
-                    const thirdResponse = await axios.get("https://localhost:8000/chat/"+user.value._id)
-                    temp.value = thirdResponse.data
-                }
+                const response = await axios.post("https://localhost:8000/chat/get/"+user.value._id+"/"+curr)
+                const thirdResponse = await axios.get("https://localhost:8000/chat/"+user.value._id)
+                temp.value = thirdResponse.data
             }catch(err){
                 console.log("***ERROR***")
             }

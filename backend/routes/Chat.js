@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 
 // Create a new chat
-router.post("/:User_Id/:Friend_Id", async (req, res) => {
+router.post("/get/:User_Id/:Friend_Id", async (req, res) => {
     const newChat = new Chat();
 
     try {
@@ -34,7 +34,7 @@ router.post("/:User_Id/:Friend_Id", async (req, res) => {
 });
 
 
-// Get a User's chat list
+// @desc Get a User's chat list
 router.get("/:User_Id", async (req, res) => {
     try {
         const result = await Chat.find({ chaters: { $in: [ mongoose.Types.ObjectId(req.params.User_Id) ] } });
@@ -66,7 +66,6 @@ router.get("/:User_Id", async (req, res) => {
 
 // @desc New message
 router.post('/message/:id', (req, res) => {
-    // console.log(req.body)
     Chat.findById({_id: req.params.id})
     .then(chat => {
         const newMessage = {

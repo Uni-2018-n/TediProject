@@ -54,11 +54,13 @@ export default defineComponent({
 
         const sendMessage = async() =>{
             try {
+                // console.log(props.myId)
                 const response = await axios.post("https://localhost:8000/chat/message/"+props.other.msg_id, {
                     sender: props.myId,
                     text: currText.value,
                     avatar: props.avatar,
                 })
+                // console.log("test")
             }catch(error){
                 console.log("**NEW MSG ERROR**")
             }
