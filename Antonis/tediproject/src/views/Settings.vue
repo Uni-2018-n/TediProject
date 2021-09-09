@@ -43,6 +43,7 @@ import Footer from "../components/footer.vue";
 import { loginCheck, updateUser, givenType } from "../tsLibs/auth"
 import axios from 'axios';
 import { getPic } from "../tsLibs/funcs";
+import router from "../router/index"
 
 export default defineComponent({
     name: "Settings",
@@ -104,6 +105,7 @@ export default defineComponent({
                     }
                 })
                 user.value = updateUser(response.data);
+                router.go(0)
             }catch (e){
                 console.log("**USER SIGNUP ERROR**")
             }

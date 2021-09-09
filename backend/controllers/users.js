@@ -114,7 +114,7 @@ const deleteUser = (req, res) => {
 
 const updateUser = (req, res) => {
     const {id} = req.params;
-    console.log(req.file)
+    // console.log(req.file)
     // The new data we want to patch
     NewUser.findByIdAndUpdate(id, req.body)
     .then(async (result) => {
