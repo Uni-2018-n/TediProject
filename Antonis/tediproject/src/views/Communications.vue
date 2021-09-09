@@ -11,7 +11,7 @@
                     height="25"
                     />
                 </div>
-                <chats :id="user._id" :loaded="loaded" :users="temp" />
+                <chats v-if="temp.length" :id="user._id" :loaded="loaded" :users="temp" />
             </div>
             <div class="right">
                 <chat v-if="current" :myId="user._id" :avatar="user.ProfilePic" :other="current"/>
@@ -41,6 +41,7 @@ export default defineComponent({
         popupSearch,
     },
     async setup() {
+        const current = ref<currType>()
         const user = ref<givenType>();
         await loginCheck().then((data: givenType) =>{
             user.value = data;
@@ -56,7 +57,6 @@ export default defineComponent({
           console.log("**CHATS LEFT ERROR**");
         }
 
-        const current = ref<currType>()
         const loaded = (temp: currType) =>{
             current.value = temp
         }

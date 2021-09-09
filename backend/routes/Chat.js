@@ -9,17 +9,18 @@ router.post("/get/:User_Id/:Friend_Id", async (req, res) => {
     const newChat = new Chat();
 
     try {
-        result = await Chat.findOne({ chaters: {
-            $in: [mongoose.Types.ObjectId(req.params.User_Id)],
-            $in: [mongoose.Types.ObjectId(req.params.Friend_Id)]
-        }});
+        result = await Chat.findOneAndDelete({$and: [
+            {chaters: {$in: [mongoose.Types.ObjectId(req.params.User_Id)]}},
+            {chaters: {$in: [mongoose.Types.ObjectId(req.params.Friend_Id)]}}
+        ]});
 
         if (result) {
-            return res.send(result);
+            newChat.chaters = result.chaters;
+            newChat.messages = result.messages;
+        } else {
+            newChat.chaters.unshift(req.params.User_Id);
+            newChat.chaters.unshift(req.params.Friend_Id);
         }
-
-        newChat.chaters.unshift(req.params.User_Id);
-        newChat.chaters.unshift(req.params.Friend_Id);
 
         newChat.save()
         .then(
@@ -38,31 +39,29 @@ router.post("/get/:User_Id/:Friend_Id", async (req, res) => {
 router.get("/:User_Id", async (req, res) => {
     try {
         const result = await Chat.find({ chaters: { $in: [ mongoose.Types.ObjectId(req.params.User_Id) ] } });
-        res.json(result);
+        res.json(result.reverse());
     } catch (error) {
         res.status(400).json(error)
     }
 })
 
 // @desc Get one Chat
-// router.get("", async (req, res) => {
-//     try {
-        
-
-//             chat.chaters = result.chaters;
-//             chat.messages = result.messages;
-
-//             chat.save()
-//             .then(
-//                 chat => res.json(chat)
-//             )
-//             .catch ((err) => {
-//                 res.status(400).json(err)
-//             });
-//     } catch (error) {
-//         res.status(400).json(error)
-//     }
-// })
+router.get("/get_messages/:User_Id/:Friend_Id", async (req, res) => {
+    try {
+        result = await Chat.findOne({$and: [
+            {chaters: {$in: [mongoose.Types.ObjectId(req.params.User_Id)]}},
+            {chaters: {$in: [mongoose.Types.ObjectId(req.params.Friend_Id)]}}
+        ]})
+        .then(
+            result => res.json(result.messages)
+        )
+        .catch ((err) => {
+            res.status(400).json(err)
+        });
+    } catch (error) {
+        res.status(400).json(error)
+    }
+})
 
 // @desc New message
 router.post('/message/:id', (req, res) => {
