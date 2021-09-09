@@ -36,18 +36,18 @@ const NewUser = new mongoose.Schema({
     Education: {
         string: {
             type: String,
-            required: true
+            required: false
         },
         private: {
             type: Boolean,
-            required: true
+            required: false
         },
         required: false
     },
     Skills:{
         private: {
             type: Boolean,
-            required: true
+            required: false
         },
         skills: [{
             type: String

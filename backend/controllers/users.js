@@ -1,7 +1,7 @@
 // import { v4 as uuidv4 } from 'uuid';
 const NewUser           = require('../models/SignUp.js');
 const UploadController  = require('../controllers/Upload.js');
-const bcrypt            = require('bcrypt');
+const bcrypt            = require('bcryptjs');
 
 const getUsers = async (req, res) => {
     try {
@@ -82,7 +82,7 @@ const createUser = (req, res) => {
                         ProfilePic: filename
                     });
 
-                    user.save()//TODO THIS GOES TO ERROR
+                    user.save()
                     .then((result) => {
                         res.json({
                             "boolean": true

@@ -5,12 +5,21 @@ const mongoose = require("mongoose");
 const router = express.Router();
 
 // Create a new chat
-router.post("/", (req, res) => {
+router.post("/:User_Id/:Friend_Id", async (req, res) => {
     const newChat = new Chat();
 
     try {
-        newChat.chaters.unshift(req.body.senderId);
-        newChat.chaters.unshift(req.body.receiverId);
+        result = await Chat.findOne({ chaters: {
+            $in: [mongoose.Types.ObjectId(req.params.User_Id)],
+            $in: [mongoose.Types.ObjectId(req.params.Friend_Id)]
+        }});
+
+        if (result) {
+            return res.send(result);
+        }
+
+        newChat.chaters.unshift(req.params.User_Id);
+        newChat.chaters.unshift(req.params.Friend_Id);
 
         newChat.save()
         .then(
@@ -36,30 +45,24 @@ router.get("/:User_Id", async (req, res) => {
 })
 
 // @desc Get one Chat
-router.get("/:User_Id/:Friend_Id", async (req, res) => {
-    try {
-        const chat = new Chat();
-        result = await Chat.findOneAndDelete({ chaters: {
-            $in: [mongoose.Types.ObjectId(req.params.User_Id)],
-            $in: [mongoose.Types.ObjectId(req.params.Friend_Id)]
-        }});
+// router.get("", async (req, res) => {
+//     try {
+        
 
-        if (result) {
-            chat.chaters = result.chaters;
-            chat.messages = result.messages;
+//             chat.chaters = result.chaters;
+//             chat.messages = result.messages;
 
-            chat.save()
-            .then(
-                chat => res.json(chat)
-            )
-            .catch ((err) => {
-                res.status(400).json(err)
-            });
-        } else res.send(undefined);
-    } catch (error) {
-        res.status(400).json(error)
-    }
-})
+//             chat.save()
+//             .then(
+//                 chat => res.json(chat)
+//             )
+//             .catch ((err) => {
+//                 res.status(400).json(err)
+//             });
+//     } catch (error) {
+//         res.status(400).json(error)
+//     }
+// })
 
 // @desc New message
 router.post('/message/:id', (req, res) => {

@@ -8,7 +8,7 @@ const Grid           = require('gridfs-stream');
 const cors           = require('cors');
 const passport       = require('passport');
 const localStrategy  = require('passport-local');
-const bcrypt         = require('bcrypt');
+const bcrypt         = require('bcryptjs');
 const jwt            = require('jsonwebtoken');
 // const hbs            = require('hbs');
 
