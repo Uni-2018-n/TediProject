@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const Job = mongoose.Schema({
-    author: {
+const Application = mongoose.Schema({
+    applicant: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'NewUser',
         required: true
@@ -16,16 +16,15 @@ const Job = mongoose.Schema({
         type: String,
         required: true
     },
+    Bio_file: {
+        type: String,
+    },
     Skills: [{
         type: String,
         required: true
-    }],
-    Applications: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Application',
-    }
+    }]
 }, {timestamps: true});
 
-const model = mongoose.model('Job', Job);
+const model = mongoose.model('Application', Application);
 
 module.exports = model;

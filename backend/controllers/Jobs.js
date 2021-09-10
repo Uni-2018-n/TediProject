@@ -1,5 +1,6 @@
-const Job = require("../models/Jobs");
-const NewUser = require("../models/SignUp");
+const Job         = require("../models/Jobs");
+const Application = require("../models/applications");
+const NewUser     = require("../models/SignUp");
 
 const createJob = async (req, res) => {
     const user = await NewUser.findById({_id: req.body.author})
@@ -44,8 +45,61 @@ const getJobs = async (req, res) => {
     }
 }
 
-const applyJob = async (req, res) => {}
+const applyJob = async (req, res) => {
+    try {
+        await Job.findById({_id: req.params.Job_id})
+        .then(async (job) => {
+            const user = await NewUser.findById({_id: req.body.applicant})
+            let filename = '';
+            if (req.file) filename = req.file.filename;
+            const newApp = new Application({
+                applicant: user._id,
+                name: user.firstname.concat(" ", user.lastname),
+                avatar: user.ProfilePic,
+                Description: req.body.Description,
+                Skills: req.body.Skills,
+                Bio_file: filename
+            });
+
+            
+            newApp.save()
+            .then((application) => {
+                job.Applications.unshift(application._id);
+                job.save();
+                res.json(application);
+            })
+            .catch((err) => {
+                res.json(err);
+            });
+        })
+        .catch((error) => {
+            res.json(error)
+        })
+
+    } catch (error) {
+        res.json(error);
+    }
+}
+
+const getApplications = async (req, res) => {
+    try {
+        let applications = [];
+        await Job.findById({_id: req.params.Job_id})
+        .then(async (job) => {
+            for (const JOB of job.Applications) {
+                applications = applications.concat(await Application.find({_id: JOB}));
+            }
+            res.json(applications);        
+        })
+        .catch((error) => {
+            res.json(error)
+        })
+
+    } catch (error) {
+        res.json(error);
+    }
+}
 
 module.exports = {
-    createJob, getJobs, applyJob// getUser, deleteUser, updateUser, connectUser
+    createJob, getJobs, applyJob, getApplications//, deleteUser, updateUser, connectUser
 }

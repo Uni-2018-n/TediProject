@@ -121,7 +121,7 @@ const updateUser = (req, res) => {
         if (req.body.firstname) result.firstname = req.body.firstname;
         if (req.body.lastname) result.lastname = req.body.lastname;
         if (req.body.age) result.age = req.body.age;
-        if (req.body.ProfilePic) result.ProfilePic = req.file.filename;
+        if (req.file) result.ProfilePic = req.file.filename;
         if (req.body.email) result.email = req.body.email;
         if (req.body.password) result.password = await bcrypt.hash(req.body.password, 10);
         if (req.body.Education) result.Education = req.body.Education;
@@ -263,7 +263,14 @@ const getProfile = (req, res) => {
     });
 }
 
+const getNotifications = async (req, res) => {
+    await NewUser.findById({_id: req.params.User_id})
+    .then((user) => {
+        res.json(user.Notifications);
+    }).catch(err => res.status(404).json({user: 'User not found'}));
+}
+
 module.exports = {
     getUsers, getUser, createUser, deleteUser, updateUser, connectUser,
-    getConnected, acceptRequest, rejectRequest, getRequest, getProfile
+    getConnected, acceptRequest, rejectRequest, getRequest, getProfile, getNotifications
 }

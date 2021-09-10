@@ -36,4 +36,7 @@ router.post('/connect/reject/:id/:connect_id', UserController.rejectRequest);
 // @desc Get connected Users
 router.get('/connect/:id', UserController.getConnected);
 
+// @desc Get Notifications (Likes & Comments)
+router.get('/notifications/:User_id', UserController.getNotifications);
+
 module.exports = router;

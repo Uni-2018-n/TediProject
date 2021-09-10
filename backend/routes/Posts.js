@@ -109,6 +109,7 @@ router.delete('/:Post_id', async (req, res) => {
 // @desc Like/Unlike a Users Post
 router.post('/like/:User_id/:Post_id', async (req, res) => {
     try {
+        var like = 0;
         const user = await NewUser.findById({_id: req.params.User_id});
         await Posts.findById({_id: req.params.Post_id})
         .then(Post => {
@@ -123,13 +124,29 @@ router.post('/like/:User_id/:Post_id', async (req, res) => {
                 user.Liked_Posts.splice(post_index, 1);
             } else {
                 // Add the User to the liked list
+                like = 1;
                 Post.likes.unshift({user: req.params.User_id});
                 user.Liked_Posts.unshift({post: req.params.Post_id});
             }
 
-            Post.save().then(Post => {
+            Post.save().then(async (Post) => {
+                if (like == 1) {
+                    if (Post.author.toString() === user._id.toString()) {
+                        user.Notifications.Likes.unshift({
+                            user: req.params.User_id,
+                            post: Post._id
+                        });
+                    } else{
+                        const author = await NewUser.findById({_id: [mongoose.Types.ObjectId(Post.author)]});
+                        author.Notifications.Likes.unshift({
+                            user: req.params.User_id,
+                            post: Post._id
+                        });
+                        author.save();
+                    }
+                }
                 res.json(Post);
-                user.save()
+                user.save();
             });
             
         })
@@ -144,7 +161,7 @@ router.post('/comment/:id', async (req, res) => {
     const user = await NewUser.findById({_id: req.body.user})
 
     await Posts.findById({_id: req.params.id})
-    .then(Post => {
+    .then(async (Post) => {
       const newComment = {
         user: req.body.user,
         text: req.body.text,
@@ -152,9 +169,16 @@ router.post('/comment/:id', async (req, res) => {
         avatar: user.ProfilePic
       }
 
-      // Add a new comment to the array
-      Post.comments.unshift(newComment);
-      Post.save().then(Post => res.json(Post.comments))
+        const author = await NewUser.findById({_id: [mongoose.Types.ObjectId(Post.author)]});
+        author.Notifications.Comments.unshift({
+            user: req.body.user,
+            post: Post._id
+        });
+        author.save();
+
+        // Add a new comment to the array
+        Post.comments.unshift(newComment);
+        Post.save().then(Post => res.json(Post.comments))
     })
     .catch(err => res.status(404).json({post: 'No post found'}));
 })

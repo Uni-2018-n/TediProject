@@ -69,7 +69,29 @@ const NewUser = new mongoose.Schema({
               ref: 'Posts'
           }
         }
-    ]
+    ],
+    Notifications: {
+        Likes: [{
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'NewUser'
+            },
+            post: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Posts'
+            }
+        }],
+        Comments: [{
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'NewUser'
+            },
+            post: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Posts'
+            }
+        }]
+    }
     // Add every file necessary later
 }, {timestamps: true});
 
