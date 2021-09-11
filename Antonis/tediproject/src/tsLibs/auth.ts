@@ -57,6 +57,7 @@ export type notificationRequestType = {
 }
 
 export type notificationNotificationsType = {
+    post: String,
     name: String,
     type: String,
     action: String,

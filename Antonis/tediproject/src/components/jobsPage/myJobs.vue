@@ -6,22 +6,25 @@
                     <div class="inner-input">
                         <div class="top-input">
                             <img
-                            src="@/assets/blank-profile-picture.png"
+                            :src="getPic(user.ProfilePic)"
                             width="55"
                             height="55"
                             />
                             <div class="text-input">
-                                <span>Antonis Kalamakis</span>
+                                <span>{{ user.firstname }} {{ user.lastname }}</span>
                             </div>
                         </div>
                         <textarea id="postTextArea" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
+                    </div>
+                    <div class="postButton">
+                        <button @click="post()">Post!</button>
                     </div>
                 </div>
             </div>
             <div class="rest">
                 <ul>
                     <li v-for="post in posts" :key="post">
-                        <userJob :name="post.name" :text="post.text" :intrest="post.intrested"/>
+                        <userJob :src="post" :setCurr="setCurr" :my="true"/>
                     </li>
                 </ul>
             </div>
@@ -29,29 +32,50 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import axios from 'axios';
+import { defineComponent, PropType, reactive, ref } from 'vue';
 import userJob from '../jobsPage/userJob.vue';
+import { jobType } from '../../tsLibs/jobs';
+import { givenType } from "../../tsLibs/auth";
+import {getPic} from '../../tsLibs/funcs'
 
 export default defineComponent({
     name: "myJobs",
     components: {
         userJob,
     },
-    setup() {
-        const posts = reactive([
-            {
-                name: "Antonis Kalamakis",
-                text: "She who arrival end how fertile enabled. Brother she add yet see minuter natural smiling article painted. Themselves at dispatched interested insensible am be prosperous reasonably it. In either so spring wished. Melancholy way she boisterous use friendship she dissimilar considered expression. Sex quick arose mrs lived. Mr things do plenty others an vanity myself waited to. Always parish tastes at as mr father dining at. ",
-                intrested: false,
-            },
-        ])
+    props: {
+        user: {type: Object as PropType<givenType>, required: true},
+        setCurr: {type: Function, required: true},
+    },
+    async setup(props) {
+        const posts = ref<jobType[]>()
+        try{ 
+            const response = await axios.get("https://localhost:8000/jobs/my_jobs/"+props.user._id);
+            // console.log(response.data)
+            posts.value = response.data
+        }catch(error){
+            console.log("**MY JOBS ERROR**")
+        }
 
         const resize = (e: Event) => {
             (e.target as HTMLTextAreaElement).style.height = 'auto';
             (e.target as HTMLTextAreaElement).style.height = (e.target as HTMLTextAreaElement).scrollHeight +'px';
         }
 
-        return { resize, posts }
+        const postJob = async() => {
+            try {
+                // const response = await axios.post("https://localhost:8000/jobs", {
+                //     author: ,
+                //     Description: ,
+                //     Skills: [],
+                // })
+            }catch(error){
+                console.log("***ERROR POST JOB***")
+            }
+        }
+
+        return { resize, posts, getPic }
     },
 })
 </script>
@@ -110,5 +134,26 @@ textarea {
 }
 textarea:focus {
     outline: none !important;
+}
+
+.postButton {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+.postButton button {
+    border: none;
+    background-color: rgb(25, 119, 242);
+    color: white;
+    width: 80%;
+    padding: 1.5%;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 19px;
+    transition: all 0.25s;
+}
+.postButton button:hover{
+    background-color: rgb(20, 95, 192);
+    cursor: pointer;
 }
 </style>

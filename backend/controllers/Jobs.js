@@ -100,6 +100,16 @@ const getApplications = async (req, res) => {
     }
 }
 
+const getmyJobs = async (req, res) => {
+    try {
+        await Job.find({author: req.params.User_id})
+        .then((my_jobs) => res.json(my_jobs))
+        .catch((err) => res.json(error))
+    } catch (error) {
+        res.json(error);
+    }
+}
+
 module.exports = {
-    createJob, getJobs, applyJob, getApplications//, deleteUser, updateUser, connectUser
+    createJob, getJobs, applyJob, getApplications, getmyJobs//, deleteUser, updateUser
 }

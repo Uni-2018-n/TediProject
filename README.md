@@ -1,5 +1,3 @@
-tell nizar to fix the date's timezone
-
 make jobs new job accept skills
 
 + comment delete

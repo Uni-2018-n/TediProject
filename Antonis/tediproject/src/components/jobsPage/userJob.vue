@@ -3,13 +3,13 @@
         <div class="inner">
             <div class="top">
                 <img
-                src="@/assets/blank-profile-picture.png"
+                :src="getPic(src.avatar)"
                 width="55"
                 height="55"
                 />
                 <div class="text">
-                    <span>{{ name }}</span>
-                    <span class="time">10:00pm</span>
+                    <span>{{ src.name }}</span>
+                    <span class="time" :title="full">{{ time }}</span>
                 </div>
                 <div class="middle">
                     <span>
@@ -19,28 +19,33 @@
                 </div>
             </div>
             <div class="bottom">
-                <button @click="intrested=true;">
-                    <span v-if="!intrested">Intrest</span>
-                    <span v-else>Intrested!</span>
+                <button v-if="!my">
+                    <span>Intrest</span>
+                </button>
+                <button @click="setCurr(src._id)" v-else>
+                    <span>Check Applications</span>
                 </button>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
+import { jobType } from '../../tsLibs/jobs'
+import { getPic } from "../../tsLibs/funcs";
+import axios from 'axios';
 
 export default defineComponent({
     name: "userJob",
     props: {
-        name: {type: String, required: true},
-        text: {type: String, required: true},
-        intrest: {type: Boolean, required: true},
+        src: {type: Object as PropType<jobType>, required: true},
+        setCurr: {type: Function, required: false},
+        my: {type: Boolean, required: true},
     },
     setup(props) {
-        const intrested= ref(props.intrest);
+        // console.log(props.src)
         const flag = ref(false);
-        const postTextTemp = ref(props.text);
+        const postTextTemp = ref(props.src.Description.toString());
         const loadFlag = ref(false);
         const postText = ref("")
         if(postTextTemp.value.length > 300){
@@ -50,8 +55,34 @@ export default defineComponent({
             postText.value = postTextTemp.value;
             loadFlag.value = false;
         }
+
+        let date: Date =new Date(Date.parse(props.src.createdAt.toString()));
+        const time = ref(date.getHours() + ':' + date.getMinutes());
+        const full = ref(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes());
+
+        const apply = async () =>{
+            try {
+                // const response = await axios.post("https://localhost:8000/jobs/"+props.src._id, {
+                //     author: ,
+                //     Description: ,
+                //     Skills: [],
+                // })
+            }catch(error){
+                console.log("**apply**")
+            }
+        }
+
+
+        const checkApps = async () =>{
+            try {
+                const resposne = await axios.get("https://localhost:8000/jobs/applications/"+props.src._id)
+                // console.log(resposne.data) //TODO
+            }catch(error){
+                console.log("**CHECK APPS**")
+            }
+        }
         
-        return { loadFlag, flag, postText, postTextTemp, focus, intrested }
+        return { loadFlag, flag, postText, postTextTemp, focus, getPic, time, full, checkApps }
     },
 })
 </script>

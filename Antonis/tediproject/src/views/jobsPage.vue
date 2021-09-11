@@ -11,9 +11,9 @@
                     </ul>
                 </div>
                 <div class="middle">
-                    <myjobs v-if="curr===1" />
-                    <jobs v-else-if="curr===2" />
-                    <requests v-else-if="curr===3" />
+                    <myjobs :user="user" :setCurr="setCurr" v-if="curr===1" />
+                    <jobs :myId="user._id" v-else-if="curr===2" />
+                    <requests :myId="user._id" :postId="currRequests" v-else-if="curr===3" />
                 </div>
             </div>
         </div>
@@ -27,6 +27,7 @@ import Footer from "../components/footer.vue";
 import myjobs from "../components/jobsPage/myJobs.vue";
 import jobs from "../components/jobsPage/jobs.vue";
 import requests from "../components/jobsPage/requests.vue";
+import { loginCheck, givenType, chatsListType, currType } from "../tsLibs/auth";
 
 export default defineComponent({
     name: "jobsPage",
@@ -37,9 +38,22 @@ export default defineComponent({
         jobs,
         requests,
     },
-    setup() {
-        const curr= ref(3);
-        return { curr }
+    async setup() {
+        const user = ref<givenType>();
+        await loginCheck().then((data: givenType) =>{
+            user.value = data;
+        })
+
+        const curr= ref(1);
+
+        const currRequests = ref("")
+
+        const setCurr = (c: string) =>{
+            currRequests.value = c;
+            curr.value = 3;
+        }
+
+        return { curr, user, currRequests, setCurr }
     },
 })
 </script>

@@ -6,7 +6,7 @@
                 <div class="inner">
                     <div class="friend-requests" >
                         <span class="headline">Connection Requests</span>
-                        <ul v-if="requests.length">
+                        <ul v-if="requests && requests.length">
                             <li v-for="request in requests" :key="request.id">
                                 <requestCard :src="request" :userId="user._id"/>
                             </li>
@@ -17,7 +17,7 @@
                     </div>
                     <div class="other-notifications">
                         <span class="headline">Other Notifications</span>
-                        <ul v-if="notifications.length">
+                        <ul v-if="notifications && notifications.length">
                             <li v-for="notification in notifications" :key="notification">
                                 <notificationCard :src="notification"/>
                             </li>
@@ -66,28 +66,15 @@ export default defineComponent({
             console.log("**REQUEST ERROR**")
         }
 
-        const notifications = ref<notificationNotificationsType[]>([
-            {
-                name: "Antonis Kalamakis",
-                type: "post",
-                action: "comment",
-            },
-            {
-                name: "Antonis Kalamakis2",
-                type: "post",
-                action: "like",
-            },
-            {
-                name: "Antonis Kalamakis3",
-                type: "post",
-                action: "like",
-            },
-            {
-                name: "Antonis Kalamakis4",
-                type: "post",
-                action: "comment",
-            }
-        ])
+        const notifications = ref<notificationNotificationsType[]>()
+        if(user.value)
+        try {
+            const response = await axios.get("https://localhost:8000/users/notifications/"+user.value._id);
+            // console.log(response.data)//TODO
+            // notifications.value = response.data
+        }catch(error){
+            console.log("**REQUEST ERROR**")
+        }
         // const requests = reactive([]);
         return { user,requests, notifications }
     },

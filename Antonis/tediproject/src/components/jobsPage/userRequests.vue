@@ -2,12 +2,12 @@
     <div class="external">
         <div class="internal">
             <img
-                src="@/assets/blank-profile-picture.png"
+                :src="getPic(src.avatar)"
                 width="75"
                 height="75"
             />
             <div class="info">
-                <span>User {{ name }} applied for a job you offered!</span>
+                <span>User {{ src.name }} applied for a job you offered!</span>
                 <div class="btns">
                     <button class="btn accept">Accept</button>
                     <button class="btn reject">Reject</button>
@@ -17,16 +17,17 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+import { applicationType } from '../../tsLibs/jobs'
+import {getPic} from '../../tsLibs/funcs'
 
 export default defineComponent({
     name: "userRequests",
     props: {
-        name: {type: String, required: true},
-        flag: {type: Boolean, required: true}
+        src: {type: Object as PropType<applicationType>, required: true}
     },
-    setup() {
-        return {  }
+    setup(props) {
+        return { getPic  }
     },
 })
 </script>

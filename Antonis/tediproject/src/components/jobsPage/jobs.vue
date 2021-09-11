@@ -3,29 +3,34 @@
         <div class="internal">
             <ul>
                 <li v-for="post in posts" :key="post">
-                    <userJob :name="post.name" :text="post.text" :intrest="post.intrested" />
+                    <userJob :src="post" :my="false"/>
                 </li>
             </ul>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import axios from 'axios';
+import { defineComponent, ref } from 'vue';
 import userJob from '../jobsPage/userJob.vue';
+import { jobType } from '../../tsLibs/jobs'
 
 export default defineComponent({
     name: "jobs",
+    props: {
+        myId: {type: String, required: true},
+    },
     components: {
         userJob,
     },
-    setup() {
-        const posts = reactive([
-            {
-                name: "Antonis Kalamakis",
-                text: "She who arrival end how fertile enabled. Brother she add yet see minuter natural smiling article painted. Themselves at dispatched interested insensible am be prosperous reasonably it. In either so spring wished. Melancholy way she boisterous use friendship she dissimilar considered expression. Sex quick arose mrs lived. Mr things do plenty others an vanity myself waited to. Always parish tastes at as mr father dining at. ",
-                intrested: false,
-            },
-        ])
+    async setup(props) {
+        const posts = ref<jobType[]>()
+        try {
+            const response = await axios.get("https://localhost:8000/jobs/"+props.myId)
+            posts.value = response.data.all_jobs
+        }catch(error){
+            console.log("**GET JOBS ERROR**")
+        }
         return { posts }
     },
 })

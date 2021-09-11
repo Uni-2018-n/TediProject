@@ -1,9 +1,9 @@
 <template>
     <div class="external">
         <div class="internal">
-            <ul v-if="requests.length">
+            <ul v-if="requests && requests.length">
                 <li v-for="request in requests" :key="request">
-                    <userRequests :name="request.name" :flag="request.flag" />
+                    <userRequests :src="request" />
                 </li>
             </ul>
             <div class="else" v-else>
@@ -13,29 +13,30 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import axios from 'axios';
+import { defineComponent, ref } from 'vue'
 import userRequests from '../jobsPage/userRequests.vue';
+import { applicationType } from '../../tsLibs/jobs'
 
 export default defineComponent({
     name: "requests",
     components: {
         userRequests,
     },
-    setup() {
-        const requests = reactive([
-            {
-                name: "Antonis Kalamakis",
-                flag: false,
-            },
-            {
-                name: "Antonis Kalamakis",
-                flag: false,
-            },
-            {
-                name: "Antonis Kalamakis",
-                flag: false,
+    props: {
+        myId: {type: String, required: false},
+        postId: {type: String, required: false},
+    },
+    async setup(props) {
+        const requests = ref<applicationType[]>();
+        if(props.myId && props.postId){
+            try {
+                const response = await axios.get("https://localhost:8000/jobs/applications/"+props.postId)
+                requests.value = response.data
+            }catch(error){
+                console.log("")
             }
-        ])
+        }
         return { requests }
     },
 })

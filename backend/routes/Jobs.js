@@ -11,6 +11,9 @@ const router  = express.Router();
 // @desc Get the list of Jobs of all (non) Connected_with Users
 router.get('/:User_id', JobController.getJobs);
 
+// @desc Get Users Job posts
+router.get('/my_jobs/:User_id', JobController.getmyJobs);
+
 // @desc Get Job applications
 router.get('/applications/:Job_id', JobController.getApplications);
 
