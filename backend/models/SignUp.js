@@ -70,28 +70,19 @@ const NewUser = new mongoose.Schema({
           }
         }
     ],
-    Notifications: {
-        Likes: [{
-            user: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'NewUser'
-            },
-            post: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Posts'
-            }
-        }],
-        Comments: [{
-            user: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'NewUser'
-            },
-            post: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Posts'
-            }
-        }]
-    }
+    Notifications: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'NewUser'
+        },
+        post: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Posts'
+        },
+        type: {
+            type: String
+        }
+    }]
     // Add every file necessary later
 }, {timestamps: true});
 

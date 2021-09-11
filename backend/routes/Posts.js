@@ -138,9 +138,10 @@ router.post('/like/:User_id/:Post_id', async (req, res) => {
                         });
                     } else{
                         const author = await NewUser.findById({_id: [mongoose.Types.ObjectId(Post.author)]});
-                        author.Notifications.Likes.unshift({
+                        author.Notifications.unshift({
                             user: req.params.User_id,
-                            post: Post._id
+                            post: Post._id,
+                            type: "Like"
                         });
                         author.save();
                     }
@@ -170,9 +171,10 @@ router.post('/comment/:id', async (req, res) => {
       }
 
         const author = await NewUser.findById({_id: [mongoose.Types.ObjectId(Post.author)]});
-        author.Notifications.Comments.unshift({
+        author.Notifications.unshift({
             user: req.body.user,
-            post: Post._id
+            post: Post._id,
+            type: "Comment"
         });
         author.save();
 
