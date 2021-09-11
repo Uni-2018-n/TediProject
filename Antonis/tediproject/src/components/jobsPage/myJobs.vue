@@ -14,11 +14,19 @@
                                 <span>{{ user.firstname }} {{ user.lastname }}</span>
                             </div>
                         </div>
-                        <textarea id="postTextArea" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
+                        <textarea v-model="desc" id="postTextArea" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
                     </div>
-                    <div class="postButton">
-                        <button @click="post()">Post!</button>
+                    <div class="skills">
+                        <input @keyup.enter.prevent="skillAppend()" v-model="currSkilltxt" class="skillInput" type="text" placeholder="Add a skill"/>
+                        <ul>
+                            <li v-for="(skill, index) in currSkills" :key="index">
+                                <span @click="skillRemove(index)">{{skill}}</span>
+                            </li>
+                        </ul>
                     </div>
+                </div>
+                <div class="postButton">
+                    <button @click="postJob()">Post!</button>
                 </div>
             </div>
             <div class="rest">
@@ -33,11 +41,12 @@
 </template>
 <script lang="ts">
 import axios from 'axios';
-import { defineComponent, PropType, reactive, ref } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import userJob from '../jobsPage/userJob.vue';
 import { jobType } from '../../tsLibs/jobs';
 import { givenType } from "../../tsLibs/auth";
 import {getPic} from '../../tsLibs/funcs'
+import router from "../../router/index"
 
 export default defineComponent({
     name: "myJobs",
@@ -49,6 +58,7 @@ export default defineComponent({
         setCurr: {type: Function, required: true},
     },
     async setup(props) {
+        const desc = ref("");
         const posts = ref<jobType[]>()
         try{ 
             const response = await axios.get("https://localhost:8000/jobs/my_jobs/"+props.user._id);
@@ -64,50 +74,71 @@ export default defineComponent({
         }
 
         const postJob = async() => {
-            try {
-                // const response = await axios.post("https://localhost:8000/jobs", {
-                //     author: ,
-                //     Description: ,
-                //     Skills: [],
-                // })
-            }catch(error){
-                console.log("***ERROR POST JOB***")
+            if(desc.value != '' && currSkills.value.length != 0){
+                try {
+                    const response = await axios.post("https://localhost:8000/jobs", {
+                        author: props.user._id,
+                        Description: desc.value,
+                        Skills: currSkills.value,
+                    })
+                    router.go(0)
+                }catch(error){
+                    console.log("***ERROR POST JOB***")
+                }
             }
         }
 
-        return { resize, posts, getPic }
+        const currSkills = ref<String[]>([])
+        const currSkilltxt = ref("")
+        const skillRemove = (indx: number) =>{
+            currSkills.value.splice(indx, 1);
+        }
+        
+        const skillAppend = () =>{
+            if(currSkilltxt.value != "")
+            if(currSkills.value.includes(currSkilltxt.value)) {
+                currSkilltxt.value = "";
+            }else{
+                currSkills.value.push(currSkilltxt.value);
+                currSkilltxt.value ="";
+            }
+        }
+
+
+        return { resize, posts, getPic, currSkills, currSkilltxt, skillAppend, skillRemove, desc, postJob }
     },
 })
 </script>
 <style scoped>
-.rest ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+.external {
+    width: 100%;
+    height: 100%;
+}
+.internal {
     display: flex;
     flex-direction: column;
-    margin-top: 15px;
-}
-.rest ul li {
-    margin-top: 15px;
-}
-.rest ul li:first-child {
-    margin-top: 0px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 .outer-input {
     margin-top: 15px;
+    margin-bottom: 5px;
+    border-radius: 15px;
+    background-color: rgb(248, 248, 248);
+    display: flex;
+    flex-direction: column;
+    width: 450px;
 }
 
 .inner-input {
-    width: 450px;
     min-height: 100px;
     display: flex;
     justify-content:space-between;
     flex-direction:column;
-    border-radius: 15px;
-    background-color: rgb(248, 248, 248);
 }
+
 .top-input {
     padding: 5px;
 }
@@ -136,6 +167,54 @@ textarea:focus {
     outline: none !important;
 }
 
+.skills {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.skills input {
+    background-color: transparent;
+    border: solid;
+    border-radius: 25px;
+    border-color: rgba(211, 211, 211, 0.473);
+    font-size: 19px;
+    line-height: 30px;
+    text-align: center;
+    min-width: 40%;
+}
+.skills input:focus {
+    outline: none;
+}
+
+.skills ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0 10px 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.skills ul li {
+    margin: 5px 5px 15px 5px;
+}
+
+.skills ul li span {
+    color: rgb(0, 0, 0);
+    border: solid;
+    border-color: rgb(190, 190, 190);
+    padding: 5px;
+    border-radius: 25px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.skills ul li span:hover {
+    background-color: rgb(236, 236, 236);
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
 .postButton {
     padding: 0;
     margin: 0;
@@ -156,4 +235,21 @@ textarea:focus {
     background-color: rgb(20, 95, 192);
     cursor: pointer;
 }
+
+
+.rest ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+.rest ul li {
+    margin-top: 15px;
+}
+.rest ul li:first-child {
+    margin-top: 0px;
+}
+
 </style>

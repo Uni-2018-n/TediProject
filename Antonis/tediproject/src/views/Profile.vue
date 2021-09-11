@@ -11,7 +11,9 @@
                         height="185"
                     />
                     </label>
-                    <button @click="updatePic()">update photo</button>
+                    <div class="btn">
+                        <button @click="updatePic()">update photo</button>
+                    </div>
                     <input @change="selectedFile" type="file" name="file" id="img" accept="image/*"/>
                     <div class="top-text">
                         <span>{{ user.firstname }} {{ user.lastname }}</span>
@@ -194,6 +196,24 @@ export default defineComponent({
 .top input {
     display: none;
 }
+
+.btn {
+    display: flex;
+    justify-content: space-between;
+}
+.btn button {
+    background-color: rgb(66, 132, 255);
+    padding: 5px 15px 5px 15px;
+    font-size: 16px;
+    color: rgb(235, 235, 235);
+    border: none;
+    border-radius: 35px;
+}
+.btn button:hover{
+    cursor: pointer;
+    background-color: rgb(139, 176, 245);
+}
+
 .middle {
     display: flex;
     flex-direction: column;

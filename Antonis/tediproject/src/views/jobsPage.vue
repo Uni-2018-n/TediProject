@@ -27,7 +27,7 @@ import Footer from "../components/footer.vue";
 import myjobs from "../components/jobsPage/myJobs.vue";
 import jobs from "../components/jobsPage/jobs.vue";
 import requests from "../components/jobsPage/requests.vue";
-import { loginCheck, givenType, chatsListType, currType } from "../tsLibs/auth";
+import { loginCheck, givenType } from "../tsLibs/auth";
 
 export default defineComponent({
     name: "jobsPage",

@@ -75,7 +75,6 @@ export default defineComponent({
         }catch(error){
             console.log("**REQUEST ERROR**")
         }
-        // const requests = reactive([]);
         return { user,requests, notifications }
     },
 })

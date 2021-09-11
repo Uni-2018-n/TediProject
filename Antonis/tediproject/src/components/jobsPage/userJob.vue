@@ -17,9 +17,18 @@
                     </span>
                     <span class="load" @click="postText = postTextTemp;loadFlag = false;" v-if=loadFlag>Load More...</span>
                 </div>
+                <div class="skills">
+                    <ul>
+                        <li v-for="skill in src.Skills" :key="skill">
+                            <span>{{skill}}</span>
+                        </li>
+                    </ul>
+
+                </div>
+
             </div>
             <div class="bottom">
-                <button v-if="!my">
+                <button @click="apply()" v-if="!my">
                     <span>Intrest</span>
                 </button>
                 <button @click="setCurr(src._id)" v-else>
@@ -43,7 +52,6 @@ export default defineComponent({
         my: {type: Boolean, required: true},
     },
     setup(props) {
-        // console.log(props.src)
         const flag = ref(false);
         const postTextTemp = ref(props.src.Description.toString());
         const loadFlag = ref(false);
@@ -60,7 +68,7 @@ export default defineComponent({
         const time = ref(date.getHours() + ':' + date.getMinutes());
         const full = ref(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes());
 
-        const apply = async () =>{
+        const apply = async () =>{//TODO
             try {
                 // const response = await axios.post("https://localhost:8000/jobs/"+props.src._id, {
                 //     author: ,
@@ -71,18 +79,8 @@ export default defineComponent({
                 console.log("**apply**")
             }
         }
-
-
-        const checkApps = async () =>{
-            try {
-                const resposne = await axios.get("https://localhost:8000/jobs/applications/"+props.src._id)
-                // console.log(resposne.data) //TODO
-            }catch(error){
-                console.log("**CHECK APPS**")
-            }
-        }
         
-        return { loadFlag, flag, postText, postTextTemp, focus, getPic, time, full, checkApps }
+        return { loadFlag, flag, postText, postTextTemp, focus, getPic, time, full }
     },
 })
 </script>
@@ -133,6 +131,36 @@ export default defineComponent({
     border-width: 1px;
     cursor: pointer;
 }
+
+.skills ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0 10px 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.skills ul li {
+    margin: 5px 5px 15px 5px;
+}
+
+.skills ul li span {
+    color: rgb(0, 0, 0);
+    border: solid;
+    border-color: rgb(190, 190, 190);
+    padding: 5px;
+    border-radius: 25px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.skills ul li span:hover {
+    background-color: rgb(236, 236, 236);
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+
 .bottom {
     margin-top: 15px;
     display: flex;
