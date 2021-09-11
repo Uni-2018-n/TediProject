@@ -270,7 +270,36 @@ const getNotifications = async (req, res) => {
     }).catch(err => res.status(404).json({user: 'User not found'}));
 }
 
+const getUsersInfo = async (req, res) => {
+    try {
+        const result = await NewUser.find({},
+            {
+                _id: 1,
+                firstname: 1,
+                lastname: 1,
+                ProfilePic: 1,
+                Education: 1,
+                Skills: 1,
+                number: 1,
+                email: 1
+            }
+        )
+        res.send(result);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const JsontoXml = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     getUsers, getUser, createUser, deleteUser, updateUser, connectUser,
-    getConnected, acceptRequest, rejectRequest, getRequest, getProfile, getNotifications
+    getConnected, acceptRequest, rejectRequest, getRequest, getProfile, getNotifications,
+    getUsersInfo, JsontoXml
 }
