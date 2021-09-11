@@ -32,7 +32,7 @@
             <div class="rest">
                 <ul>
                     <li v-for="post in posts" :key="post">
-                        <userJob :src="post" :setCurr="setCurr" :my="true"/>
+                        <userJob :src="post" :userId="user._id" :setCurr="setCurr" :my="true"/>
                     </li>
                 </ul>
             </div>

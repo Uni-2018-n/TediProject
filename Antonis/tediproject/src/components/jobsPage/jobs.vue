@@ -3,7 +3,7 @@
         <div class="internal">
             <ul>
                 <li v-for="post in posts" :key="post">
-                    <userJob :src="post" :my="false"/>
+                    <userJob :src="post" :userId="myId" :my="false"/>
                 </li>
             </ul>
         </div>

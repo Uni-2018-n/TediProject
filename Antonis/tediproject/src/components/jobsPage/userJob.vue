@@ -23,12 +23,10 @@
                             <span>{{skill}}</span>
                         </li>
                     </ul>
-
                 </div>
-
             </div>
             <div class="bottom">
-                <button @click="apply()" v-if="!my">
+                <button @click="IntrestFlag = true;" v-if="!my">
                     <span>Intrest</span>
                 </button>
                 <button @click="setCurr(src._id)" v-else>
@@ -37,19 +35,25 @@
             </div>
         </div>
     </div>
+    <jobIntrestPopup v-if="IntrestFlag" :jobId="src._id" :userId="userId" :close="() =>{IntrestFlag=false;}"/>
 </template>
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import { jobType } from '../../tsLibs/jobs'
 import { getPic } from "../../tsLibs/funcs";
 import axios from 'axios';
+import jobIntrestPopup from "./jobIntrestPopup.vue"
 
 export default defineComponent({
     name: "userJob",
     props: {
+        userId: {type: String, required: true},
         src: {type: Object as PropType<jobType>, required: true},
         setCurr: {type: Function, required: false},
         my: {type: Boolean, required: true},
+    },
+    components: {
+        jobIntrestPopup,
     },
     setup(props) {
         const flag = ref(false);
@@ -79,8 +83,10 @@ export default defineComponent({
                 console.log("**apply**")
             }
         }
+
+        const IntrestFlag = ref(false)
         
-        return { loadFlag, flag, postText, postTextTemp, focus, getPic, time, full }
+        return { loadFlag, flag, postText, postTextTemp, focus, getPic, time, full, IntrestFlag }
     },
 })
 </script>
