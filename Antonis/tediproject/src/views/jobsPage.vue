@@ -44,7 +44,7 @@ export default defineComponent({
             user.value = data;
         })
 
-        const curr= ref(1);
+        const curr= ref(2);
 
         const currRequests = ref("")
 
@@ -68,16 +68,17 @@ export default defineComponent({
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
 }
 .internal {
     display: flex;
     flex-direction: column;
     justify-content: center;
     background-color: rgb(255, 255, 255);
-    min-width: 60%;
-    max-width: 80%;
+    min-width: max-content;
+    /* min-width: 60%; */
+    width: 60%;
     border-radius: 25px;
-    margin-bottom: 20px;
     padding-bottom: 20px;
 }
 .top {

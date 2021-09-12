@@ -8,11 +8,11 @@
                     height="90"
                 />
                 <div class="text">
-                    <span class="name">{{ userName }}</span>
+                    <span @click="router.push({path: '/profile'})" class="name">{{ userName }}</span>
                     <span class="inf">Student at National & Kapodistrian University of Athens</span>
                 </div>
             </div>
-            <div class="left-other" @click="goToNetwork()">
+            <div class="left-other" @click="router.push({path: '/network'})">
                 <span class="network">Connections</span>
             </div>
         </div>
@@ -30,10 +30,7 @@ export default defineComponent({
     },
     name: "userLeftCompartment",
     setup() {
-        const goToNetwork = () =>{
-            router.push({path: '/network'})
-        }
-        return { getPic, goToNetwork }
+        return { getPic, router }
     },
 })
 </script>

@@ -64,12 +64,12 @@ export default defineComponent({
     flex: 1;
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
 }
 .internal {
     background-color: white;
     padding: 15px;
     border-radius: 15px;
-    margin-bottom: 10px;
 }
 .internal ul {
     display: grid;
@@ -91,7 +91,6 @@ export default defineComponent({
     background-color: white;
     padding: 15px;
     border-radius: 15px;
-    margin-bottom: 10px;
 }
 .else span {
     font-size: 40px;

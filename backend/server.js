@@ -103,7 +103,9 @@ app.post('/login', async (req, res) => {
             firstname: user.firstname,
             lastname: user.lastname,
             email: user.email,
-            ProfilePic: user.ProfilePic
+            ProfilePic: user.ProfilePic,
+            number: user.number,
+            Education: user.Education
         });
     });
 });

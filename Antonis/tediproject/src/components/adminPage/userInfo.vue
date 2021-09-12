@@ -30,7 +30,6 @@
 
       <button @click="popupTriger()" id="btn">CLOSE</button>
     </div>
-    <!-- <h1>test</h1> -->
   </div>
 </template>
 

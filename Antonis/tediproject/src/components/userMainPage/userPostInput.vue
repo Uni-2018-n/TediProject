@@ -8,7 +8,7 @@
                 height="55"
                 />
                 <div class="text">
-                    <span>{{ userName }}</span>
+                    <span @click="router.push({path: '/profile'})">{{ userName }}</span>
                 </div>
             </div>
             <textarea v-model="text" id="postTextArea" rows="1" placeholder="Type Here..."></textarea>
@@ -40,6 +40,7 @@ import imgSlideShow from "../imgSlideShow.vue"
 import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
 import loading from "../loading.vue"
 import { getPic } from "../../tsLibs/funcs";
+import router from "../../router/index"
 
 export default defineComponent({
     name: "userPostInput",
@@ -193,7 +194,7 @@ export default defineComponent({
           photos, videos, voices,
           photosURL, videosURL, voicesURL, totalURL,
           allCount, imgFlag, imgCloseTriger, imgOpenTriger,
-          post, resetFlag, getPic };
+          post, resetFlag, getPic, router };
     },
 })
 </script>

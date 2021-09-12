@@ -126,6 +126,7 @@ const updateUser = (req, res) => {
         if (req.body.password) result.password = await bcrypt.hash(req.body.password, 10);
         if (req.body.Education) result.Education = req.body.Education;
         if (req.body.Skills) result.Skills = req.body.Skills;
+        if (req.body.number) result.number = req.body.number;
 
         jwt.sign({result: result}, 'secretkey', (err, token) => {
             res.json({
@@ -135,7 +136,8 @@ const updateUser = (req, res) => {
                 firstname: result.firstname,
                 lastname: result.lastname,
                 email: result.email,
-                ProfilePic: result.ProfilePic
+                ProfilePic: result.ProfilePic,
+                number: result.number
             });
         });
     })

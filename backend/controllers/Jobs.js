@@ -57,7 +57,7 @@ const applyJob = async (req, res) => {
                 name: user.firstname.concat(" ", user.lastname),
                 avatar: user.ProfilePic,
                 Description: req.body.Description,
-                Skills: req.body.Skills,
+                Skills: JSON.parse(req.body.Skills),
                 Bio_file: filename
             });
 

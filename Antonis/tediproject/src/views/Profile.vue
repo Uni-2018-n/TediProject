@@ -102,6 +102,7 @@ export default defineComponent({
         if(user.value)
         try {
             const response = await axios.get("https://localhost:8000/users/profile/"+user.value._id+"/"+user.value._id)
+            console.log(response.data)
             skills.value = response.data.Skills.skills;
             skillsPrivate.value = response.data.Skills.private;
             education.value = response.data.Education.string;
@@ -157,7 +158,7 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 0px 1% 20px 1%;
     width: 100%;
 }
 .internal {
@@ -179,6 +180,7 @@ export default defineComponent({
 .top img{
     border-radius: 150px;
     margin-bottom: 35px;
+    -webkit-user-drag: none;
 }
 .top-text span {
     font-size: 35px;
@@ -232,6 +234,7 @@ export default defineComponent({
     /* background-color: rgb(240, 240, 240); */
     border-radius: 25px;
     padding: 5px;
+    -webkit-user-drag: none;
 }
 .curr span {
     font-size: 18px;
@@ -241,6 +244,9 @@ export default defineComponent({
 .edit {
     display: flex;
     align-items: center;
+}
+.edit img {
+    -webkit-user-drag: none;
 }
 .edit img:hover {
     opacity: 0.7;
@@ -267,6 +273,7 @@ export default defineComponent({
     border-radius: 10px;
     padding: 5px;
     margin-right: 15px;
+    -webkit-user-drag: none;
 }
 .tags-curr ul {
     list-style-type: none;

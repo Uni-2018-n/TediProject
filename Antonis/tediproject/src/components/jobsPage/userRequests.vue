@@ -28,7 +28,6 @@ export default defineComponent({
         jobRequestPopup,
     },
     setup(props) {
-        console.log(props.src)
         const popupFlag = ref(false)
         return { getPic, popupFlag  }
     },

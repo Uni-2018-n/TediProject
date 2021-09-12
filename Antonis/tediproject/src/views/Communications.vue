@@ -90,7 +90,7 @@ export default defineComponent({
 }
 
 .external-com {
-    margin: 1%;
+    margin: 0px 1% 20px 1%;
     flex: 1;
     height: 100%;
     min-height: 0px;
@@ -130,6 +130,7 @@ export default defineComponent({
     border-width: 1px;
     padding: 5px;
     float: right;
+    -webkit-user-drag: none;
 }
 .top img:hover {
     opacity: 0.7;

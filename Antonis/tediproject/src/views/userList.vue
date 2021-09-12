@@ -59,6 +59,7 @@ export default defineComponent({
     flex: 1;
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
 }
 
 .internal {
@@ -90,16 +91,12 @@ export default defineComponent({
     font-size: 25px;
     align-items: center;
     transition: all 0.15s ease-in-out;
+    min-width: 240px;
 }
 
 .internal ul li:hover {
     background-color: rgba(0, 0, 0, 0.11);
     color: rgb(54, 54, 54);
     cursor: pointer;
-}
-
-.internal ul li img {
-    border-radius: 40px;
-    margin-right: 15px;
 }
 </style>

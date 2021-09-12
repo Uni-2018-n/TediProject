@@ -82,6 +82,7 @@ export default defineComponent({
     /* border-color: rgb(212, 212, 212); */
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
+    /* min-width: max-content; */
 }
 
 .inside {

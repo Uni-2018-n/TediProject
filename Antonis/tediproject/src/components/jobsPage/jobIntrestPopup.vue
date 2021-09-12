@@ -79,12 +79,12 @@ export default defineComponent({
         const applyForJob = async() => {
             if(text.value != '' && currSkills.value.length != 0 && fileName.value != ''){
                 const fd = new FormData();
-                fd.append('author', props.userId)
+                fd.append('applicant', props.userId)
                 fd.append('Description', text.value)
                 fd.append('Skills', JSON.stringify(currSkills.value))
                 fd.append('file', file.value!)
                 try {
-                    const response = await axios.post('https://localhost:8000/jobs/'+props.jobId, fd, { //TODO
+                    const response = await axios.post('https://localhost:8000/jobs/'+props.jobId, fd, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }

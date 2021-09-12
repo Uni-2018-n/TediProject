@@ -175,7 +175,7 @@ export default defineComponent({
 }
 .top img{
     border-radius: 150px;
-    margin-bottom: 35px;
+    margin-bottom: 35px; 
 }
 .top-text span {
     font-size: 35px;

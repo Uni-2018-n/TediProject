@@ -131,12 +131,7 @@ router.post('/like/:User_id/:Post_id', async (req, res) => {
 
             Post.save().then(async (Post) => {
                 if (like == 1) {
-                    if (Post.author.toString() === user._id.toString()) {
-                        user.Notifications.Likes.unshift({
-                            user: req.params.User_id,
-                            post: Post._id
-                        });
-                    } else{
+                    if (!(Post.author.toString() === user._id.toString())) {
                         const author = await NewUser.findById({_id: [mongoose.Types.ObjectId(Post.author)]});
                         author.Notifications.unshift({
                             user: req.params.User_id,
@@ -170,13 +165,15 @@ router.post('/comment/:id', async (req, res) => {
         avatar: user.ProfilePic
       }
 
-        const author = await NewUser.findById({_id: [mongoose.Types.ObjectId(Post.author)]});
-        author.Notifications.unshift({
-            user: req.body.user,
-            post: Post._id,
-            type: "Comment"
-        });
-        author.save();
+        if (!(Post.author.toString() === user._id.toString())) {  
+            const author = await NewUser.findById({_id: [mongoose.Types.ObjectId(Post.author)]});
+            author.Notifications.unshift({
+                user: req.body.user,
+                post: Post._id,
+                type: "Comment"
+            });
+            author.save();
+        }
 
         // Add a new comment to the array
         Post.comments.unshift(newComment);

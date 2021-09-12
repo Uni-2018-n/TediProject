@@ -70,7 +70,6 @@ export default defineComponent({
         if(user.value)
         try {
             const response = await axios.get("https://localhost:8000/users/notifications/"+user.value._id);
-            // console.log(response.data)//TODO
             notifications.value = response.data
         }catch(error){
             console.log("**REQUEST ERROR**")
@@ -87,7 +86,7 @@ export default defineComponent({
 }
 .external {
     flex: 1;
-    padding: 20px;
+    padding: 0px 1% 20px 1%;
     height: 100%;
     min-height: 0px;
     margin-bottom: 20px;
@@ -100,15 +99,16 @@ export default defineComponent({
     min-height: 0px;
     border-radius: 25px;
     padding: 10px;
-    width: fit-content;
+    width: max-content;
 }
 .inner {
     height: 100%;
     min-height: 0px;
     overflow-y: auto;
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     flex-direction: column;
+    width: max-content;
     align-items: center;
 }
 .else {

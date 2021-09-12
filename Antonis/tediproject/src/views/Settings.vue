@@ -136,7 +136,7 @@ export default defineComponent({
     flex: 1;
     display: flex;
     justify-content: center;
-    margin-bottom: 1%;
+    margin: 0px 1% 20px 1%;
 }
 .internal {
     display: flex;
@@ -150,6 +150,7 @@ export default defineComponent({
 }
 .top label img {
     border-radius: 100px;
+    -webkit-user-drag: none;
 }
 .top label:hover {
     cursor: pointer;

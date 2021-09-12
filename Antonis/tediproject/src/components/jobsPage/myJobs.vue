@@ -11,7 +11,7 @@
                             height="55"
                             />
                             <div class="text-input">
-                                <span>{{ user.firstname }} {{ user.lastname }}</span>
+                                <span @click="router.push({path: '/profile'})" >{{ user.firstname }} {{ user.lastname }}</span>
                             </div>
                         </div>
                         <textarea v-model="desc" id="postTextArea" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
@@ -105,7 +105,7 @@ export default defineComponent({
         }
 
 
-        return { resize, posts, getPic, currSkills, currSkilltxt, skillAppend, skillRemove, desc, postJob }
+        return { resize, posts, getPic, currSkills, currSkilltxt, skillAppend, skillRemove, desc, postJob, router }
     },
 })
 </script>
@@ -154,6 +154,9 @@ export default defineComponent({
     font-size: 18px;
     font-family: "Poppins", Arial, sans-serif;
     font-weight: bolder;
+}
+.text-input span:hover {
+    cursor: pointer;
 }
 
 textarea {

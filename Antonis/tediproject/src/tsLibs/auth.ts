@@ -9,7 +9,8 @@ export type givenType = {
     ProfilePic: String,
     _id: String,
     email: String,
-    phoneNumber: String,
+    number: String,
+    Education: String,
 }
 
 export type likeType = {

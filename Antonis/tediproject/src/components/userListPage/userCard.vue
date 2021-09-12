@@ -28,5 +28,6 @@ export default defineComponent({
 img {
     border-radius: 40px;
     margin-right: 15px;
+    -webkit-user-drag: none;
 }
 </style>

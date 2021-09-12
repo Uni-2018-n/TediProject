@@ -32,7 +32,6 @@ export default defineComponent({
         if(props.myId && props.postId){
             try {
                 const response = await axios.get("https://localhost:8000/jobs/applications/"+props.postId)
-                console.log(response.data)
                 requests.value = response.data
             }catch(error){
                 console.log("")
