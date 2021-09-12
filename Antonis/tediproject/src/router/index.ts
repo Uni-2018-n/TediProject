@@ -71,9 +71,10 @@ const routes: Array<RouteRecordRaw> = [
     props: true,
   },
   {
-    path: '/profileOther',
+    path: '/profileOther/:input',
     name: 'ProfileOther',
-    component: ProfileOther
+    component: ProfileOther,
+    props: true,
   },
   {
     path: '/logout',

@@ -1,4 +1,5 @@
 const NewUser  = require('../models/SignUp');
+const mongoose = require("mongoose");
 
 const getUsers = async function (req, res) {
     const users = await NewUser.find({
@@ -34,6 +35,19 @@ const getUsers_Friends = async function (req, res) {
     res.send(users);
 }
 
+const getUsersID = async function (req, res) {
+    const users = await NewUser.find({
+        _id: req.params.id
+    },
+    {
+        _id: 1,
+        firstname: 1,
+        lastname: 1,
+        ProfilePic: 1
+    });
+    res.send(users);
+}
+
 module.exports = {
-    getUsers, getUsers_Friends
+    getUsers, getUsers_Friends, getUsersID
 }

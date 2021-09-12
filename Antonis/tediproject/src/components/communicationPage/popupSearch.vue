@@ -44,6 +44,7 @@ export default defineComponent({
 
 
         const request = async(input: String) => {
+            if(input != '')
             try {
                 const response = await axios.get("https://localhost:8000/search/"+props.id+"/"+input.toString());
                 // console.log(response.data)

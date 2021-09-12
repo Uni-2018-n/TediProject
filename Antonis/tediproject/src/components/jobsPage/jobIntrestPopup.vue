@@ -52,10 +52,11 @@ export default defineComponent({
         const applyForJob = async() => {
             if(text.value != '' && currSkills.value.length != 0){
                 try {
-                    // const response = await axios.post("https://localhost:8000/jobs", {
+                    // const response = await axios.post("https://localhost:8000/jobs/"+job_id, { //TODO
                     //     author: props.userId,
                     //     Description: text.value,
                     //     Skills: currSkills.value,
+                    //     file: 
                     // })
                     router.go(0)
                 }catch(error){

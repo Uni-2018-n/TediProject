@@ -21,7 +21,8 @@
                                 width="35"
                                 height="35"
                             />
-                            <span>Student at National & Kapodistrian University of Athens</span>
+                            <span v-if="educationFlag">Student at National & Kapodistrian University of Athens</span>
+                            <span v-else>No information available</span>
                         </div>
                     </div>
                     <div class="skill-tags">
@@ -31,11 +32,12 @@
                                 width="35"
                                 height="35"
                             />
-                            <ul>
+                            <ul v-if="skillsFlag">
                                 <li v-for="skill in skills" :key="skill">
                                     {{ skill }}
                                 </li>
                             </ul>
+                            <span>No information available</span>
                         </div>
                     </div>
                 </div>
@@ -45,11 +47,15 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
 import editEducation from "../components/profilePage/editEducation.vue"
 import editSkills from "../components/profilePage/editSkills.vue"
+import { useRoute } from 'vue-router';
+import axios from 'axios';
+import { getPic } from "../tsLibs/funcs";
+import { loginCheck, givenType, networkUserType, otherProfileType } from "../tsLibs/auth"
 
 export default defineComponent({
     name: "Profile",
@@ -59,12 +65,28 @@ export default defineComponent({
         editEducation,
         editSkills
     },
-    setup() {
+    async setup() {
+        const route = useRoute();
+        const user = ref<givenType>();
+        await loginCheck().then((data: givenType) =>{
+            user.value = data;
+        })
+        const userOther = ref<otherProfileType>();
         const educationFlag = ref(false);
+        const education = ref("");
         const skillsFlag = ref(false);
-        const skills = reactive(["second", "third", "forth", "first", "second", "third", "forth", "first", "second", "third", "forth", "first", "second", "third", "forth"]);
-        // const skills = reactive(["second", "third", "forth", "first", "second"]);
-        return { skills, educationFlag, skillsFlag }
+        const skills = ref<String[]>([]);
+        watchEffect(async() => {
+            try {
+                const response = await axios.get("https://localhost:8000/users/profile/"+route.params.input+'/'+user.value?._id);
+                // console.log(response.data)
+                userOther.value = response.data
+                // console.log(userOther.value)
+            }catch(error){
+                console.log("**SEARCH ERROR**")
+            }  
+        })
+        return { skills, educationFlag, skillsFlag, getPic, education, user, userOther }
     },
 })
 </script>
@@ -173,5 +195,11 @@ export default defineComponent({
 .tags-curr ul li:hover {
     background-color: rgba(135, 206, 250, 0.644);
     cursor: pointer;
+}
+
+.tags-curr span {
+    font-size: 18px;
+    font-weight: bold;
+    opacity: 0.9;
 }
 </style>

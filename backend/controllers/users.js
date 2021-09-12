@@ -242,10 +242,13 @@ const getRequest = (req, res) => {
 const getProfile = (req, res) => {
     NewUser.findById(req.params.id)
     .then((result) => {
-        if (req.params.id.toString() == req.params.UserId.toString()) {
+        if (req.params.id.toString() == req.params.UserId.toString() || result.Connected_users.includes(req.params.UserId)) {
             res.json({
+                ProfilePic: result.ProfilePic,
+                name: result.firstname.concat(' ', result.lastname),
                 Education: result.Education,
-                Skills: result.Skills
+                Skills: result.Skills,
+                friends: true
             });
         } else {
             let education = undefined;
@@ -253,8 +256,11 @@ const getProfile = (req, res) => {
             if (!result.Education.private) education = result.Education
             if (!result.Skills.private) skills = result.Skills
             res.json({
+                ProfilePic: result.ProfilePic,
+                name: result.firstname.concat(' ', result.lastname),
                 Education: education,
-                Skills: skills
+                Skills: skills,
+                friends: false
             });
         }
     })
@@ -272,19 +278,48 @@ const getNotifications = async (req, res) => {
 
 const getUsersInfo = async (req, res) => {
     try {
+        // for (const user of req.body.users) {}
         const result = await NewUser.find({},
             {
                 _id: 1,
                 firstname: 1,
                 lastname: 1,
                 ProfilePic: 1,
-                Education: 1,
-                Skills: 1,
-                number: 1,
-                email: 1
+                // Education: 1,
+                // Skills: 1,
+                // number: 1,
+                // email: 1
             }
         )
         res.send(result);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const fs = require('fs');
+
+const Json = async (req, res) => {
+    try {
+        let users = []
+        for (const User of req.body.users) {
+            users = users.concat(await NewUser.findById(User));
+        }
+        fs.readfile('./users.json', 'utf-8', (err, jsonString) => {
+            if (err) {
+                console.log(err);
+            } else {
+                try {
+                    const data = JSON.parse({users});
+                    console.log(data.address);
+                } catch (error) {
+                    console.log('Error parsing JSON', error);
+                }
+                
+            }
+        });
+            
+        res.json({users});
     } catch (error) {
         console.log(error);
     }
@@ -301,5 +336,5 @@ const JsontoXml = async (req, res) => {
 module.exports = {
     getUsers, getUser, createUser, deleteUser, updateUser, connectUser,
     getConnected, acceptRequest, rejectRequest, getRequest, getProfile, getNotifications,
-    getUsersInfo, JsontoXml
+    getUsersInfo, JsontoXml, Json
 }

@@ -58,9 +58,9 @@ export type notificationRequestType = {
 
 export type notificationNotificationsType = {
     post: String,
-    name: String,
     type: String,
-    action: String,
+    user: String,
+    _id: String,
 }
 
 export type userListType = {
@@ -91,6 +91,13 @@ export type currType = {
     id: userListType,
     msg_id: String,
     msgs: Array<chatsMessagesType>,
+}
+
+export type otherProfileType = {
+    // Education: Object<{string: String, private: Boolean}>, //TODO
+    ProfilePic: String,
+    // Skills: Object<{string: Array<String>, private: Boolean}>,
+    friends: true,
 }
 
 

@@ -45,6 +45,7 @@ export default defineComponent({
     },
     setup(props) {
         const text = ref("");
+        // /upload/files/+filename //TODO
         watch(text, () =>{
             const e = document.getElementById('postTextArea') as HTMLTextAreaElement;
             if(text.value == ""){

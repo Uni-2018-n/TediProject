@@ -2,9 +2,9 @@
    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <div class="searchBox">
         <button class="searchButton" type="submit">
-            <i @click="if(txt!=''){request(txt);txt='';}" class="material-icons"> search </i>
+            <i @click="request(txt);txt='';" class="material-icons"> search </i>
         </button>
-        <input @keyup.enter.prevent="if(txt!=''){request(txt);txt='';}" class="searchInput" v-model="txt" type="search" name="q" placeholder="Type to search...">
+        <input @keyup.enter.prevent="request(txt);txt='';" class="searchInput" v-model="txt" type="search" name="q" placeholder="Type to search...">
     </div>
 </template>
 <script lang="ts">

@@ -17,8 +17,10 @@ router.get('/:id', UserController.getUser);
 // @desc Get Users Profile
 router.get('/profile/:id/:UserId', UserController.getProfile);
 
+// @desc Delete a User
 router.delete('/:id', UserController.deleteUser);
 
+// @desc Update Users Profile
 router.patch('/:id', upload.single('file'), UserController.updateUser);
 
 // @desc Send Connect Request or disconnect with a User
@@ -42,12 +44,12 @@ router.get('/notifications/:User_id', UserController.getNotifications);
 // Admin requests
 
 // @desc Get all user info
-router.get('/admin', UserController.getUsersInfo);
+router.get('/admin/users', UserController.getUsersInfo);
 
 // @desc Get XML
-router.get('/admin/xml', UserController.JsontoXml);
+router.post('/admin/xml', UserController.JsontoXml);
 
 // @desc Get JSON
-// router.get('/admin/json', UserController.JsontoExcel);
+router.post('/admin/json', UserController.Json);
 
 module.exports = router;

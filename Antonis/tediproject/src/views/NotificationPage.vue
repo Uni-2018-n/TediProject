@@ -71,7 +71,7 @@ export default defineComponent({
         try {
             const response = await axios.get("https://localhost:8000/users/notifications/"+user.value._id);
             // console.log(response.data)//TODO
-            // notifications.value = response.data
+            notifications.value = response.data
         }catch(error){
             console.log("**REQUEST ERROR**")
         }

@@ -1,7 +1,7 @@
 <template>
   <div class="outer">
     <div id="top">
-      <userSearch :updateQuery="(value) => updateQuery(value)"/>
+      <userSearch :updateQuery="currSearch"/>
       <div class="container">
         <div class="buttons">
           <ul>
@@ -9,18 +9,18 @@
               <button @click="select=!select; selectedArray=[];">Select</button>
             </li>
             <li>
-              <button :disabled="!select" :class="{ disabled: !select }">Export</button>
+              <button @click="sendExport()" :disabled="!select" :class="{ disabled: !select }">Export</button>
             </li>
           </ul>
         </div>
         <div class="radios">
           <ul>
               <li>
-                  <input type=radio name="expOpt" id="radio3" :class="{ radioDis: !select}" checked :disabled="!select">
+                  <input v-model="opt" value="a" type=radio name="expOpt" id="radio3" :class="{ radioDis: !select}" checked :disabled="!select">
                   <label for="radio3" :class="{ radioDis: !select}" >XML</label>
               </li>
               <li>
-                  <input type=radio name="expOpt" id="radio4" :class="{ radioDis: !select}" :disabled="!select">
+                  <input v-model="opt" value="b" type=radio name="expOpt" id="radio4" :class="{ radioDis: !select}" :disabled="!select">
                   <label for="radio4" :class="{ radioDis: !select}" >JSON</label>
               </li>
           </ul>
@@ -29,9 +29,9 @@
     </div>
     <div id="genera">
       <ul>
-        <li v-for="item in items" :key="item.id">
-          <Users @click="if(!select){idprop=item.id;flag=true;}else{if(selectedArray.includes(item.id)){selectedArray.splice(selectedArray.indexOf(item.id), 1)}else{selectedArray.push(item.id)}}" :userId="item.id" :name="item.name" :selected="selectedArray.includes(item.id)" />
-          <input class="inpcheck" type="checkbox" :value="item.id" v-model="selectedArray" :id="item.id" />
+        <li v-for="item in items" :key="item._id">
+          <Users @click="if(!select){idprop=item._id;flag=true;}else{if(selectedArray.includes(item._id)){selectedArray.splice(selectedArray.indexOf(item._id), 1)}else{selectedArray.push(item._id)}}" :userId="item._id" :name="item.firstname+' '+item.lastname" :selected="selectedArray.includes(item._id)" />
+          <input class="inpcheck" type="checkbox" :value="item._id" v-model="selectedArray" :id="item._id" />
         </li>
       </ul>
     </div>
@@ -46,6 +46,8 @@ import Footer from "../components/footer.vue";
 import Users from "../components/adminPage/users.vue";
 import userInfo from "../components/adminPage/userInfo.vue"
 import userSearch from "../components/adminPage/userSearch.vue"
+import {userListType} from '../tsLibs/auth'
+import axios from "axios";
 
 export default defineComponent({
   name: "AdminPage",
@@ -55,33 +57,16 @@ export default defineComponent({
     userInfo,
     userSearch,
   },
-  setup() {
-    const items = [
-      {
-        id: "123456789012345678901234",
-        name: "Antonis Kalamakis1"
-      },
-      {
-        id: "223456789012345678901234",
-        name: "Antonis Kalamakis2"
-      },
-      {
-        id: "323456789012345678901234",
-        name: "Antonis Kalamakis3"
-      },
-      {
-        id: "423456789012345678901234",
-        name: "Antonis Kalamakis4"
-      },
-      {
-        id: "523456789012345678901234",
-        name: "Antonis Kalamakis5"
-      },
-      {
-        id: "623456789012345678901234",
-        name: "Antonis Kalamakis6"
-      },
-    ]
+  async setup() {
+    const items = ref<userListType[]>([])
+
+    try {
+      const response = await axios.get("https://localhost:8000/users/admin/users")
+      // console.log(response.data)
+      items.value = response.data
+    }catch(error){
+      console.log("**ADMIN ERROR**")
+    }
 
     const query = ref({}); //to send
 
@@ -94,11 +79,56 @@ export default defineComponent({
     const popupTriger = () => {
       flag.value = false;
     }
-    const updateQuery = (value: Object) => {
-      query.value = value;
+    const currSearch = async(input: string, type: string) =>{
+      if(input === ''){
+        console.log("empty")
+        try {
+          const response = await axios.get("https://localhost:8000/users/admin/users")
+          console.log(response.data)
+          items.value = response.data
+        }catch(error){
+          console.log("**ADMIN ERROR**")
+        }
+        return;
+      }
+      if(type === '1'){
+        //id
+        console.log("checking with id")
+        try {
+          const response = await axios.get("https://localhost:8000/search/search/id/"+input)
+          console.log(response.data)
+          items.value = response.data
+        }catch(error){
+          console.log("**ADMIN SEARCH ID**")
+        }
+      }else{
+        //name
+        console.log("checking with name")
+        try {
+          const response = await axios.get("https://localhost:8000/search/"+input)
+          console.log(response.data)
+          items.value = response.data
+        }catch(error){
+          console.log("")
+        }
+
+      }
     }
+
+    const opt = ref("a");
+
+    const sendExport = () => {
+      if(opt.value === "a"){
+        
+      }else{
+        
+      }
+    }
+
+
+
     return { items, flag, idpop, popupTriger,
-             select, selectedArray, updateQuery, }
+             select, selectedArray, opt, sendExport, currSearch}
   }
 });
 </script>

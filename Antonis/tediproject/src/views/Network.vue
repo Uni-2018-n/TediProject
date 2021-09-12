@@ -5,7 +5,7 @@
             <div class="internal" v-if="users.length">
                 <ul>
                     <li v-for="user in users" :key="user">
-                        <networkUserCard :src="user" />
+                        <networkUserCard @click="redirect(user.id)" :src="user" />
                     </li>
                 </ul>
             </div>
@@ -23,6 +23,7 @@ import Footer from "../components/footer.vue";
 import networkUserCard from "../components/networkPage/networkUserCard.vue"
 import { loginCheck, givenType, networkUserType } from "../tsLibs/auth"
 import axios from 'axios';
+import router from '../router'
 
 export default defineComponent({
     name: "Network",
@@ -45,7 +46,11 @@ export default defineComponent({
             console.log("**NETWORK ERROR**")
         }
 
-        return { user, users }
+        const redirect = (id: string,) => {
+            router.push({path: "/profileOther/"+id})
+        }
+
+        return { user, users, redirect }
     },
 })
 </script>

@@ -1,13 +1,13 @@
 <template>
-    <searchBar />
+    <searchBar :request="request" />
     <div class="container">
         <ul>
             <li>
-                <input type=radio name="searchOpt" value="true" v-model="query.bool" id="radio1" checked>
+                <input type=radio name="searchOpt" value="1" v-model="query" id="radio1" checked>
                 <label for="radio1">ID</label>
             </li>
             <li>
-                <input type=radio name="searchOpt" value="false" v-model="query.bool" id="radio2">
+                <input type=radio name="searchOpt" value="0" v-model="query" id="radio2">
                 <label for="radio2">Name</label>
             </li>
         </ul>
@@ -15,19 +15,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "@vue/runtime-core";
+import { defineComponent, ref, watch } from "@vue/runtime-core";
 import searchBar from "../searchBar.vue"
 
 export default defineComponent({
   name: "userSearch",
-  props: ["updateQuery", ],
+  props: {
+      updateQuery: {type: Function, required: true},
+  },
   components: {
       searchBar,
   },
-  setup() {
-      const query = ref({bool: true});
+  setup(props) {
+    const query = ref("1");
+    const request = async(input: string) => {
+        // router.push({path: "/userList/"+input.toString()})
+        props.updateQuery(input, query.value)
+    }
 
-    return { query};
+    return { query, request};
   },
 });
 </script>

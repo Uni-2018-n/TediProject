@@ -67,6 +67,7 @@ export default defineComponent({
         ])
 
         const request = async(input: String) => {
+            if(input != '')
             router.push({path: "/userList/"+input.toString()})
         }
         return { list, request }
