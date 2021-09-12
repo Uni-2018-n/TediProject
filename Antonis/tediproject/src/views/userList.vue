@@ -4,7 +4,7 @@
         <div class="external">
             <div class="internal">
                 <ul>
-                    <li v-for="user in searchCurr" :key="user">
+                    <li @click="go(user._id)" v-for="user in searchCurr" :key="user">
                         <userCard :src="user"/>
                     </li>
                 </ul>
@@ -21,6 +21,7 @@ import userCard from "../components/userListPage/userCard.vue"
 import {userListType} from '../tsLibs/auth'
 import axios from 'axios';
 import { useRoute } from 'vue-router';
+import router from '../router'
 
 export default defineComponent({
     name: "UserList",
@@ -40,7 +41,11 @@ export default defineComponent({
                 console.log("**SEARCH ERROR**")
             }  
         })
-        return { searchCurr }
+
+        const go = (id: string) =>{
+            router.push({path: "/profileOther/"+id})
+        }
+        return { searchCurr, go }
     },
 })
 </script>

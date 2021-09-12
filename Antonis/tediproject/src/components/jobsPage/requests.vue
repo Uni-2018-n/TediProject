@@ -7,7 +7,7 @@
                 </li>
             </ul>
             <div class="else" v-else>
-                <span>No information available</span>
+                <span>No Requests Available</span>
             </div>
         </div>
     </div>
@@ -52,5 +52,15 @@ export default defineComponent({
 }
 .internal ul li {
     margin-bottom: 25px;
+}
+
+.else {
+    margin: 25px;
+    text-align: center;
+}
+.else span {
+    font-size: 40px;
+    font-weight: bolder;
+    color: rgb(116, 116, 116);
 }
 </style>

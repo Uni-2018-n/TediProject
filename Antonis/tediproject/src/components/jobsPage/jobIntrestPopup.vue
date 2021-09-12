@@ -32,6 +32,7 @@ export default defineComponent({
     props: {
         userId: {type: String, required: true},
         close: {type: Function, required: true},
+        jobId: {type: String, required: true},
     },
     setup(props) {
         const text = ref("");
@@ -47,22 +48,6 @@ export default defineComponent({
 
         const focus = () => {
             document.getElementById('postTextArea')!.focus();
-        }
-
-        const applyForJob = async() => {
-            if(text.value != '' && currSkills.value.length != 0){
-                try {
-                    // const response = await axios.post("https://localhost:8000/jobs/"+job_id, { //TODO
-                    //     author: props.userId,
-                    //     Description: text.value,
-                    //     Skills: currSkills.value,
-                    //     file: 
-                    // })
-                    router.go(0)
-                }catch(error){
-                    console.log("***ERROR POST JOB***")
-                }
-            }
         }
 
         const currSkills = ref<String[]>([])
@@ -81,7 +66,7 @@ export default defineComponent({
             }
         }
 
-        const photo = ref<File>()
+        const file = ref<File>()
         const fileName = ref("")
 
         const selectedFile = (event: Event) => {
@@ -90,12 +75,31 @@ export default defineComponent({
 
                 console.log('error image more than 50k') //TODO
                 }else{
-                photo.value = ((event.target as HTMLInputElement).files as FileList)[0]
-                fileName.value = photo.value.name
+                    file.value = ((event.target as HTMLInputElement).files as FileList)[0]
+                    fileName.value = file.value.name
                 }
             }
         }
 
+        const applyForJob = async() => {
+            if(text.value != '' && currSkills.value.length != 0 && fileName.value != ''){
+                const fd = new FormData();
+                fd.append('author', props.userId)
+                fd.append('Description', text.value)
+                fd.append('Skills', JSON.stringify(currSkills.value))
+                fd.append('file', file.value!)
+                try {
+                    const response = await axios.post('https://localhost:8000/jobs/'+props.jobId, fd, { //TODO
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    router.go(0)
+                }catch(error){
+                    console.log("***ERROR APPLY TO JOB***")
+                }
+            }
+        }
         return { text,focus, applyForJob, currSkills, currSkilltxt, skillRemove, skillAppend, selectedFile, fileName }
     },
 })

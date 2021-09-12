@@ -9,8 +9,8 @@
                     </li>
                 </ul>
             </div>
-            <div class="none" v-else>
-                No users found
+            <div class="else" v-else>
+                <span>No users found</span>
             </div>
         </div>
         <Footer />
@@ -80,7 +80,10 @@ export default defineComponent({
     padding: 0;
     margin: 0;
 }
-.none {
+.internal ul li:hover {
+    cursor: pointer
+}
+.else {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -89,5 +92,10 @@ export default defineComponent({
     padding: 15px;
     border-radius: 15px;
     margin-bottom: 10px;
+}
+.else span {
+    font-size: 40px;
+    font-weight: bolder;
+    color: rgb(116, 116, 116);
 }
 </style>

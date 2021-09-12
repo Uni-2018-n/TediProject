@@ -72,17 +72,6 @@ export default defineComponent({
         const time = ref(date.getHours() + ':' + date.getMinutes());
         const full = ref(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes());
 
-        const apply = async () =>{//TODO
-            try {
-                // const response = await axios.post("https://localhost:8000/jobs/"+props.src._id, {
-                //     author: ,
-                //     Description: ,
-                //     Skills: [],
-                // })
-            }catch(error){
-                console.log("**apply**")
-            }
-        }
 
         const IntrestFlag = ref(false)
         

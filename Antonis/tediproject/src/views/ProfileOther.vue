@@ -1,16 +1,20 @@
 <template>
     <div class="big">
         <navBar />
-        <div class="external">
+        <div class="external" v-if="userOther">
             <div class="internal">
                 <div class="top">
                     <img
-                        src="@/assets/blank-profile-picture.png"
+                        :src="getPic(userOther.ProfilePic)"
                         width="185"
                         height="185"
                     />
                     <div class="top-text">
-                        <span>Antonis Kalamakis</span>
+                        <span>{{ userOther.name }}</span>
+                    </div>
+                    <div class="btn">
+                        <button @click="msg()" v-if="userOther.friends">Message!</button>
+                        <button @click="connect()" v-else>Connect!</button>
                     </div>
                 </div>
                 <div class="middle">
@@ -21,7 +25,7 @@
                                 width="35"
                                 height="35"
                             />
-                            <span v-if="educationFlag">Student at National & Kapodistrian University of Athens</span>
+                            <span v-if="educationFlag">{{ education }}</span>
                             <span v-else>No information available</span>
                         </div>
                     </div>
@@ -37,7 +41,7 @@
                                     {{ skill }}
                                 </li>
                             </ul>
-                            <span>No information available</span>
+                            <span v-else>No information available</span>
                         </div>
                     </div>
                 </div>
@@ -56,6 +60,7 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import { getPic } from "../tsLibs/funcs";
 import { loginCheck, givenType, networkUserType, otherProfileType } from "../tsLibs/auth"
+import router from '../router'
 
 export default defineComponent({
     name: "Profile",
@@ -71,22 +76,69 @@ export default defineComponent({
         await loginCheck().then((data: givenType) =>{
             user.value = data;
         })
-        const userOther = ref<otherProfileType>();
+
         const educationFlag = ref(false);
         const education = ref("");
         const skillsFlag = ref(false);
         const skills = ref<String[]>([]);
+        
+        const userOther = ref<otherProfileType>();
         watchEffect(async() => {
             try {
                 const response = await axios.get("https://localhost:8000/users/profile/"+route.params.input+'/'+user.value?._id);
                 // console.log(response.data)
+
                 userOther.value = response.data
-                // console.log(userOther.value)
+                console.log(userOther.value)
+
+                if(userOther.value){
+                    if(userOther.value.friends){
+                        if(userOther.value.Skills && userOther.value.Skills.skills.length){
+                            skills.value = userOther.value.Skills.skills
+                            skillsFlag.value = true
+                        }
+                        if(userOther.value.Education && userOther.value.Education.string){
+                            education.value = userOther.value.Education.string
+                            educationFlag.value = true;
+                        }
+                    }else{
+                        if(userOther.value.Skills && !(userOther.value.Skills.private) && userOther.value.Skills.skills.length){
+                            skills.value = userOther.value.Skills.skills
+                            skillsFlag.value = true;
+                        }
+                        if(userOther.value.Education && !(userOther.value.Education.private) && userOther.value.Education.string){
+                            education.value = userOther.value.Education.string
+                            educationFlag.value = true;
+                        }
+                    }
+                }
+
             }catch(error){
                 console.log("**SEARCH ERROR**")
             }  
         })
-        return { skills, educationFlag, skillsFlag, getPic, education, user, userOther }
+        
+        const connect = async() =>{
+            try {
+                const response = await axios.post("https://localhost:8000/users/connect/"+ user.value!._id +'/'+ route.params.input)
+            }catch(err){
+                console.log("**CONNECT ERRR**")
+            }
+        }
+
+        const msg = async() => {
+            // console.log("test")
+            try {
+                const response = await axios.post("https://localhost:8000/chat/get/"+user.value!._id+"/"+route.params.input)
+                router.push({path: "/communication"})
+                
+
+            }catch(err){
+                console.log("**CONNECT ERRR**")
+            }
+        }
+
+        return { skills, educationFlag, skillsFlag, getPic, education, user, userOther, connect, msg }
     },
 })
 </script>
@@ -130,6 +182,24 @@ export default defineComponent({
     font-weight: bolder;
     opacity: 0.9;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.btn {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+.btn button {
+    background-color: rgb(66, 132, 255);
+    padding: 5px 15px 5px 15px;
+    font-size: 16px;
+    color: rgb(235, 235, 235);
+    border: none;
+    border-radius: 35px;
+}
+.btn button:hover{
+    cursor: pointer;
+    background-color: rgb(139, 176, 245);
 }
 
 .middle {

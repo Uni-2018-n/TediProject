@@ -12,8 +12,8 @@
                     <span class="inf">Student at National & Kapodistrian University of Athens</span>
                 </div>
             </div>
-            <div class="left-other">
-                <router-link class="network" to='network'>Connections</router-link>
+            <div class="left-other" @click="goToNetwork()">
+                <span class="network">Connections</span>
             </div>
         </div>
     </div>
@@ -21,6 +21,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { getPic } from "../../tsLibs/funcs";
+import router from "../../router/index"
 
 export default defineComponent({
     props: {
@@ -29,7 +30,10 @@ export default defineComponent({
     },
     name: "userLeftCompartment",
     setup() {
-        return { getPic }
+        const goToNetwork = () =>{
+            router.push({path: '/network'})
+        }
+        return { getPic, goToNetwork }
     },
 })
 </script>

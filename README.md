@@ -4,11 +4,10 @@ TODO:
 user:
 left compartment needs to get() the school
 
-make viewing others user profile and map it,
-make notifications,
 
 
-for searchBar: make it so it wont check if empty from the searchBar component
+SOS: PHONE NUMBER front is done, need to make it so back gives it to me
 
 
-SOS: PHONE NUMBER
+like dosent work
+notifications needs to get fixed: if i like my post i receive a notification

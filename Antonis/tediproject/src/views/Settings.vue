@@ -20,6 +20,10 @@
                             <input id="email" v-model="currEmail" :disabled="emailDisabled" />
                         </div>
                     </div>
+                    <div class="phoneNumber">
+                        <span>Update Phone Number:</span>
+                        <input v-model="currPhone" />
+                    </div>
                     <div class="pass">
                         <span>Update Password:</span>
                         <input v-model="pass" />
@@ -62,8 +66,11 @@ export default defineComponent({
         const oldPhoto = ref(user.value!.ProfilePic)
         const photoURL = ref(getPic(user.value!.ProfilePic))
         const oldEmail = ref(user.value!.email.toString())
+        // const oldPhone = ref(user.value!.phoneNumber)
+        const oldPhone = ref("")
 
         const currEmail = ref(oldEmail.value)
+        const currPhone = ref(oldPhone.value)
         const emailDisabled = ref(true);
         const atClick = () => {
             emailDisabled.value=false;
@@ -113,12 +120,13 @@ export default defineComponent({
 
         const reset = () => {
             currEmail.value = oldEmail.value;
+            currPhone.value = oldPhone.value;
             emailDisabled.value = true;
             pass.value =""
             vpass.value =""
             photoURL.value = getPic(oldPhoto.value.toString())
         }
-        return { currEmail, emailDisabled, atClick, update, reset, pass, vpass, selectedFile, photoURL, getPic }
+        return { currEmail, emailDisabled, atClick, update, reset, pass, vpass, selectedFile, photoURL, getPic, currPhone }
     },
 })
 </script>
@@ -161,7 +169,7 @@ export default defineComponent({
     flex-direction: column;
     padding-bottom: 10px;
 }
-.email, .pass {
+.email, .pass, .phoneNumber {
     margin-bottom: 60px;
     display: flex;
     flex-direction: column;
@@ -169,7 +177,7 @@ export default defineComponent({
 .pass {
     margin-bottom: 20px;
 }
-.email > input, .pass > input {
+.email > input, .pass > input, .phoneNumber > input {
     font-family: Arial, Helvetica, sans-serif;
     border: solid;
     border-width: 1px;
@@ -190,7 +198,7 @@ export default defineComponent({
 .input > input:focus{
     outline: none;
 }
-.rest .email,.pass > input:focus {
+.rest .email,.pass,.phoneNumber > input:focus {
     outline: none;
 }
 .pass > input {

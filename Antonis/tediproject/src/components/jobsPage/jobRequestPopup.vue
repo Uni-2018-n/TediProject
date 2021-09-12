@@ -18,12 +18,8 @@
                     </ul>
                 </div>
                 <div class="resume">
-                    <span v-if="fileName">{{fileName}}</span>
+                    <a v-if="src.Bio_file" :href="'https://localhost:8000/upload/files/'+src.Bio_file">Get resume</a>
                     <span v-else>No resume provided</span>
-                </div>
-                <div class="btns">
-                    <button class="btn accept">Accept</button>
-                    <button class="btn reject">Reject</button>
                 </div>
             </div>
         </div>
@@ -34,18 +30,17 @@
 import axios from 'axios';
 import { defineComponent, PropType, ref, watch } from 'vue'
 import router from "../../router/index"
-import { jobType } from '../../tsLibs/jobs'
+import { jobType, applicationType } from '../../tsLibs/jobs'
 import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
     name: "jobIntrestPopup",
     props: {
-        src: {type: Object as PropType<jobType>, required: true},
+        src: {type: Object as PropType<applicationType>, required: true},
         close: {type: Function, required: true},
     },
     setup(props) {
         const text = ref("");
-        // /upload/files/+filename //TODO
         watch(text, () =>{
             const e = document.getElementById('postTextArea') as HTMLTextAreaElement;
             if(text.value == ""){
@@ -58,21 +53,6 @@ export default defineComponent({
 
         const focus = () => {
             document.getElementById('postTextArea')!.focus();
-        }
-
-        const applyForJob = async() => {
-            if(text.value != '' && currSkills.value.length != 0){
-                try {
-                    // const response = await axios.post("https://localhost:8000/jobs", {
-                    //     author: props.userId,
-                    //     Description: text.value,
-                    //     Skills: currSkills.value,
-                    // })
-                    router.go(0)
-                }catch(error){
-                    console.log("***ERROR POST JOB***")
-                }
-            }
         }
 
         const currSkills = ref<String[]>([])
@@ -106,7 +86,7 @@ export default defineComponent({
             }
         }
 
-        return { text,focus, applyForJob, currSkills, currSkilltxt, skillRemove, skillAppend, selectedFile, fileName, getPic }
+        return { text,focus, currSkills, currSkilltxt, skillRemove, skillAppend, selectedFile, fileName, getPic }
     },
 })
 </script>
@@ -219,40 +199,23 @@ export default defineComponent({
     align-items: center;
 }
 
+.resume a {
+    flex:1;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.resume a:hover {
+    cursor: pointer;
+}
+
+.resume a, .resume a:visited, .resume a:hover, .resume a:active {
+  color: inherit;
+}
+
 .resume span {
     flex:1;
     padding: 5px;
-    white-space: nowrap;
-    display: inline-block;
-    overflow: hidden !important;
-    text-overflow: ellipsis;
     font-size: 16px;
-    max-width: 70%;
-}
-
-.resume span:hover {
-    cursor: pointer;
-}
-
-.btn {
-    margin: 0px 5px;
-    background-color: lightgray;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 10px;
-}
-.accept{
-    border: solid;
-    background-color: rgba(66, 101, 255, 0.404);
-    border-color: rgba(66, 101, 255, 0.663);
-    border-width: 2px;
-}
-.accept:hover {
-    background-color: rgba(66, 101, 255, 0.663);
-    cursor: pointer;
-}
-.reject:hover {
-    background-color: rgb(173, 173, 173);
-    cursor: pointer;
 }
 </style>

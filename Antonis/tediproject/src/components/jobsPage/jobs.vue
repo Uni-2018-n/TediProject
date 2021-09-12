@@ -1,11 +1,14 @@
 <template>
     <div class="external">
         <div class="internal">
-            <ul>
+            <ul v-if="posts.length">
                 <li v-for="post in posts" :key="post">
                     <userJob :src="post" :userId="myId" :my="false"/>
                 </li>
             </ul>
+            <div class="else" v-else>
+                <span>No Jobs Available</span>
+            </div>
         </div>
     </div>
 </template>
@@ -47,4 +50,13 @@ export default defineComponent({
     margin-top: 15px;
 }
 
+.else {
+    text-align: center;
+    margin: 25px;
+}
+.else span {
+    font-size: 40px;
+    font-weight: bolder;
+    color: rgb(116, 116, 116);
+}
 </style>

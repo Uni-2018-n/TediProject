@@ -12,6 +12,9 @@
                     />
                 </div>
                 <chats v-if="temp.length" :id="user._id" :loaded="loaded" :users="temp" />
+                <div class="else" v-else>
+                    <span>No users found</span>
+                </div>
             </div>
             <div class="right">
                 <chat v-if="current" :myId="user._id" :avatar="user.ProfilePic" :other="current"/>
@@ -101,6 +104,7 @@ export default defineComponent({
     width: max-content;
     display: flex;
     flex-direction: column;
+    min-width: 280px;
 }
 .right {
     flex: 1;
@@ -130,5 +134,14 @@ export default defineComponent({
 .top img:hover {
     opacity: 0.7;
     cursor: pointer;
+}
+
+.else {
+    text-align: center;
+}
+.else span {
+    font-size: 25px;
+    font-weight: bolder;
+    color: rgb(116, 116, 116);
 }
 </style>

@@ -9,6 +9,7 @@ export type givenType = {
     ProfilePic: String,
     _id: String,
     email: String,
+    phoneNumber: String,
 }
 
 export type likeType = {
@@ -94,10 +95,11 @@ export type currType = {
 }
 
 export type otherProfileType = {
-    // Education: Object<{string: String, private: Boolean}>, //TODO
+    Education: {private: boolean, string: string},
     ProfilePic: String,
-    // Skills: Object<{string: Array<String>, private: Boolean}>,
-    friends: true,
+    Skills: {private: boolean, skills: Array<string>},
+    friends: boolean,
+    name: string,
 }
 
 

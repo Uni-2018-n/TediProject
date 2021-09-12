@@ -42,7 +42,7 @@ export default defineComponent({
         await loginCheck().then((data: givenType) =>{
             user.value = data;
         })
-
+        
         return { user }
     },
 })

@@ -78,6 +78,7 @@ export default defineComponent({
     max-width: 80%;
     border-radius: 25px;
     margin-bottom: 20px;
+    padding-bottom: 20px;
 }
 .top {
     width: 100%;
