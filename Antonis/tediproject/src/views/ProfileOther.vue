@@ -59,7 +59,7 @@ import editSkills from "../components/profilePage/editSkills.vue"
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import { getPic } from "../tsLibs/funcs";
-import { loginCheck, givenType, networkUserType, otherProfileType } from "../tsLibs/auth"
+import { loginCheck, givenType, otherProfileType } from "../tsLibs/auth"
 import router from '../router'
 
 export default defineComponent({

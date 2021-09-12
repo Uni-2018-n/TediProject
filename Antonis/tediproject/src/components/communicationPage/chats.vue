@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue'
 import userChats from '../communicationPage/userChats.vue'
-import { chatsListType, currType, chatsMessagesType, userListType } from "../../tsLibs/auth"
+import { chatsListType, chatsMessagesType, userListType } from "../../tsLibs/auth"
 import axios from 'axios'
 
 export default defineComponent({

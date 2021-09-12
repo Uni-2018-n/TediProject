@@ -18,9 +18,8 @@
     </div>
 </template>
 <script lang="ts">
-import axios from 'axios'
-import { defineComponent, PropType, ref } from 'vue'
-import { loginCheck, givenType, chatsListType, userListType } from "../../tsLibs/auth"
+import { defineComponent, PropType } from 'vue'
+import { userListType } from "../../tsLibs/auth"
 import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({

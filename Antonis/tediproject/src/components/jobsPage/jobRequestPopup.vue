@@ -27,10 +27,8 @@
     </div>
 </template>
 <script lang="ts">
-import axios from 'axios';
 import { defineComponent, PropType, ref, watch } from 'vue'
-import router from "../../router/index"
-import { jobType, applicationType } from '../../tsLibs/jobs'
+import { applicationType } from '../../tsLibs/jobs'
 import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({

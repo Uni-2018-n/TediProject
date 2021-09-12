@@ -41,7 +41,6 @@
 import { defineComponent, PropType, ref } from 'vue'
 import { jobType } from '../../tsLibs/jobs'
 import { getPic } from "../../tsLibs/funcs";
-import axios from 'axios';
 import jobIntrestPopup from "./jobIntrestPopup.vue"
 
 export default defineComponent({

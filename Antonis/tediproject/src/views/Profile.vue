@@ -69,7 +69,7 @@
     <editSkills v-if="skillsFlag" :id="user._id" :private="skillsPrivate" :close="()=>{skillsFlag=false;}" :curr="skills"/>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
 import editEducation from "../components/profilePage/editEducation.vue"
@@ -158,7 +158,7 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0px 1% 20px 1%;
+    margin: 0px 0px 20px 0px;
     width: 100%;
 }
 .internal {

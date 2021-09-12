@@ -16,7 +16,6 @@ import { defineComponent } from "vue";
 import welcomeForms from "../components/welcomeForms.vue";
 import Footer from "../components/footer.vue";
 import router from '../router/index'
-import { useStore } from "vuex";
 
 
 export default defineComponent({

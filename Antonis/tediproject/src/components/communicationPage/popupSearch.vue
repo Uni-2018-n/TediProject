@@ -24,7 +24,7 @@
 </template>
 <script lang="ts">
 import axios from 'axios';
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import searchBar from '../searchBar.vue'
 import { userListType } from "../../tsLibs/auth";
 import { getPic } from "../../tsLibs/funcs";

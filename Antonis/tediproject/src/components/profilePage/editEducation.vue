@@ -12,6 +12,7 @@
 import axios from 'axios';
 import { defineComponent, ref } from 'vue'
 import router from "../../router/index"
+import { updateUser } from "../../tsLibs/auth"
 
 
 export default defineComponent({
@@ -33,6 +34,7 @@ export default defineComponent({
                         private: !(checked.value)
                     }
                 })
+                updateUser(response.data);
                 router.go(0)
             }catch(error){
                 console.log("**UPDATE ERROR**")

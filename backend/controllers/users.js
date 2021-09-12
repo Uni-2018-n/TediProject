@@ -137,7 +137,8 @@ const updateUser = (req, res) => {
                 lastname: result.lastname,
                 email: result.email,
                 ProfilePic: result.ProfilePic,
-                number: result.number
+                number: result.number,
+                Education: result.Education
             });
         });
     })

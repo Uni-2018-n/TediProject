@@ -3,7 +3,7 @@
         <navBar />
         <div class="middle">
             <div class="left">
-                <userLeftCompartment :userName="user.firstname + ' ' + user.lastname" :ProfilePic="user.ProfilePic" />
+                <userLeftCompartment :userEducation="user.Education.string" :userName="user.firstname + ' ' + user.lastname" :ProfilePic="user.ProfilePic" />
             </div>
             <div class="other">
                 <div class="postInput">
@@ -42,7 +42,7 @@ export default defineComponent({
         await loginCheck().then((data: givenType) =>{
             user.value = data;
         })
-        
+                
         return { user }
     },
 })

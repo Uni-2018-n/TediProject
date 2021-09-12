@@ -20,7 +20,6 @@
     </div>
 </template>
 <script lang="ts">
-import axios from 'axios'
 import { defineComponent, reactive } from 'vue'
 import router from '../router'
 import searchBar from './searchBar.vue'

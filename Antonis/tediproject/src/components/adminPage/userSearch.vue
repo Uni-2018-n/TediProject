@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "@vue/runtime-core";
+import { defineComponent, ref } from "@vue/runtime-core";
 import searchBar from "../searchBar.vue"
 
 export default defineComponent({

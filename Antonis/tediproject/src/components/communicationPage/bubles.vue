@@ -35,7 +35,7 @@
 <script lang="ts">
 import axios from 'axios';
 import { defineComponent, onBeforeUnmount, PropType, ref } from 'vue'
-import { chatsMessagesType, chatsListType } from "../../tsLibs/auth";
+import { chatsMessagesType } from "../../tsLibs/auth";
 import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({

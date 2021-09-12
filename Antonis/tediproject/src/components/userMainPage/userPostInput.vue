@@ -35,7 +35,7 @@
 </template>
 <script lang="ts">
 import axios from 'axios';
-import { defineComponent, reactive, ref, watch } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import imgSlideShow from "../imgSlideShow.vue"
 import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
 import loading from "../loading.vue"

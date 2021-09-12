@@ -66,8 +66,7 @@ export default defineComponent({
         const oldPhoto = ref(user.value!.ProfilePic)
         const photoURL = ref(getPic(user.value!.ProfilePic))
         const oldEmail = ref(user.value!.email.toString())
-        // const oldPhone = ref(user.value!.phoneNumber)
-        const oldPhone = ref("")
+        const oldPhone = ref(user.value!.number)
 
         const currEmail = ref(oldEmail.value)
         const currPhone = ref(oldPhone.value)
@@ -99,6 +98,10 @@ export default defineComponent({
             }
             if(photo.value){
                 fd.append('file', photo.value!)
+            }
+
+            if(currPhone.value != "" && currPhone.value != oldPhone.value){
+                fd.append('number', currPhone.value)
             }
             if(user.value)
             try {

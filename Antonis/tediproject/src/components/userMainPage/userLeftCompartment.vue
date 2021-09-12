@@ -9,7 +9,7 @@
                 />
                 <div class="text">
                     <span @click="router.push({path: '/profile'})" class="name">{{ userName }}</span>
-                    <span class="inf">Student at National & Kapodistrian University of Athens</span>
+                    <span class="inf">{{userEducation}}</span>
                 </div>
             </div>
             <div class="left-other" @click="router.push({path: '/network'})">
@@ -25,6 +25,7 @@ import router from "../../router/index"
 
 export default defineComponent({
     props: {
+        userEducation: {type: String, required: true},
         userName: {type: String, required: true},
         ProfilePic: {type: String, required: true},
     },
@@ -39,8 +40,7 @@ export default defineComponent({
     margin-right: 15px;
     background-color: white;
     border-radius: 20px;
-    width: fit-content;
-    max-width: 200px;
+    width: 200px;
 }
 .internal {
     display: flex;
@@ -86,6 +86,7 @@ export default defineComponent({
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-align: center;
     margin-bottom: 20px;
+    
 }
 .left-other {
     display: flex;

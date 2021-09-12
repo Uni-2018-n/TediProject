@@ -33,7 +33,7 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
 import { loginCheck, givenType, notificationRequestType, notificationNotificationsType } from "../tsLibs/auth"

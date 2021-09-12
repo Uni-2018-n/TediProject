@@ -63,7 +63,7 @@
     <imgSlideShow v-if="imgFlag" :src="totalURL" :closeTriger="() => imgCloseTriger()"/>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, reactive, ref, watch } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import userComments from '../userMainPage/userComments.vue'
 import { postType, givenType } from "../../tsLibs/auth"
 import userUnderPostImg from "../userMainPage/userUnderPostImg.vue"
