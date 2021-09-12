@@ -105,12 +105,8 @@ export default defineComponent({
                 photos.value.splice(0);
                 photosURL.value.splice(0);
                 for (let photo of ((event.target as HTMLInputElement).files as FileList)) {
-                    if(photo.size > 10000000){
-                        console.log("error image too big");
-                    }else{
-                        photosURL.value.push({photo: URL.createObjectURL(photo), t: 0});
-                        photos.value.push(photo);
-                    }
+                    photosURL.value.push({photo: URL.createObjectURL(photo), t: 0});
+                    photos.value.push(photo);
                 }
             }
             totalURL.value.splice(0, totalURL.value.length);
@@ -126,12 +122,8 @@ export default defineComponent({
                 videos.value.splice(0);
                 videosURL.value.splice(0);
                 for (let video of ((event.target as HTMLInputElement).files as FileList)) {
-                    if(video.size > 100000000){
-                        console.log("error image too big");
-                    }else{
-                        videosURL.value.push({video: URL.createObjectURL(video), t:1});
-                        videos.value.push(video);
-                    }
+                    videosURL.value.push({video: URL.createObjectURL(video), t:1});
+                    videos.value.push(video);
                 }
             }
             totalURL.value.splice(0, totalURL.value.length);
@@ -145,12 +137,8 @@ export default defineComponent({
                 voices.value.splice(0);
                 voicesURL.value.splice(0);
                 for (let voice of ((event.target as HTMLInputElement).files as FileList)) {
-                    if(voice.size > 1000000){
-                        console.log("error image too big");
-                    }else{
-                        voicesURL.value.push(URL.createObjectURL(voice));
-                        voices.value.push(voice);
-                    }
+                    voicesURL.value.push(URL.createObjectURL(voice));
+                    voices.value.push(voice);
                 }
             }
         }

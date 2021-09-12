@@ -71,13 +71,8 @@ export default defineComponent({
 
         const selectedFile = (event: Event) => {
             if(event){
-                if(((event.target as HTMLInputElement).files as FileList)[0].size > 100000){
-
-                console.log('error image more than 50k') //TODO
-                }else{
-                    file.value = ((event.target as HTMLInputElement).files as FileList)[0]
-                    fileName.value = file.value.name
-                }
+                file.value = ((event.target as HTMLInputElement).files as FileList)[0]
+                fileName.value = file.value.name
             }
         }
 
