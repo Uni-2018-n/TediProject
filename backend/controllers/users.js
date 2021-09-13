@@ -3,6 +3,10 @@ const NewUser           = require('../models/SignUp.js');
 const UploadController  = require('../controllers/Upload.js');
 const bcrypt            = require('bcryptjs');
 const jwt               = require('jsonwebtoken');
+const fs                = require('fs');
+const axios             = require('axios');
+const FormData          = require('form-data');
+const fetch             = require('fetch');
 
 const getUsers = async (req, res) => {
     try {
@@ -300,28 +304,44 @@ const getUsersInfo = async (req, res) => {
     }
 }
 
-const fs = require('fs');
-
 const Json = async (req, res) => {
     try {
         let users = []
         for (const User of req.body.users) {
             users = users.concat(await NewUser.findById(User));
         }
-        fs.readfile('./users.json', 'utf-8', (err, jsonString) => {
-            if (err) {
-                console.log(err);
-            } else {
-                try {
-                    const data = JSON.parse({users});
-                    console.log(data.address);
-                } catch (error) {
-                    console.log('Error parsing JSON', error);
-                }
+        // fs.readfile('./users.json', 'utf-8', (err, jsonString) => {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         try {
+        //             const data = JSON.parse({users});
+        //             console.log(data.address);
+        //         } catch (error) {
+        //             console.log('Error parsing JSON', error);
+        //         }
                 
+        //     }
+        // });
+
+        fs.writeFile('./users.json', JSON.stringify({users}, null, 2), async err => {
+            if (err) {
+                console.log('Error writing file', err);
+            } else {
+                const form = new FormData();
+                // form.append('file', file, './users.json');
+                console.log('Successfully wrote file');
             }
-        });
-            
+        })
+
+        const fd = new FormData();
+        fd.append('file', './users.json');
+
+        const response = await axios.patch('https://localhost:8000/upload', fd, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
         res.json({users});
     } catch (error) {
         console.log(error);

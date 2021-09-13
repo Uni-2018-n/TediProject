@@ -1,0 +1,101 @@
+{
+  "users": [
+    {
+      "Education": {
+        "string": "YEET",
+        "private": false
+      },
+      "Skills": {
+        "skills": [
+          "Im the best",
+          "LULW",
+          "yeet",
+          "HELLO"
+        ],
+        "private": false
+      },
+      "Connected_users": [
+        "613d0ed4ed3bd04bcc76617a",
+        "6134856a634b1e3673626b0c"
+      ],
+      "Pending_requests": [],
+      "_id": "6130817d350cb63a4f2d64cb",
+      "firstname": "p",
+      "lastname": "p",
+      "email": "user1",
+      "password": "$2b$10$d26XW2B6vyERDhQd6KLSpekYX514oicz1mt9ZkwLhK1GD3DklPtG.",
+      "ProfilePic": "1630568828996-any-name-870-200x300-blur_2-grayscale.jpg",
+      "Liked_Posts": [
+        {
+          "_id": "613e44abb4413246028e4c6d",
+          "post": "6130b3be7070945370d87464"
+        },
+        {
+          "_id": "613e44298798df42d14beba5",
+          "post": "613083e222899642f1461cb3"
+        }
+      ],
+      "createdAt": "2021-09-02T07:47:09.779Z",
+      "updatedAt": "2021-09-12T19:46:33.079Z",
+      "__v": 58,
+      "Notifications": [
+        {
+          "_id": "613e44e6b4413246028e4cdf",
+          "user": "6134856a634b1e3673626b0c",
+          "post": "613083e222899642f1461cb3",
+          "type": "Comment"
+        },
+        {
+          "_id": "613e44c0b4413246028e4c95",
+          "user": "6134856a634b1e3673626b0c",
+          "post": "613083e222899642f1461cb3",
+          "type": "Like"
+        },
+        {
+          "_id": "613e44298798df42d14beba7",
+          "user": "6130817d350cb63a4f2d64cb",
+          "post": "613083e222899642f1461cb3",
+          "type": "Like"
+        }
+      ],
+      "number": "690000003"
+    },
+    {
+      "Skills": {
+        "skills": []
+      },
+      "Connected_users": [
+        "613a3a7086974025116c9062",
+        "613a3a6686974025116c905f",
+        "6130817d350cb63a4f2d64cb"
+      ],
+      "Pending_requests": [],
+      "_id": "6134856a634b1e3673626b0c",
+      "firstname": "p",
+      "lastname": "p2",
+      "email": "user2",
+      "password": "$2b$10$LAhBRAB/iL5gQ8b50CSnXuJrJ.gcDKZIpS9M.DjgNVMg2jLjhL7iK",
+      "ProfilePic": "",
+      "Liked_Posts": [
+        {
+          "_id": "613e44c0b4413246028e4c92",
+          "post": "613083e222899642f1461cb3"
+        },
+        {
+          "_id": "613c527c6327a01cf60805ca",
+          "post": "613081d29c2a493bfd6356bc"
+        },
+        {
+          "_id": "613a612673e4131d143c13b2",
+          "post": "6130841622899642f1461cd1"
+        }
+      ],
+      "createdAt": "2021-09-05T08:52:58.919Z",
+      "updatedAt": "2021-09-12T18:19:44.902Z",
+      "__v": 9,
+      "Notifications": [
+        {}
+      ]
+    }
+  ]
+}
