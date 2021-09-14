@@ -6,7 +6,7 @@ const jwt               = require('jsonwebtoken');
 const fs                = require('fs');
 const axios             = require('axios');
 const FormData          = require('form-data');
-const fetch             = require('fetch');
+const convert           = require('xml-js');
 
 const getUsers = async (req, res) => {
     try {
@@ -350,7 +350,31 @@ const Json = async (req, res) => {
 
 const JsontoXml = async (req, res) => {
     try {
+        let users = []
+        for (const User of req.body.users) {
+            users = users.concat(await NewUser.findById(User));
+        }
+
+        fs.writeFile('./users.json', JSON.stringify({users}, null, 2), async err => {
+            if (err) {
+                console.log('Error writing file', err);
+            } else {
+                console.log('Successfully wrote file');
+            }
+        })
         
+        var json = fs.readFileSync('./users.json', 'utf8');
+        var options = {compact: true, ignoreComment: true, spaces: 4};
+        var result = convert.json2xml(json, options);
+
+        fs.writeFile('./users.xml', result, async err => {
+            if (err) {
+                console.log('Error writing file', err);
+            } else {
+                console.log('Successfully wrote file');
+            }
+        })
+        res.json({users});
     } catch (error) {
         console.log(error);
     }
