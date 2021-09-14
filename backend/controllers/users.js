@@ -4,9 +4,12 @@ const UploadController  = require('../controllers/Upload.js');
 const bcrypt            = require('bcryptjs');
 const jwt               = require('jsonwebtoken');
 const fs                = require('fs');
-const axios             = require('axios');
 const FormData          = require('form-data');
 const convert           = require('xml-js');
+const mongoose          = require('mongoose');
+const Grid              = require('gridfs-stream');
+const axios             = require('axios');
+const upload            = require('../middleware/upload.js');
 
 const getUsers = async (req, res) => {
     try {
@@ -334,15 +337,23 @@ const Json = async (req, res) => {
             }
         })
 
-        const fd = new FormData();
-        fd.append('file', './users.json');
+        var json = fs.readFileSync('./users.json');
 
-        const response = await axios.patch('https://localhost:8000/upload', fd, {
+        const fd = new FormData();
+        fd.append('file', json);
+
+        process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+
+        const response = await axios.post('https://localhost:8000/upload', fd, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
-        res.json({users});
+        
+        process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 1;
+
+        res.json({users})
+        
     } catch (error) {
         console.log(error);
     }

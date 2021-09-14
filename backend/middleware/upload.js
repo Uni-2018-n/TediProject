@@ -8,6 +8,8 @@ const storage = new GridFsStorage({
     url: process.env.DATABASE_ACCESS,
     options: {useNewUrlParser: true, useUnifiedTopology: true},
     file: (req, file) => {
+
+        console.log("HERE");
         // const match = ["image/png", "image/jpeg"];
 
         // if (match.indexOf(file.mimetype) === -1) {
