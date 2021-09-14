@@ -59,43 +59,6 @@
         }
       ],
       "number": "690000003"
-    },
-    {
-      "Skills": {
-        "skills": []
-      },
-      "Connected_users": [
-        "613a3a7086974025116c9062",
-        "613a3a6686974025116c905f",
-        "6130817d350cb63a4f2d64cb"
-      ],
-      "Pending_requests": [],
-      "_id": "6134856a634b1e3673626b0c",
-      "firstname": "p",
-      "lastname": "p2",
-      "email": "user2",
-      "password": "$2b$10$LAhBRAB/iL5gQ8b50CSnXuJrJ.gcDKZIpS9M.DjgNVMg2jLjhL7iK",
-      "ProfilePic": "",
-      "Liked_Posts": [
-        {
-          "_id": "613e44c0b4413246028e4c92",
-          "post": "613083e222899642f1461cb3"
-        },
-        {
-          "_id": "613c527c6327a01cf60805ca",
-          "post": "613081d29c2a493bfd6356bc"
-        },
-        {
-          "_id": "613a612673e4131d143c13b2",
-          "post": "6130841622899642f1461cd1"
-        }
-      ],
-      "createdAt": "2021-09-05T08:52:58.919Z",
-      "updatedAt": "2021-09-12T18:19:44.902Z",
-      "__v": 9,
-      "Notifications": [
-        {}
-      ]
     }
   ]
 }

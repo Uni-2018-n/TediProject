@@ -10,6 +10,7 @@ const mongoose          = require('mongoose');
 const Grid              = require('gridfs-stream');
 const axios             = require('axios');
 const upload            = require('../middleware/upload.js');
+const db                = require('../db.js')
 
 const getUsers = async (req, res) => {
     try {
@@ -313,46 +314,25 @@ const Json = async (req, res) => {
         for (const User of req.body.users) {
             users = users.concat(await NewUser.findById(User));
         }
-        // fs.readfile('./users.json', 'utf-8', (err, jsonString) => {
-        //     if (err) {
-        //         console.log(err);
-        //     } else {
-        //         try {
-        //             const data = JSON.parse({users});
-        //             console.log(data.address);
-        //         } catch (error) {
-        //             console.log('Error parsing JSON', error);
-        //         }
-                
-        //     }
-        // });
 
         fs.writeFile('./users.json', JSON.stringify({users}, null, 2), async err => {
             if (err) {
                 console.log('Error writing file', err);
             } else {
-                const form = new FormData();
-                // form.append('file', file, './users.json');
                 console.log('Successfully wrote file');
             }
         })
-
-        var json = fs.readFileSync('./users.json');
-
-        const fd = new FormData();
-        fd.append('file', json);
-
-        process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
-
-        const response = await axios.post('https://localhost:8000/upload', fd, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
         
-        process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 1;
+        // var json = fs.readFileSync('./users.json');
+    
+        const fd = new FormData();
+        fd.append('file', JSON.stringify(users, null, 2));
+        // fd.append('file', users);
+
+        // db.collection('upload').insert(json);
 
         res.json({users})
+        
         
     } catch (error) {
         console.log(error);

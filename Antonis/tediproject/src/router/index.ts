@@ -12,6 +12,7 @@ import jobsPage from '../views/jobsPage.vue'
 import userList from '../views/userList.vue'
 import ProfileOther from '../views/ProfileOther.vue'
 import logout from '../views/logout.vue'
+import postPage from '../views/postPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -75,6 +76,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/logout',
     name: 'logout',
     component: logout
+  },
+  {
+    path: '/postPage',
+    name: 'postPage',
+    component: postPage
   },
 ]
 

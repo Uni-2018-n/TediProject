@@ -103,6 +103,8 @@ export default defineComponent({
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     position: relative;
     color: white;
+    user-select: none;
+
 }
 .top ul li:hover {
     background-color: rgba(0, 0, 0, 0.116);
