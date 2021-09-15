@@ -27,7 +27,6 @@ export default defineComponent({
         const curr = ref<userListType>()
         try {
             const response = await axios.get("https://localhost:8000/users/"+props.src?.user)
-            //TODO: make div clickable to post specific page
             curr.value = response.data
         }catch(error){
             console.log("**NOTIFICATION ERROR**")

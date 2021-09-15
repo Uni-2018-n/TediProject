@@ -18,7 +18,7 @@
                     <div class="other-notifications">
                         <span class="headline">Other Notifications</span>
                         <ul v-if="notifications && notifications.length">
-                            <li v-for="notification in notifications" :key="notification">
+                            <li @click="redirect(notification.post)" v-for="notification in notifications" :key="notification">
                                 <notificationCard :src="notification"/>
                             </li>
                         </ul>
@@ -40,6 +40,7 @@ import { loginCheck, givenType, notificationRequestType, notificationNotificatio
 import axios from 'axios';
 import notificationCard from '../components/notificationPage/notificationCard.vue'
 import requestCard from '../components/notificationPage/requestCard.vue'
+import router from '../router'
 
 export default defineComponent({
     name: "NotificationPage",
@@ -74,7 +75,11 @@ export default defineComponent({
         }catch(error){
             console.log("**REQUEST ERROR**")
         }
-        return { user,requests, notifications }
+
+        const redirect = (id: string,) => {
+            router.push({path: "/postPage/"+id})
+        }
+        return { user,requests, notifications, redirect }
     },
 })
 </script>

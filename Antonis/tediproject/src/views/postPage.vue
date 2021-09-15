@@ -2,7 +2,7 @@
     <div class="big">
         <navBar />
         <div class="external">
-
+            <userPost :post="post" :user="user" />
         </div>
         <Footer />
     </div>
@@ -14,6 +14,7 @@ import Footer from '../components/footer.vue'
 import userPost from "../components/userMainPage/userPost.vue";
 import { loginCheck, givenType, postType } from "../tsLibs/auth"
 import axios from 'axios';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
     name: "postPage",
@@ -23,20 +24,21 @@ export default defineComponent({
         userPost
     },
     async setup() {
+        const route = useRoute();
+        const post = ref<postType>();
         const user = ref<givenType>();
         await loginCheck().then((data: givenType) =>{
             user.value = data;
         })
 
-        // try {
-        //     const response = await axios.get("https://localhost:8000/"){
+        try {
+            const response = await axios.get("https://localhost:8000/posts/getpost/"+route.params.postID)
+            post.value = response.data.result[0]
+        }catch(erorr){
+            console.log("**POST LOAD ERROR**")
+        }
 
-        //     }
-        // }catch(erorr){
-        //     console.log("**POST LOAD ERROR**")
-        // }
-
-        return {  }
+        return { post, user, }
     },
 })
 </script>
@@ -49,5 +51,8 @@ export default defineComponent({
 }
 .external {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 </style>

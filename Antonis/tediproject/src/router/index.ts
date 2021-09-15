@@ -78,9 +78,10 @@ const routes: Array<RouteRecordRaw> = [
     component: logout
   },
   {
-    path: '/postPage',
+    path: '/postPage/:postID',
     name: 'postPage',
-    component: postPage
+    component: postPage,
+    props: true,
   },
 ]
 

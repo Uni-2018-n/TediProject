@@ -87,7 +87,6 @@ export default defineComponent({
     },
     setup(props) {
         const postComments = ref(props.post.comments)
-        // console.log(postComments)
         const flag = ref(props.post.likes.filter(likes => likes.user.toString() === props.user._id).length > 0 );
         const postTextTemp = ref<string>(props.post.text.toString());
         const loadFlag = ref(false);
