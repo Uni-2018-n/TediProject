@@ -321,13 +321,28 @@ const JsontoXml = async (req, res) => {
     try {
         let profile = []
         for (const User of req.body.users) {
-            profile = profile.concat(await NewUser.findById(User));
+            const user = await NewUser.findById(User);
+            profile = profile.concat({
+                _id: user._id,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email,
+                password: user.password,
+                Pending_requests: user.Pending_requests,
+                ProfilePic: user.ProfilePic,
+                Education: user.Education,
+                Skills: user.Skills.for,
+                Notifications: user.Notifications,
+                number: user.number,
+                Liked_Posts: user.Liked_Posts,
+                Connected_users: user.Connected_users
+            });
         }
 
         const users = {profile}
 
         var options = {compact: true, ignoreComment: true, spaces: 4};
-        var result = convert.json2xml(JSON.stringify({users}, null, 2), options);
+        var result = convert.json2xml("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + JSON.stringify({users}, null, 2), options);
         fs.writeFile('./users.xml', result, async err => {
             if (err) {
                 console.log('Error writing file', err);

@@ -1,35 +1,40 @@
 <users>
     <profile>
-        <Education>
-            <string>YEET</string>
-            <private>false</private>
-        </Education>
-        <Skills>
-            <skills>Im the best</skills>
-            <skills>LULW</skills>
-            <skills>yeet</skills>
-            <skills>HELLO</skills>
-            <private>false</private>
-        </Skills>
-        <Connected_users>613d0ed4ed3bd04bcc76617a</Connected_users>
-        <Connected_users>6134856a634b1e3673626b0c</Connected_users>
+        <_id>6134856a634b1e3673626b0c</_id>
+        <firstname>p</firstname>
+        <lastname>p2</lastname>
+        <email>user2</email>
+        <password>$2b$10$LAhBRAB/iL5gQ8b50CSnXuJrJ.gcDKZIpS9M.DjgNVMg2jLjhL7iK</password>
+        <ProfilePic/>
+        <Education/>
+        <Notifications/>
+        <LikedPosts>
+            <_id>613e44c0b4413246028e4c92</_id>
+            <post>613083e222899642f1461cb3</post>
+        </LikedPosts>
+        <LikedPosts>
+            <_id>613c527c6327a01cf60805ca</_id>
+            <post>613081d29c2a493bfd6356bc</post>
+        </LikedPosts>
+        <LikedPosts>
+            <_id>613a612673e4131d143c13b2</_id>
+            <post>6130841622899642f1461cd1</post>
+        </LikedPosts>
+        <Connected_users>613a3a7086974025116c9062</Connected_users>
+        <Connected_users>613a3a6686974025116c905f</Connected_users>
+        <Connected_users>6130817d350cb63a4f2d64cb</Connected_users>
+    </profile>
+    <profile>
         <_id>6130817d350cb63a4f2d64cb</_id>
         <firstname>p</firstname>
         <lastname>p</lastname>
         <email>user1</email>
         <password>$2b$10$d26XW2B6vyERDhQd6KLSpekYX514oicz1mt9ZkwLhK1GD3DklPtG.</password>
         <ProfilePic>1630568828996-any-name-870-200x300-blur_2-grayscale.jpg</ProfilePic>
-        <Liked_Posts>
-            <_id>613e44abb4413246028e4c6d</_id>
-            <post>6130b3be7070945370d87464</post>
-        </Liked_Posts>
-        <Liked_Posts>
-            <_id>613e44298798df42d14beba5</_id>
-            <post>613083e222899642f1461cb3</post>
-        </Liked_Posts>
-        <createdAt>2021-09-02T07:47:09.779Z</createdAt>
-        <updatedAt>2021-09-15T07:30:50.053Z</updatedAt>
-        <__v>60</__v>
+        <Education>
+            <string>YEET</string>
+            <private>false</private>
+        </Education>
         <Notifications>
             <_id>6141a12a6e7a1b55d8cf4a1d</_id>
             <user>6134856a634b1e3673626b0c</user>
@@ -61,34 +66,15 @@
             <type>Like</type>
         </Notifications>
         <number>690000003</number>
-    </profile>
-    <profile>
-        <Skills>
-        </Skills>
-        <Connected_users>613a3a7086974025116c9062</Connected_users>
-        <Connected_users>613a3a6686974025116c905f</Connected_users>
-        <Connected_users>6130817d350cb63a4f2d64cb</Connected_users>
-        <_id>6134856a634b1e3673626b0c</_id>
-        <firstname>p</firstname>
-        <lastname>p2</lastname>
-        <email>user2</email>
-        <password>$2b$10$LAhBRAB/iL5gQ8b50CSnXuJrJ.gcDKZIpS9M.DjgNVMg2jLjhL7iK</password>
-        <ProfilePic/>
-        <Liked_Posts>
-            <_id>613e44c0b4413246028e4c92</_id>
+        <LikedPosts>
+            <_id>613e44abb4413246028e4c6d</_id>
+            <post>6130b3be7070945370d87464</post>
+        </LikedPosts>
+        <LikedPosts>
+            <_id>613e44298798df42d14beba5</_id>
             <post>613083e222899642f1461cb3</post>
-        </Liked_Posts>
-        <Liked_Posts>
-            <_id>613c527c6327a01cf60805ca</_id>
-            <post>613081d29c2a493bfd6356bc</post>
-        </Liked_Posts>
-        <Liked_Posts>
-            <_id>613a612673e4131d143c13b2</_id>
-            <post>6130841622899642f1461cd1</post>
-        </Liked_Posts>
-        <createdAt>2021-09-05T08:52:58.919Z</createdAt>
-        <updatedAt>2021-09-12T18:19:44.902Z</updatedAt>
-        <__v>9</__v>
-        <Notifications/>
+        </LikedPosts>
+        <Connected_users>613d0ed4ed3bd04bcc76617a</Connected_users>
+        <Connected_users>6134856a634b1e3673626b0c</Connected_users>
     </profile>
 </users>
