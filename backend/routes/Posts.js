@@ -82,6 +82,15 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(404).json({post: 'This User has no posts'}));
 })
 
+// @desc Get a specific Post
+router.get('/getpost/:id', (req, res) => {
+    Posts.find({_id: req.params.id})
+    .then((result) =>
+        res.json({result})
+    )
+    .catch(err => res.status(404).json({post: 'This post doesnt exist'}));
+})
+
 // @dec Delete all Users Post
 router.delete('/all/:Author_id', async (req, res) => {
     try {

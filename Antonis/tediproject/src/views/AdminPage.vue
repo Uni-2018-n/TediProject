@@ -117,11 +117,38 @@ export default defineComponent({
 
     const opt = ref("a");
 
-    const sendExport = () => {
+    const sendExport = async () => {
       if(opt.value === "a"){
-        
+        try {
+          const response = await axios.post("https://localhost:8000/users/admin/xml", {
+            users: selectedArray.value,
+          })
+          // console.log(response.data)
+          var fileUrl = URL.createObjectURL(new Blob([response.data], {type: 'application/xml'}))
+          let fURL = document.createElement('a');
+          fURL.href = fileUrl;
+          fURL.setAttribute('download', 'users.xml');
+          document.body.appendChild(fURL);
+          fURL.click();
+          document.body.removeChild(fURL);
+        }catch(error){
+          console.log("**B ERROR**")
+        }
       }else{
-        
+        try {
+          const response = await axios.post("https://localhost:8000/users/admin/json", {
+            users: selectedArray.value,
+          })
+          var fileUrl = URL.createObjectURL(new Blob([JSON.stringify(response.data.users, null, 2)], {type: 'application/json'}))
+          let fURL = document.createElement('a');
+          fURL.href = fileUrl;
+          fURL.setAttribute('download', 'users.json');
+          document.body.appendChild(fURL);
+          fURL.click();
+          document.body.removeChild(fURL);
+        }catch(error){
+          console.log("**B ERROR**")
+        }
       }
     }
 

@@ -8,7 +8,6 @@ const FormData          = require('form-data');
 const convert           = require('xml-js');
 const mongoose          = require('mongoose');
 const Grid              = require('gridfs-stream');
-const axios             = require('axios');
 const upload            = require('../middleware/upload.js');
 const db                = require('../db.js')
 
@@ -49,8 +48,7 @@ const getUsers = async (req, res) => {
 }
 
 const getUser = (req, res) => {
-    const {id} = req.params;
-    NewUser.findById(id)
+    NewUser.findById({_id: req.params.id})
     .then((result) => {
         res.json({
                 _id: result._id,
@@ -59,9 +57,7 @@ const getUser = (req, res) => {
                 ProfilePic: result.ProfilePic
             });
     })
-    .catch((err) => {
-        console.log(err);
-    });
+    .catch(err => res.status(404).json({user: 'This user doesnt exist'}));
 }
 
 const createUser = (req, res) => {
@@ -314,25 +310,7 @@ const Json = async (req, res) => {
         for (const User of req.body.users) {
             users = users.concat(await NewUser.findById(User));
         }
-
-        fs.writeFile('./users.json', JSON.stringify({users}, null, 2), async err => {
-            if (err) {
-                console.log('Error writing file', err);
-            } else {
-                console.log('Successfully wrote file');
-            }
-        })
-        
-        // var json = fs.readFileSync('./users.json');
-    
-        const fd = new FormData();
-        fd.append('file', JSON.stringify(users, null, 2));
-        // fd.append('file', users);
-
-        // db.collection('upload').insert(json);
-
-        res.json({users})
-        
+        res.send({users});
         
     } catch (error) {
         console.log(error);
@@ -341,23 +319,15 @@ const Json = async (req, res) => {
 
 const JsontoXml = async (req, res) => {
     try {
-        let users = []
+        let profile = []
         for (const User of req.body.users) {
-            users = users.concat(await NewUser.findById(User));
+            profile = profile.concat(await NewUser.findById(User));
         }
 
-        fs.writeFile('./users.json', JSON.stringify({users}, null, 2), async err => {
-            if (err) {
-                console.log('Error writing file', err);
-            } else {
-                console.log('Successfully wrote file');
-            }
-        })
-        
-        var json = fs.readFileSync('./users.json', 'utf8');
-        var options = {compact: true, ignoreComment: true, spaces: 4};
-        var result = convert.json2xml(json, options);
+        const users = {profile}
 
+        var options = {compact: true, ignoreComment: true, spaces: 4};
+        var result = convert.json2xml(JSON.stringify({users}, null, 2), options);
         fs.writeFile('./users.xml', result, async err => {
             if (err) {
                 console.log('Error writing file', err);
@@ -365,7 +335,7 @@ const JsontoXml = async (req, res) => {
                 console.log('Successfully wrote file');
             }
         })
-        res.json({users});
+        res.json(result);
     } catch (error) {
         console.log(error);
     }

@@ -9,14 +9,6 @@ const storage = new GridFsStorage({
     options: {useNewUrlParser: true, useUnifiedTopology: true},
     file: (req, file) => {
 
-        console.log("HERE");
-        // const match = ["image/png", "image/jpeg"];
-
-        // if (match.indexOf(file.mimetype) === -1) {
-        //     const filename = `${Date.now()}-any-name-${file.originalname}`;
-        //     return filename;
-        // }
-
         return {
             bucketName: "uploads",
             filename: `${Date.now()}-any-name-${file.originalname}`

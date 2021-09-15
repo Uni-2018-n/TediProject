@@ -18,7 +18,7 @@
                     </ul>
                 </div>
                 <div class="resume">
-                    <a v-if="src.Bio_file" :href="'https://localhost:8000/upload/files/'+src.Bio_file">Get resume</a>
+                    <a v-if="src.Bio_file" :href="'https://localhost:8000/upload/files/'+src.Bio_file" target="_blank">Get resume</a>
                     <span v-else>No resume provided</span>
                 </div>
             </div>
