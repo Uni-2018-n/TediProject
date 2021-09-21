@@ -14,10 +14,10 @@
                                 <span @click="router.push({path: '/profile'})" >{{ user.firstname }} {{ user.lastname }}</span>
                             </div>
                         </div>
-                        <textarea v-model="desc" id="postTextArea" @input="resize($event)" rows="1" placeholder="Type Here..."></textarea>
+                        <textarea v-model="desc" id="postTextArea" @input="resize($event)" :class="{ textError: textFlag }" rows="1" placeholder="Type Here..."></textarea>
                     </div>
                     <div class="skills">
-                        <input @keyup.enter.prevent="skillAppend()" v-model="currSkilltxt" class="skillInput" type="text" placeholder="Add a skill"/>
+                        <input @keyup.enter.prevent="skillAppend()" v-model="currSkilltxt" class="skillInput" :class="{ currSkillError: currSkillsFlag }" type="text" placeholder="Add a skill"/>
                         <ul>
                             <li v-for="(skill, index) in currSkills" :key="index">
                                 <span @click="skillRemove(index)">{{skill}}</span>
@@ -68,7 +68,11 @@ export default defineComponent({
             console.log("**MY JOBS ERROR**")
         }
 
+        const textFlag = ref(false);
+        const currSkillsFlag = ref(false);
+
         const resize = (e: Event) => {
+            textFlag.value = false;
             (e.target as HTMLTextAreaElement).style.height = 'auto';
             (e.target as HTMLTextAreaElement).style.height = (e.target as HTMLTextAreaElement).scrollHeight +'px';
         }
@@ -85,6 +89,14 @@ export default defineComponent({
                 }catch(error){
                     console.log("***ERROR POST JOB***")
                 }
+            }else{
+                if(desc.value === ''){
+                    textFlag.value = true;
+                }
+                if(currSkills.value.length === 0){
+                    currSkillsFlag.value = true;
+                }
+
             }
         }
 
@@ -95,6 +107,7 @@ export default defineComponent({
         }
         
         const skillAppend = () =>{
+            currSkillsFlag.value = false;
             if(currSkilltxt.value != "")
             if(currSkills.value.includes(currSkilltxt.value)) {
                 currSkilltxt.value = "";
@@ -105,7 +118,7 @@ export default defineComponent({
         }
 
 
-        return { resize, posts, getPic, currSkills, currSkilltxt, skillAppend, skillRemove, desc, postJob, router }
+        return { resize, posts, getPic, currSkills, currSkilltxt, skillAppend, skillRemove, desc, postJob, router, currSkillsFlag, textFlag }
     },
 })
 </script>
@@ -170,6 +183,15 @@ textarea:focus {
     outline: none !important;
 }
 
+
+.inner-input .textError{
+    border-style: solid solid solid solid;
+    border-width: 2px;
+    border-color: rgb(255, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+}
+
 .skills {
     width: 100%;
     display: flex;
@@ -218,6 +240,11 @@ textarea:focus {
     color: rgb(0, 0, 0);
     cursor: pointer;
 }
+
+.skills .currSkillError {
+    border-color: rgba(212, 0, 0, 0.473);
+}
+
 .postButton {
     padding: 0;
     margin: 0;

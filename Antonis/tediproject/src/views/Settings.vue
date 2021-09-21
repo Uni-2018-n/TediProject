@@ -24,11 +24,11 @@
                         <span>Update Phone Number:</span>
                         <input v-model="currPhone" />
                     </div>
-                    <div class="pass">
+                    <div class="pass" :class="{ passError: passFlag }">
                         <span>Update Password:</span>
-                        <input v-model="pass" />
+                        <input type="password" v-model="pass" />
                         <span>Verify Password:</span>
-                        <input v-model="vpass" />
+                        <input type="password" v-model="vpass" />
                     </div>
                     <div class="btn">
                         <button @click="reset()">Reset</button>
@@ -62,6 +62,7 @@ export default defineComponent({
         })
         const pass = ref("")
         const vpass = ref("")
+        const passFlag = ref(false);
         const photo = ref<File>()
         const oldPhoto = ref(user.value!.ProfilePic)
         const photoURL = ref(getPic(user.value!.ProfilePic))
@@ -85,25 +86,32 @@ export default defineComponent({
                 photoURL.value = URL.createObjectURL(photo.value);
             }
         }
+        let flag = false;
 
         const update = async() => {
             const fd = new FormData();
             if(pass.value != ""){
                 if(pass.value === vpass.value){
                     fd.append('password', pass.value)
+                    flag= true;
+                }else{
+                    passFlag.value = true;
                 }
             }
             if(currEmail.value != "" && currEmail.value != oldEmail.value){
                 fd.append('email', currEmail.value)
+                    flag= true;
             }
             if(photo.value){
                 fd.append('file', photo.value!)
+                    flag= true;
             }
 
             if(currPhone.value != "" && currPhone.value != oldPhone.value){
                 fd.append('number', currPhone.value)
+                    flag= true;
             }
-            if(user.value)
+            if(user.value && flag)
             try {
                 const response = await axios.patch('https://localhost:8000/users/'+user.value._id, fd, {
                     headers: {
@@ -118,6 +126,7 @@ export default defineComponent({
         }
 
         const reset = () => {
+            passFlag.value = false;
             currEmail.value = oldEmail.value;
             currPhone.value = oldPhone.value;
             emailDisabled.value = true;
@@ -125,7 +134,7 @@ export default defineComponent({
             vpass.value =""
             photoURL.value = getPic(oldPhoto.value.toString())
         }
-        return { currEmail, emailDisabled, atClick, update, reset, pass, vpass, selectedFile, photoURL, getPic, currPhone }
+        return { currEmail, emailDisabled, atClick, update, reset, pass, vpass, selectedFile, photoURL, getPic, currPhone, passFlag }
     },
 })
 </script>
@@ -198,11 +207,15 @@ export default defineComponent({
 .input > input:focus{
     outline: none;
 }
-.rest .email,.pass,.phoneNumber > input:focus {
+.rest .email > input:focus ,.pass > input:focus ,.phoneNumber > input:focus {
     outline: none;
 }
 .pass > input {
     margin-bottom: 20px;
+}
+
+.passError > input {
+    border-color: rgb(255, 0, 0);
 }
 .btn {
     display: flex;

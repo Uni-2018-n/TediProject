@@ -9,7 +9,7 @@
                 />
                 <div class="text">
                     <span @click="router.push({path: '/profile'})" class="name">{{ userName }}</span>
-                    <span class="inf">{{userEducation}}</span>
+                    <span v-if="userEducation" class="inf">{{userEducation}}</span>
                 </div>
             </div>
             <div class="left-other" @click="router.push({path: '/network'})">
@@ -25,7 +25,7 @@ import router from "../../router/index"
 
 export default defineComponent({
     props: {
-        userEducation: {type: String, required: true},
+        userEducation: {type: String, required: false},
         userName: {type: String, required: true},
         ProfilePic: {type: String, required: true},
     },

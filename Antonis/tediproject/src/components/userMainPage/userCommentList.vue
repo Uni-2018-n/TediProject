@@ -4,7 +4,7 @@
             <userComments :src="comment" />
         </li>
     </ul>
-    <span>Load Previous...</span>
+    <!-- <span>Load Previous...</span> -->
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
