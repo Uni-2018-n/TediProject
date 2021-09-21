@@ -1,9 +1,9 @@
 <template>
     <div class="external">
         <div class="internal">
-            <textarea v-model="text" id="postTextArea" rows="1" placeholder="Type Here..."></textarea>
+            <textarea v-model="text" id="postTextArea" rows="1" :class="{ textError: textFlag }" placeholder="Type Here..."></textarea>
             <div class="skills">
-                <input @keyup.enter.prevent="skillAppend()" v-model="currSkilltxt" class="skillInput" type="text" placeholder="Add a skill"/>
+                <input @keyup.enter.prevent="skillAppend()" v-model="currSkilltxt" class="skillInput" :class="{ currSkillError: currSkillsFlag }" type="text" placeholder="Add a skill"/>
                 <ul>
                     <li v-for="(skill, index) in currSkills" :key="index">
                         <span @click="skillRemove(index)">{{skill}}</span>
@@ -12,8 +12,8 @@
             </div>
             <div class="resume">
                 <input @change="selectedFile" type="file" name="file" id="file"/>
-                <span>{{fileName}}</span>
-                <label for="file">Select Resume</label>
+                <span :class="{ fileNameError: fileNameFlag }">{{fileName}}</span>
+                <label :class="{ fileNameError: fileNameFlag }" for="file">Select Resume</label>
             </div>
             <div class="postButton">
                 <button @click="applyForJob()">Post!</button>
@@ -35,8 +35,12 @@ export default defineComponent({
         jobId: {type: String, required: true},
     },
     setup(props) {
+        const textFlag = ref(false);
+        const currSkillsFlag = ref(false);
+        const fileNameFlag = ref(false);
         const text = ref("");
         watch(text, () =>{
+            textFlag.value = false;
             const e = document.getElementById('postTextArea') as HTMLTextAreaElement;
             if(text.value == ""){
                 e.style.height = 'initial'
@@ -57,6 +61,7 @@ export default defineComponent({
         }
         
         const skillAppend = () =>{
+            currSkillsFlag.value = false;
             if(currSkilltxt.value != "")
             if(currSkills.value.includes(currSkilltxt.value)) {
                 currSkilltxt.value = "";
@@ -71,6 +76,7 @@ export default defineComponent({
 
         const selectedFile = (event: Event) => {
             if(event){
+                fileNameFlag.value = false;
                 file.value = ((event.target as HTMLInputElement).files as FileList)[0]
                 fileName.value = file.value.name
             }
@@ -93,9 +99,19 @@ export default defineComponent({
                 }catch(error){
                     console.log("***ERROR APPLY TO JOB***")
                 }
+            }else{
+                if(text.value === ''){
+                    textFlag.value = true;
+                }
+                if(currSkills.value.length === 0){
+                    currSkillsFlag.value = true
+                }
+                if(fileName.value === ''){
+                    fileNameFlag.value = true
+                }
             }
         }
-        return { text,focus, applyForJob, currSkills, currSkilltxt, skillRemove, skillAppend, selectedFile, fileName }
+        return { text,focus, applyForJob, currSkills, currSkilltxt, skillRemove, skillAppend, selectedFile, fileName, fileNameFlag, currSkillsFlag, textFlag }
     },
 })
 </script>
@@ -152,6 +168,7 @@ export default defineComponent({
     min-width: 300px;
     width: 30%;
 }
+
 .internal textarea {
     margin: 5px 15px 15px 15px;
     background: transparent;
@@ -160,11 +177,23 @@ export default defineComponent({
     font-size: 15px;
     width: 100%;
     height: 50%;
+    padding: 10px;
     
 }
+
+.internal .textError{
+    border-style: solid solid solid solid;
+    border-width: 2px;
+    border-color: rgb(255, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+}
+
 .internal textarea:focus {
     outline: none !important;
 }
+
+
 .skills {
     width: 100%;
     display: flex;
@@ -184,6 +213,10 @@ export default defineComponent({
 }
 .skills input:focus {
     outline: none;
+}
+
+.skills .currSkillError {
+    border-color: rgba(212, 0, 0, 0.473);
 }
 
 .skills ul {
@@ -240,6 +273,10 @@ export default defineComponent({
     overflow: hidden !important;
     text-overflow: ellipsis;
     max-width: 70%;
+}
+
+.resume .fileNameError {
+    border-color: rgb(255, 0, 0);
 }
 
 .resume label {

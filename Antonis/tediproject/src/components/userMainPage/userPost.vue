@@ -51,8 +51,8 @@
                         width="35"
                         height="35"
                         />
-                        <div class="textArea" @click="focus()">
-                            <textarea @keyup.enter.prevent="submitComment()" v-model="commentText" id="commentTextArea" rows="1" placeholder="Type here..."></textarea>
+                        <div class="textArea" @click="focus">
+                            <textarea @keydown.enter.prevent @keyup.enter.exact="submitComment()" v-model="commentText" @keypress="updateTxt" id="commentTextArea" rows="1" placeholder="Type here..."></textarea>
                         </div>
                     </div>
                     <userCommentList :src="postComments"/>
@@ -105,18 +105,9 @@ export default defineComponent({
         const time = ref(date.getHours() + ':' + date.getMinutes());
         const full = ref(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes());
 
-        watch(commentText, () => {
-            const e = document.getElementById('commentTextArea') as HTMLTextAreaElement;
-            if(commentText.value == ""){
-                console.log("test")
-                e.style.height = 'initial'
-            }else{
-                e.style.height = 'auto';
-                e.style.height = e.scrollHeight +'px';
-            }
-        })
-        const focus = () => {
-            document.getElementById('commentTextArea')!.focus();
+        const focus = (e: Event) => {
+            if(((e.target as HTMLDivElement).firstChild as HTMLTextAreaElement))
+            ((e.target as HTMLDivElement).firstChild as HTMLTextAreaElement).focus();
         }
 
         const allCount = ref(props.post.pictures.length + props.post.videos.length)
@@ -165,7 +156,7 @@ export default defineComponent({
         }
 
         const submitComment = async () =>{
-            if(commentText.value){
+            if(commentText.value != ''){
                 try{
                     const response = await axios.post("https://localhost:8000/posts/comment/"+props.post._id, {
                         user: props.user._id,
@@ -173,7 +164,7 @@ export default defineComponent({
                     })
                     commentReset();
                     postComments.value.splice(0, postComments.value.length+1, ...response.data);
-                    console.log(postComments)
+                    // console.log(postComments)
                     // props.post.comments = response.data.slice(0);
                     // props.post.comments.splice(0, props.post.comments.length)
                     // console.log(props.post.comments)
@@ -185,8 +176,19 @@ export default defineComponent({
             }
         }
 
+        const updateTxt = (ev: Event) =>{
+            const e = ev.target as HTMLTextAreaElement;
+            if(commentText.value == ""){
+                e.style.height = 'initial'
+            }else{
+                e.style.height = 'auto';
+                e.style.height = e.scrollHeight +'px';
+            }
+        }
+
         return { loadFlag, flag, postText, postTextTemp, commentFlag, focus, time, full, getPic,
-        allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger, like, commentText, submitComment, postComments }
+        allCount, voicesURL, totalURL, imgFlag, imgCloseTriger, imgOpenTriger, like, commentText, submitComment, postComments,
+        updateTxt }
     },
 })
 </script>
