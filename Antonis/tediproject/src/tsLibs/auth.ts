@@ -99,6 +99,7 @@ export type otherProfileType = {
     Education: {private: boolean, string: string},
     ProfilePic: String,
     Skills: {private: boolean, skills: Array<string>},
+    Experience: {private: boolean, Experience: Array<string>},
     friends: boolean,
     name: string,
 }

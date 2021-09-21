@@ -38,6 +38,7 @@
             </div>
         </div>
     </div>
+    <loading v-if="loadingFlag"/>
 </template>
 <script lang="ts">
 import axios from 'axios';
@@ -47,11 +48,13 @@ import { jobType } from '../../tsLibs/jobs';
 import { givenType } from "../../tsLibs/auth";
 import {getPic} from '../../tsLibs/funcs'
 import router from "../../router/index"
+import loading from "../loading.vue"
 
 export default defineComponent({
     name: "myJobs",
     components: {
         userJob,
+        loading,
     },
     props: {
         user: {type: Object as PropType<givenType>, required: true},
@@ -67,6 +70,7 @@ export default defineComponent({
         }catch(error){
             console.log("**MY JOBS ERROR**")
         }
+        const loadingFlag = ref(false);
 
         const textFlag = ref(false);
         const currSkillsFlag = ref(false);
@@ -79,6 +83,7 @@ export default defineComponent({
 
         const postJob = async() => {
             if(desc.value != '' && currSkills.value.length != 0){
+                loadingFlag.value=true;
                 try {
                     const response = await axios.post("https://localhost:8000/jobs", {
                         author: props.user._id,
@@ -86,7 +91,9 @@ export default defineComponent({
                         Skills: currSkills.value,
                     })
                     router.go(0)
+                    loadingFlag.value=false;
                 }catch(error){
+                    loadingFlag.value=false;
                     console.log("***ERROR POST JOB***")
                 }
             }else{
@@ -118,7 +125,7 @@ export default defineComponent({
         }
 
 
-        return { resize, posts, getPic, currSkills, currSkilltxt, skillAppend, skillRemove, desc, postJob, router, currSkillsFlag, textFlag }
+        return { resize, posts, getPic, currSkills, currSkilltxt, skillAppend, skillRemove, desc, loadingFlag, postJob, router, currSkillsFlag, textFlag }
     },
 })
 </script>

@@ -21,6 +21,17 @@
                     <div class="prof-exp">
                         <div class="curr">
                             <img
+                                src="@/assets/outline_work_outline_black_24dp.png"
+                                width="35"
+                                height="35"
+                            />
+                            <span v-if="jobFlag">{{ job }}</span>
+                            <span v-else>No information available</span>
+                        </div>
+                    </div>
+                    <div class="prof-exp">
+                        <div class="curr">
+                            <img
                                 src="@/assets/outline_school_black_24dp.png"
                                 width="35"
                                 height="35"
@@ -81,6 +92,8 @@ export default defineComponent({
         const education = ref("");
         const skillsFlag = ref(false);
         const skills = ref<String[]>([]);
+        const jobFlag = ref(false);
+        const job = ref("");
         
         const userOther = ref<otherProfileType>();
         watchEffect(async() => {
@@ -89,7 +102,7 @@ export default defineComponent({
                 // console.log(response.data)
 
                 userOther.value = response.data
-                console.log(userOther.value)
+                // console.log(userOther.value)
 
                 if(userOther.value){
                     if(userOther.value.friends){
@@ -101,6 +114,10 @@ export default defineComponent({
                             education.value = userOther.value.Education.string
                             educationFlag.value = true;
                         }
+                        if(userOther.value.Experience && userOther.value.Experience.Experience.length){
+                            job.value = userOther.value.Experience.Experience[0]
+                            jobFlag.value = true
+                        }
                     }else{
                         if(userOther.value.Skills && !(userOther.value.Skills.private) && userOther.value.Skills.skills.length){
                             skills.value = userOther.value.Skills.skills
@@ -110,6 +127,11 @@ export default defineComponent({
                             education.value = userOther.value.Education.string
                             educationFlag.value = true;
                         }
+                        if(userOther.value.Experience && !(userOther.value.Experience.private) && userOther.value.Experience.Experience.length){
+                            job.value = userOther.value.Experience.Experience[0]
+                            jobFlag.value = true;
+                        }
+                        
                     }
                 }
 
@@ -138,7 +160,7 @@ export default defineComponent({
             }
         }
 
-        return { skills, educationFlag, skillsFlag, getPic, education, user, userOther, connect, msg }
+        return { skills, educationFlag, skillsFlag, getPic, education, user, userOther, connect, msg, jobFlag, job }
     },
 })
 </script>

@@ -25,14 +25,6 @@ const NewUser = new mongoose.Schema({
         type: String,
         required: false
     },
-    professional_position: {
-        type: String,
-        required: false
-    },
-    Employment_institution: {
-        type: String,
-        required: false
-    },
     Education: {
         string: {
             type: String,
@@ -50,6 +42,16 @@ const NewUser = new mongoose.Schema({
             required: false
         },
         skills: [{
+            type: String
+        }],
+        required: false
+    },
+    Experience: {
+        private: {
+            type: Boolean,
+            required: false
+        },
+        Experience: [{
             type: String
         }],
         required: false

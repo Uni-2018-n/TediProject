@@ -1,7 +1,13 @@
 <template>
     <div class="external">
         <div class="internal">
-            <input type="text" v-model="txt" autocomplete="off" id="text" placeholder="Update Education"/>
+            <input type="text" v-model="temp" autocomplete="off" id="text" placeholder="Update your work place"/>
+            <!-- <span class="msg">Click on a skill to remove</span> -->
+            <ul class="skills">
+                <li v-for="(skill, index) in tempAppend" :key="index">
+                    <span class="span-skill">{{ skill }}</span>
+                </li>
+            </ul>
             <input v-model="checked" id="check" type="checkbox" /><label class="label" for="check">Information <span v-if="checked">Public</span><span v-else>Private</span></label>
             <button @click="update()">Update</button>
         </div>
@@ -12,35 +18,47 @@
 import axios from 'axios';
 import { defineComponent, PropType, ref } from 'vue'
 import router from "../../router/index"
-import { updateUser } from "../../tsLibs/auth"
-
 
 export default defineComponent({
-    name: "editEducation",
+    name: "editSkills",
     props: {
         id: {type: String, required: true},
-        curr: {type: String, required: false, default: ""},
         private: {type: Boolean, required: false, default: true},
+        curr: {type: Array as PropType<Array<string>>, required: false, default: []},
         close: {type: Function, required: true},
     },
     setup(props) {
         const checked = ref(!props.private);
-        const txt = ref(props.curr)
+        const toAppend = ref<string []>([]);
+        const tempAppend = ref(toAppend.value.concat(props.curr));
+        const temp= ref("");
+        const append = () => {
+            if(toAppend.value.includes(temp.value)) {
+                temp.value = "";
+            }else{
+                toAppend.value.push(temp.value);
+                tempAppend.value.push(temp.value);
+                temp.value ="";
+            }
+        }
+
         const update = async() =>{
             try {
+                if(temp.value != ''){
+                    append();
+                }
                 const response = await axios.patch("https://localhost:8000/users/"+props.id, {
-                    Education: {
-                        string: txt.value,
-                        private: !(checked.value)
+                    Experience: {
+                        private: !(checked.value),
+                        Experience: tempAppend.value,
                     }
                 })
-                updateUser(response.data);
                 router.go(0)
             }catch(error){
                 console.log("**UPDATE ERROR**")
             }
         }
-        return { checked, update, txt }
+        return { checked, temp, append, tempAppend, update }
     },
 })
 </script>
@@ -93,7 +111,44 @@ export default defineComponent({
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    max-width: 80%;
+
 }
+.msg {
+    color: white;
+    font-size: 25px;
+    font-weight: bolder;
+    margin: 15px 15px 5px 15px;
+}
+.skills{
+    list-style-type: none;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    max-width: 80%;
+    padding: 0px;
+}
+
+.skills li {
+    margin: 5px 5px 35px 5px;
+}
+.span-skill {
+    color: white;
+    border: solid;
+    border-color: white;
+    padding: 15px;
+    border-radius: 25px;
+    text-align: center;
+    transition: all 0.2s;
+}
+.span-skill:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
 .internal input[type=text] {
     border: solid;
     background-color: white;
@@ -102,8 +157,8 @@ export default defineComponent({
     width: 80%;
     font-size: 2em;
     color: #222;
-    padding: 0px;
-    text-align: center;
+    padding: 5px;
+    /* text-align: center; */
 }
 .internal input:focus {
     outline: none;

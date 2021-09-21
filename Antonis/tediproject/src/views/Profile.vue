@@ -23,6 +23,24 @@
                     <div class="prof-exp">
                         <div class="curr">
                             <img
+                                src="@/assets/outline_work_outline_black_24dp.png"
+                                width="35"
+                                height="35"
+                            />
+                            <span v-if="job">{{ job }}</span>
+                            <span v-else>No Information</span>
+                        </div>
+                        <div class="edit">
+                            <img @click="jobsFlag=true;"
+                                src="@/assets/outline_edit_black_24dp.png"
+                                width="35"
+                                height="35"
+                            />
+                        </div>
+                    </div>
+                    <div class="prof-exp">
+                        <div class="curr">
+                            <img
                                 src="@/assets/outline_school_black_24dp.png"
                                 width="35"
                                 height="35"
@@ -67,6 +85,7 @@
     </div>
     <editEducation v-if="educationFlag" :id="user._id" :private="educationPrivate" :curr="education" :close="()=>{educationFlag=false;}"/>
     <editSkills v-if="skillsFlag" :id="user._id" :private="skillsPrivate" :close="()=>{skillsFlag=false;}" :curr="skills"/>
+    <editWork v-if="jobsFlag" :id="user._id" :private="workPrivate" :close="()=>{jobsFlag=false;}" :curr="jobs"/>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
@@ -74,6 +93,7 @@ import navBar from "../components/navBar.vue";
 import Footer from "../components/footer.vue";
 import editEducation from "../components/profilePage/editEducation.vue"
 import editSkills from "../components/profilePage/editSkills.vue"
+import editWork from "../components/profilePage/editWork.vue"
 import { loginCheck, givenType, updateUser } from "../tsLibs/auth";
 import { getPic } from "../tsLibs/funcs";
 import axios from 'axios';
@@ -85,7 +105,8 @@ export default defineComponent({
         navBar,
         Footer,
         editEducation,
-        editSkills
+        editSkills,
+        editWork,
     },
     async setup() {
         const user = ref<givenType>();
@@ -97,6 +118,9 @@ export default defineComponent({
 
         const skills = ref<String[]>([]);
         const skillsPrivate = ref<Boolean>();
+        const jobs = ref<String[]>([]);
+        const job = ref("");
+        const workPrivate = ref<Boolean>();
         const education = ref("");
         const educationPrivate = ref<Boolean>();
         if(user.value)
@@ -107,12 +131,20 @@ export default defineComponent({
             skillsPrivate.value = response.data.Skills.private;
             education.value = response.data.Education.string;
             educationPrivate.value = response.data.Education.private;
+            jobs.value = response.data.Experience.Experience;
+            workPrivate.value = response.data.Experience.private;
+            if(jobs.value.length != 0){
+                job.value = jobs.value[0].toString();
+            }else{
+                job.value = '';
+            }
         }catch(error){
             console.log("**GET DATA ERROR**")
         }
         
         const educationFlag = ref(false);
         const skillsFlag = ref(false);
+        const jobsFlag = ref(false);
 
         const updatePic = async () =>{
             if(photo.value){
@@ -126,7 +158,7 @@ export default defineComponent({
                         }
                     })
                     // console.log(response.data)
-                    console.log("test")
+                    // console.log("test")
                     user.value = updateUser(response.data)
                     router.go(0)
                 }catch(error){
@@ -142,7 +174,8 @@ export default defineComponent({
             }
         }
 
-        return { user, education, educationPrivate, skills, skillsPrivate, educationFlag, skillsFlag, getPic, updatePic, currPic, selectedFile }
+        return { user, education, educationPrivate, skills, skillsPrivate, educationFlag, skillsFlag, getPic, updatePic, currPic, selectedFile,
+        jobsFlag, jobs, job, workPrivate }
     },
 })
 </script>

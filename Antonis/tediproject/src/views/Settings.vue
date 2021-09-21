@@ -39,6 +39,7 @@
         </div>
         <Footer />
     </div>
+    <loading v-if="loadingFlag"/>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
@@ -48,11 +49,13 @@ import { loginCheck, updateUser, givenType } from "../tsLibs/auth"
 import axios from 'axios';
 import { getPic } from "../tsLibs/funcs";
 import router from "../router/index"
+import loading from "../components/loading.vue"
 
 export default defineComponent({
     name: "Settings",
     components: {
         navBar,
+        loading,
         Footer,
     },
     async setup() {
@@ -68,6 +71,7 @@ export default defineComponent({
         const photoURL = ref(getPic(user.value!.ProfilePic))
         const oldEmail = ref(user.value!.email.toString())
         const oldPhone = ref(user.value!.number)
+        const loadingFlag = ref(false);
 
         const currEmail = ref(oldEmail.value)
         const currPhone = ref(oldPhone.value)
@@ -89,6 +93,7 @@ export default defineComponent({
         let flag = false;
 
         const update = async() => {
+            loadingFlag.value=true;
             const fd = new FormData();
             if(pass.value != ""){
                 if(pass.value === vpass.value){
@@ -120,7 +125,9 @@ export default defineComponent({
                 })
                 user.value = updateUser(response.data);
                 router.go(0)
+                loadingFlag.value=false;
             }catch (e){
+                loadingFlag.value=false;
                 console.log("**USER SIGNUP ERROR**")
             }
         }
@@ -134,7 +141,7 @@ export default defineComponent({
             vpass.value =""
             photoURL.value = getPic(oldPhoto.value.toString())
         }
-        return { currEmail, emailDisabled, atClick, update, reset, pass, vpass, selectedFile, photoURL, getPic, currPhone, passFlag }
+        return { currEmail, emailDisabled, atClick, update, reset, pass, vpass, loadingFlag, selectedFile, photoURL, getPic, currPhone, passFlag }
     },
 })
 </script>

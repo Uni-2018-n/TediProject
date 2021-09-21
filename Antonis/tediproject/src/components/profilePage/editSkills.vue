@@ -23,8 +23,8 @@ export default defineComponent({
     name: "editSkills",
     props: {
         id: {type: String, required: true},
-        private: {type: Boolean, required: true},
-        curr: {type: Array as PropType<Array<string>>, required: true},
+        private: {type: Boolean, required: false, default: true},
+        curr: {type: Array as PropType<Array<string>>, required: false, default: []},
         close: {type: Function, required: true},
     },
     setup(props) {

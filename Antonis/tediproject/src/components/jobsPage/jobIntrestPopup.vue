@@ -21,10 +21,12 @@
         </div>
     <a @click="close" class="close" />
     </div>
+    <loading v-if="loadingFlag"/>
 </template>
 <script lang="ts">
 import axios from 'axios';
 import { defineComponent, ref, watch } from 'vue'
+import loading from "../loading.vue"
 import router from "../../router/index"
 
 export default defineComponent({
@@ -33,6 +35,9 @@ export default defineComponent({
         userId: {type: String, required: true},
         close: {type: Function, required: true},
         jobId: {type: String, required: true},
+    },
+    components: {
+        loading,
     },
     setup(props) {
         const textFlag = ref(false);
@@ -49,6 +54,8 @@ export default defineComponent({
                 e.style.height = e.scrollHeight +'px';
             }
         })
+
+        const loadingFlag = ref(false);
 
         const focus = () => {
             document.getElementById('postTextArea')!.focus();
@@ -84,6 +91,7 @@ export default defineComponent({
 
         const applyForJob = async() => {
             if(text.value != '' && currSkills.value.length != 0 && fileName.value != ''){
+                loadingFlag.value=true;
                 const fd = new FormData();
                 fd.append('applicant', props.userId)
                 fd.append('Description', text.value)
@@ -96,7 +104,9 @@ export default defineComponent({
                         }
                     })
                     router.go(0)
+                    loadingFlag.value=false;
                 }catch(error){
+                    loadingFlag.value=false;
                     console.log("***ERROR APPLY TO JOB***")
                 }
             }else{
@@ -111,7 +121,7 @@ export default defineComponent({
                 }
             }
         }
-        return { text,focus, applyForJob, currSkills, currSkilltxt, skillRemove, skillAppend, selectedFile, fileName, fileNameFlag, currSkillsFlag, textFlag }
+        return { text,focus, applyForJob, currSkills, currSkilltxt, skillRemove, skillAppend, selectedFile, fileName, loadingFlag, fileNameFlag, currSkillsFlag, textFlag }
     },
 })
 </script>

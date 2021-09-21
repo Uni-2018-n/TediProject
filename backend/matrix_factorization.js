@@ -1,6 +1,9 @@
-mmultiply = (a, b) => a.map(x => transpose(b).map(y => dotproduct(x, y)));
 dotproduct = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);
 transpose = a => a[0].map((x, i) => a.map(y => y[i]));
+
+function mmultiply(a, b) {
+    return a.map(x => transpose(b).map(y => dotproduct(x, y)));
+}
 
 function getCol(matrix, col){
     var column = [];
@@ -21,7 +24,8 @@ const matrix_factorization = async (R, P, Q, K, steps=5000, alpha=0.0002, beta=0
                     eij = R[i][j] - Dot;
                 }
 
-                for (let k = 0; k < K.length; k++) {
+                for (let k = 0; k < K; k++) {
+                    // console.log(P[i][k]);
                     P[i][k] = P[i][k] + alpha * (2 * eij * Q[k][j] - beta * P[i][k])
                     Q[k][j] = Q[k][j] + alpha * (2 * eij * P[i][k] - beta * Q[k][j])
                 }
@@ -49,9 +53,13 @@ const matrix_factorization = async (R, P, Q, K, steps=5000, alpha=0.0002, beta=0
         }
     }
 
-    const result = await mmultiply(P, Q);
-    console.log(result)
-    return result;
+    try {
+        const result = await mmultiply(P, Q);
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 module.exports = {

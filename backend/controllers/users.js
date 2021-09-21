@@ -134,6 +134,10 @@ const updateUser = (req, res) => {
         if (req.body.Education) result.Education = req.body.Education;
         if (req.body.Skills) result.Skills = req.body.Skills;
         if (req.body.number) result.number = req.body.number;
+        if (req.body.Experience) {
+            req.body.Experience.Experience = req.body.Experience.Experience.reverse();
+            result.Experience = req.body.Experience;
+        }
 
         jwt.sign({result: result}, 'secretkey', (err, token) => {
             res.json({
@@ -145,9 +149,11 @@ const updateUser = (req, res) => {
                 email: result.email,
                 ProfilePic: result.ProfilePic,
                 number: result.number,
-                Education: result.Education
+                Education: result.Education,
+                Experience: result.Experience
             });
         });
+        result.save();
     })
     .catch((err) => {
         console.log(err);
@@ -215,14 +221,12 @@ const getConnected = (req, res) => {
                 connected.push({
                     id: user._id,
                     name: user.firstname.concat(" ", user.lastname),
-                    avatar: user.ProfilePic,
-                    professional_position: user.professional_position,
-                    Employment_institution: user.Employment_institution
+                    avatar: user.ProfilePic
                 })
             }
             res.json(connected)
         }catch(error){
-            console.log("Test")
+            res.send(err)
         }
     })
     .catch(err => res.send(err));
@@ -258,18 +262,22 @@ const getProfile = (req, res) => {
                 name: result.firstname.concat(' ', result.lastname),
                 Education: result.Education,
                 Skills: result.Skills,
+                Experience: result.Experience,
                 friends: true
             });
         } else {
             let education = undefined;
             let skills = undefined;
+            let experience = undefined;
             if (!result.Education.private) education = result.Education
             if (!result.Skills.private) skills = result.Skills
+            if (!result.Experience.private) experience = result.Experience
             res.json({
                 ProfilePic: result.ProfilePic,
                 name: result.firstname.concat(' ', result.lastname),
                 Education: education,
                 Skills: skills,
+                Experience: experience,
                 friends: false
             });
         }

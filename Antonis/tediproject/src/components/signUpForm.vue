@@ -38,6 +38,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from "@vue/runtime-core"
+import router from "../router/index"
 import axios from 'axios'
 
 export default defineComponent({
@@ -154,6 +155,7 @@ export default defineComponent({
             if(!data.boolean){
               emailErrorB.value = true;
             }
+            router.go(0)
           }catch (e){
             console.log("**USER SIGNUP ERROR**")
           }
