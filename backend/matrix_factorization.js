@@ -1,22 +1,59 @@
-function transpose(a)
-{
-  return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
-  // or in more modern dialect
-  // return a[0].map((_, c) => a.map(r => r[c]));
+mmultiply = (a, b) => a.map(x => transpose(b).map(y => dotproduct(x, y)));
+dotproduct = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);
+transpose = a => a[0].map((x, i) => a.map(y => y[i]));
+
+function getCol(matrix, col){
+    var column = [];
+    for(var i=0; i<matrix.length; i++){
+       column.push(matrix[i][col]);
+    }
+    return column;
 }
 
-function dot(a, b) {a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);}
-
 const matrix_factorization = async (R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02) => {
-    R = transpose(R);
+    Q = transpose(Q);
 
-    for (const step = 0; step < steps; step++) {
-        for (const i = 0; i < R.length; i++) {
-            for (const j = 0; j < R[i].lengthl; j++) {
+    for (let step = 0; step < steps; step++) {
+        for (let i = 0; i < R.length; i++) {
+            for (let j = 0; j < R[i].length; j++) {
                 if (R[i][j] > 0) {
-                    eij = R[i][j] - dot(P[i], Q[j]);
+                    const Dot = await dotproduct(P[i], getCol(Q, j));
+                    eij = R[i][j] - Dot;
+                }
+
+                for (let k = 0; k < K.length; k++) {
+                    P[i][k] = P[i][k] + alpha * (2 * eij * Q[k][j] - beta * P[i][k])
+                    Q[k][j] = Q[k][j] + alpha * (2 * eij * P[i][k] - beta * Q[k][j])
                 }
             }
         }
+
+        const eR = dotproduct(P, Q);
+
+        let e = 0;
+
+        for (let i = 0; i < R.length; i++) {
+            for (let j = 0; j < R[i].length; j++) {
+                if (R[i][j] > 0) {
+                    e = e + Math.pow(R[i][j] - await dotproduct(P[i], getCol(Q, j)), 2)
+
+                    for (let k = 0; k < K.length; k++) {
+                        e = e + (beta/2) * (Math.pow(P[i][k], 2) + Math.pow(Q[k][j], 2))
+                    }
+                }
+            }
+        }
+
+        if (e < 0.001) {
+            break;
+        }
     }
+
+    const result = await mmultiply(P, Q);
+    console.log(result)
+    return result;
+}
+
+module.exports = {
+    matrix_factorization, mmultiply, dotproduct
 }
