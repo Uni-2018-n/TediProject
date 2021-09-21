@@ -127,7 +127,10 @@ const updateUser = (req, res) => {
         if (req.body.age) result.age = req.body.age;
         if (req.file) result.ProfilePic = req.file.filename;
         if (req.body.email) result.email = req.body.email;
-        if (req.body.password) result.password = await bcrypt.hash(req.body.password, 10);
+        if (req.body.password) {
+            const securePassword = await bcrypt.hash(req.body.password, 10);
+            result.password = securePassword;
+        }
         if (req.body.Education) result.Education = req.body.Education;
         if (req.body.Skills) result.Skills = req.body.Skills;
         if (req.body.number) result.number = req.body.number;
