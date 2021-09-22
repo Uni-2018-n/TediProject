@@ -43,22 +43,68 @@ router.post('/', upload.fields([{name: 'photos'},{name: 'videos'}, {name: 'voice
     });
 })
 
+async function make_Data() {
+    let data = []
+
+    await NewUser.find().exec(async function(err, Users) {
+        await Posts.find().exec(function(err, Posts) {
+            for (const user of Users) {
+                let posts = []
+                for (const post of Posts) {
+                    var value = 0;
+                    user.Liked_Posts.forEach((p) => {if (p.post.toString() == post._id.toString())  value++;})
+                    let times = 0;
+                    // for (const comment of post.comments) {
+                    //     if (comment.user == user._id) times++;
+                    // }
+                    // if (times == 1) value += 2;
+                    // else if (times >= 2) value += 3;
+                    posts.unshift({
+                        post: post._id,
+                        rating: value
+                    })
+                    // console.log(user.Liked_Posts + " " + JSON.stringify(posts));
+                }
+                
+                data.push({
+                    user: user._id,
+                    posts: posts
+                })
+            }
+        })
+        console.log(data);
+        return data;
+    });
+}
+
 // @desc HomePage - Get all the Posts of the Users friends and others
 router.get('/:User_id', async (req, res) => {
+    // const data = make_Data();
     let all_posts = [];
+    let authors = [];
     const Users_Posts = await Posts.find({author: req.params.User_id});
     all_posts = all_posts.concat(Users_Posts);
+
+    authors.unshift(mongoose.Types.ObjectId(req.params.User_id));
 
     try {
         await NewUser.findById({_id: req.params.User_id})
         .then(async (user) => {
             for (const User of user.Connected_users) {
                 all_posts = all_posts.concat(await Posts.find({author: User}))
+                authors.unshift(mongoose.Types.ObjectId(User));
+            }
 
+            // STO PP5 EMFANHZETAI DUO FORES TOU PP3 EPIDH EINAI LIKED APO 2 FILOUS TOU
+
+            for (const User of user.Connected_users) {
                 await NewUser.findById({_id: User})
                 .then(async (connected_user) => {
                     for (const post of connected_user.Liked_Posts) {
-                        all_posts = all_posts.concat(await Posts.findById(post.post));
+                        all_posts = all_posts.concat(await Posts.find({ $and:
+                            [{_id: post.post},
+                            {author: {$nin: authors}}]
+                        }).catch((err) => console.log(err)));
                     }
                 })
             }

@@ -13,7 +13,7 @@ function getCol(matrix, col){
     return column;
 }
 
-const matrix_factorization = async (R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02) => {
+const matrix_factorization = async (R, P, Q, K, steps=50000, alpha=0.0002, beta=0.02) => {
     Q = transpose(Q);
 
     for (let step = 0; step < steps; step++) {
@@ -25,7 +25,6 @@ const matrix_factorization = async (R, P, Q, K, steps=5000, alpha=0.0002, beta=0
                 }
 
                 for (let k = 0; k < K; k++) {
-                    // console.log(P[i][k]);
                     P[i][k] = P[i][k] + alpha * (2 * eij * Q[k][j] - beta * P[i][k])
                     Q[k][j] = Q[k][j] + alpha * (2 * eij * P[i][k] - beta * Q[k][j])
                 }

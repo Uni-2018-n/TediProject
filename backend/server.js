@@ -164,22 +164,28 @@ R = [
 
    ]
 
-// R = numpy.array(R)
-
 N = R.length
 
 M = R[0].length
 
 K = 3
 
-P = Array(N).fill().map(()=>Array(K).fill(parseFloat(Math.random().toFixed(10))));
-Q = Array(M).fill().map(()=>Array(K).fill(parseFloat(Math.random().toFixed(10))));
-Q = [[0.39462365, 0.59207692, 0.40479814],
-[0.36852803, 0.83375616, 0.51138182],
-[0.36195022, 0.07230487, 0.4764241],
-[0.83216094, 0.31451178, 0.91289456]]
+var P = []; // Initialize array
+for (var i = 0 ; i < N; i++) {
+    P[i] = []; // Initialize inner array
+    for (var j = 0; j < K; j++) { // i++ needs to be j++
+        P[i][j] = Math.random();
+    }
+}
 
-const nR = MF.matrix_factorization(R, P, Q, K)
+var Q = []; // Initialize array
+for (var i = 0 ; i < M; i++) {
+    Q[i] = []; // Initialize inner array
+    for (var j = 0; j < K; j++) { // i++ needs to be j++
+        Q[i][j] = Math.random();
+    }
+}
 
-// n[1] = MF.transpose(n[1]);
-console.log(nR)
+// const nR = MF.matrix_factorization(R, P, Q, K)
+
+// console.log(nR)

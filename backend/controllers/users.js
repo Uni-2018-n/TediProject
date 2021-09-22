@@ -7,7 +7,6 @@ const fs                = require('fs');
 const FormData          = require('form-data');
 const convert           = require('xml-js');
 const mongoose          = require('mongoose');
-const Grid              = require('gridfs-stream');
 const upload            = require('../middleware/upload.js');
 const db                = require('../db.js')
 
