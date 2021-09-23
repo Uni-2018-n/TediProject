@@ -59,6 +59,8 @@ router.get('/Data/posts', async (req, res) => {
             counter++;
         }
 
+        console.log(R);
+
         N = R.length
 
         M = R[0].length
@@ -150,7 +152,7 @@ router.get('/:User_id', async (req, res) => {
             all_posts = all_posts.filter(function (el) {return el != null;});
 
             for(const post of all_posts){
-                if (all_posts.filter((v) => (v != null && v._id.toString() === post._id.toString())).length == 2) {
+                if (all_posts.filter((v) => (v._id.toString() === post._id.toString())).length >= 2) {
                     const Index = all_posts.map(item => item._id.toString()).indexOf(post._id.toString());
                 
                     all_posts.splice(Index, 1);
