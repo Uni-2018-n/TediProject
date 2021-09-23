@@ -30,7 +30,7 @@
     <div id="genera">
       <ul>
         <li v-for="item in items" :key="item._id">
-          <Users @click="if(!select){idprop=item._id;flag=true;}else{if(selectedArray.includes(item._id)){selectedArray.splice(selectedArray.indexOf(item._id), 1)}else{selectedArray.push(item._id)}}" :userId="item._id" :name="item.firstname+' '+item.lastname" :selected="selectedArray.includes(item._id)" />
+          <Users @click="if(!select){idprop=item._id;flag=true;}else{if(selectedArray.includes(item._id)){selectedArray.splice(selectedArray.indexOf(item._id), 1)}else{selectedArray.push(item._id)}}" :user="item" :selected="selectedArray.includes(item._id)" />
           <input class="inpcheck" type="checkbox" :value="item._id" v-model="selectedArray" :id="item._id" />
         </li>
       </ul>

@@ -104,6 +104,14 @@ export type otherProfileType = {
     name: string,
 }
 
+export type adminUserType = {
+    _id: String,
+    name: String,
+    phoneNumber: String,
+    email: String,
+    avatar: String,
+}
+
 
 export const login = async (email: string, pass: string): Promise<Number> =>{
     try {
