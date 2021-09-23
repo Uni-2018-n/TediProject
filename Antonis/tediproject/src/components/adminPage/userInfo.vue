@@ -3,26 +3,27 @@
     <div id="inside">
       <span id="head">User Information</span>
       <div id="info">
-        <img src="@/assets/blank-profile-picture.png" 
+        <img 
+        :src="getPic(user.avatar)"
         width="200" 
         height="200" />
         <div id="text">
           <ul>
             <li>
               <label>ID:</label>
-              <span>{{ userId }}</span>
+              <span>{{ user._id }}</span>
             </li>
             <li>
               <label>Full Name:</label>
-              <span>Antonis Kalamakis</span>
+              <span>{{user.name}}</span>
             </li>
             <li>
               <label>Email:</label> 
-              <span>xxx.xxxxxxxx@hotmail.com</span>
+              <span>{{ user.email }}</span>
             </li>
             <li>
               <label>Phone Number:</label>
-              <span>690000000</span>
+              <span>{{ user.phoneNumber }}</span>
             </li>
           </ul>
         </div>
@@ -35,9 +36,28 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
+import axios from "axios";
+import { getPic } from "../../tsLibs/funcs";
+import { adminUserType } from "../../tsLibs/auth";
+import { ref } from "@vue/reactivity";
 
 export default defineComponent({
-  props: ["popupTriger", "userId"],
+  name: "Users",
+  props: {
+    popupTriger: {type: Function, required: true},
+    userId: {type: String, required: true}
+  },
+  async setup(props) {
+    const user = ref<adminUserType>()
+
+    try {
+      const response = await axios.get("https://localhost:8000/test/"+props.userId)
+      user.value = response.data
+    }catch (error){
+      console.log("**ADMIN USER LOAD ERROR**")
+    }
+    return {getPic, user, };
+  },
 });
 </script>
 

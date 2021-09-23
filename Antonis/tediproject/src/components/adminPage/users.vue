@@ -1,14 +1,14 @@
 <template>
   <div class="general" :class="{ selected: selected }">
-    <span id="id">{{ userId }}</span>
+    <span id="id">{{ user._id }}</span>
     <div id="inside">
         <img
-          src="@/assets/blank-profile-picture.png"
+          :src="getPic(user.ProfilePic)"
           width="65"
           height="65"
         />
         <div id="text">
-          <span>{{ name }}</span><br>
+          <span>{{ user.firstname }} {{ user.lastname }}</span><br>
           <!-- <span>{{ name }}</span> -->
         </div>
     </div>
@@ -16,13 +16,18 @@
 </template>
 
 <script lang="ts">
+import { PropType } from "@vue/runtime-core";
 import { defineComponent } from "@vue/runtime-core";
+import {userListType} from '../../tsLibs/auth'
+import { getPic } from "../../tsLibs/funcs";
 
 export default defineComponent({
   name: "Users",
-  props: ['userId', 'name', 'selected'],
+  props: {
+    user: {type: Object as PropType<userListType>, required: true}
+  },
   setup() {
-    return {};
+    return {getPic, };
   },
 });
 </script>
@@ -55,7 +60,6 @@ export default defineComponent({
 #inside {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 #inside img {
   vertical-align: middle;

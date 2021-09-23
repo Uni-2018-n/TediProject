@@ -1,3 +1,4 @@
 TODO:
+FTIAKSE TO ADMIN ACCESS GIA TO FRONT
 
-des sto eclass gia thn epagkelmatikh empeiria
+we should talk about network user printing information
