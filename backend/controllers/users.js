@@ -211,7 +211,7 @@ const rejectRequest = (req, res) => {
 }
 
 const getConnected = (req, res) => {
-    NewUser.findById({_id: req.params.id})
+    NewUser.findById(req.params.id)
     .then(async User => {
         let connected = [];
         try {
@@ -253,6 +253,7 @@ const getRequest = (req, res) => {
 }
 
 const getProfile = (req, res) => {
+    console.log(req.params.id + "IM HERE");
     NewUser.findById(req.params.id)
     .then((result) => {
         if (req.params.id.toString() == req.params.UserId.toString() || result.Connected_users.includes(req.params.UserId)) {

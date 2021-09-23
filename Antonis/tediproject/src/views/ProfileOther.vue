@@ -83,9 +83,10 @@ export default defineComponent({
     },
     async setup() {
         const route = useRoute();
+        const input = route.params.input
         const user = ref<givenType>();
         await loginCheck().then((data: givenType) =>{
-            user.value = data;
+             user.value = data;
         })
 
         const educationFlag = ref(false);
@@ -97,43 +98,45 @@ export default defineComponent({
         
         const userOther = ref<otherProfileType>();
         watchEffect(async() => {
+            if(input && user.value)
             try {
-                const response = await axios.get("https://localhost:8000/users/profile/"+route.params.input+'/'+user.value?._id);
+                console.log('test')
+                const response = await axios.get("https://localhost:8000/users/profile/"+input+'/'+user.value?._id);
                 // console.log(response.data)
 
                 userOther.value = response.data
                 // console.log(userOther.value)
 
-                if(userOther.value){
-                    if(userOther.value.friends){
-                        if(userOther.value.Skills && userOther.value.Skills.skills.length){
-                            skills.value = userOther.value.Skills.skills
-                            skillsFlag.value = true
-                        }
-                        if(userOther.value.Education && userOther.value.Education.string){
-                            education.value = userOther.value.Education.string
-                            educationFlag.value = true;
-                        }
-                        if(userOther.value.Experience && userOther.value.Experience.Experience.length){
-                            job.value = userOther.value.Experience.Experience[0]
-                            jobFlag.value = true
-                        }
-                    }else{
-                        if(userOther.value.Skills && !(userOther.value.Skills.private) && userOther.value.Skills.skills.length){
-                            skills.value = userOther.value.Skills.skills
-                            skillsFlag.value = true;
-                        }
-                        if(userOther.value.Education && !(userOther.value.Education.private) && userOther.value.Education.string){
-                            education.value = userOther.value.Education.string
-                            educationFlag.value = true;
-                        }
-                        if(userOther.value.Experience && !(userOther.value.Experience.private) && userOther.value.Experience.Experience.length){
-                            job.value = userOther.value.Experience.Experience[0]
-                            jobFlag.value = true;
-                        }
+                 if(userOther.value){
+                     if(userOther.value.friends){
+                         if(userOther.value.Skills && userOther.value.Skills.skills.length){
+                             skills.value = userOther.value.Skills.skills
+                             skillsFlag.value = true
+                         }
+                         if(userOther.value.Education && userOther.value.Education.string){
+                             education.value = userOther.value.Education.string
+                             educationFlag.value = true;
+                         }
+                         if(userOther.value.Experience && userOther.value.Experience.Experience.length){
+                             job.value = userOther.value.Experience.Experience[0]
+                             jobFlag.value = true
+                         }
+                     }else{
+                         if(userOther.value.Skills && !(userOther.value.Skills.private) && userOther.value.Skills.skills.length){
+                             skills.value = userOther.value.Skills.skills
+                             skillsFlag.value = true;
+                         }
+                         if(userOther.value.Education && !(userOther.value.Education.private) && userOther.value.Education.string){
+                             education.value = userOther.value.Education.string
+                             educationFlag.value = true;
+                         }
+                         if(userOther.value.Experience && !(userOther.value.Experience.private) && userOther.value.Experience.Experience.length){
+                             job.value = userOther.value.Experience.Experience[0]
+                             jobFlag.value = true;
+                         }
                         
-                    }
-                }
+                     }
+                 }
 
             }catch(error){
                 console.log("**SEARCH ERROR**")
