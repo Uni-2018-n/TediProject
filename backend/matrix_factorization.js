@@ -15,15 +15,17 @@ function getCol(matrix, col){
 
 const matrix_factorization = async (R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02) => {
     Q = transpose(Q);
-    let eij;
 
+    
     for (let step = 0; step < steps; step++) {
+        let eij = 0;
         for (let i = 0; i < R.length; i++) {
+            
             for (let j = 0; j < R[i].length; j++) {
                 if (R[i][j] > 0) {
                     const Dot = await dotproduct(P[i], getCol(Q, j));
                     eij = R[i][j] - Dot;
-                }
+                } else eij = 0
 
                 for (let k = 0; k < K; k++) {
                     P[i][k] = P[i][k] + alpha * (2 * eij * Q[k][j] - beta * P[i][k])
