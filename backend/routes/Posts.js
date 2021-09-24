@@ -5,6 +5,7 @@ const upload   = require('../middleware/upload.js');
 const Posts    = require('../models/Posts.js');
 const jwt      = require('jsonwebtoken');
 const NewUser  = require('../models/SignUp');
+const MF       = require('../matrix_factorization');
 
 const router = express.Router();
 
@@ -43,43 +44,93 @@ router.post('/', upload.fields([{name: 'photos'},{name: 'videos'}, {name: 'voice
     });
 })
 
+router.get('/Data/posts', async (req, res) => {
+    await make_Data().then(async (data) => {
+        
+        var R = []
+        let counter = 0;
+        for (const user of data) {
+            R[counter] = []
+            var counter2 = 0;
+            for (const post of user.posts) {
+                R[counter][counter2] = post.rating;
+                counter2++;
+            }
+            counter++;
+        }
+
+        console.log(R);
+
+        N = R.length
+
+        M = R[0].length
+
+        K = 3
+
+        var P = []; // Initialize array
+        for (var i = 0 ; i < N; i++) {
+            P[i] = []; // Initialize inner array
+            for (var j = 0; j < K; j++) { // i++ needs to be j++
+                P[i][j] = Math.random();
+            }
+        }
+
+        var Q = []; // Initialize array
+        for (var i = 0 ; i < M; i++) {
+            Q[i] = []; // Initialize inner array
+            for (var j = 0; j < K; j++) { // i++ needs to be j++
+                Q[i][j] = Math.random();
+            }
+        }
+        const nR = await MF.matrix_factorization(R, P, Q, K)
+
+        if (isNaN(nR[0][0])) res.send("NaN")
+        else res.send(nR)
+    })
+    .catch((error) => {console.log(error)});
+})
+
 async function make_Data() {
     let data = []
 
-    await NewUser.find().exec(async function(err, Users) {
-        await Posts.find().exec(function(err, Posts) {
-            for (const user of Users) {
-                let posts = []
-                for (const post of Posts) {
-                    var value = 0;
-                    user.Liked_Posts.forEach((p) => {if (p.post.toString() == post._id.toString())  value++;})
-                    let times = 0;
-                    // for (const comment of post.comments) {
-                    //     if (comment.user == user._id) times++;
-                    // }
-                    // if (times == 1) value += 2;
-                    // else if (times >= 2) value += 3;
-                    posts.unshift({
-                        post: post._id,
-                        rating: value
-                    })
-                    // console.log(user.Liked_Posts + " " + JSON.stringify(posts));
-                }
-                
-                data.push({
-                    user: user._id,
-                    posts: posts
+    try {
+        let Data = await new Promise(async (resolve, reject) =>{
+            await NewUser.find().exec(async function(err, Users) {
+                await Posts.find().exec(function(err, Posts) {
+                    for (const user of Users) {
+                        let posts = []
+                        for (const post of Posts) {
+                            var value = 0;
+                            user.Liked_Posts.forEach((p) => {if (p.post.toString() == post._id.toString())  value++;})
+                            let times = 0;
+                            for (const comment of post.comments) {
+                                if (comment.user.toString() == user._id.toString()) times++;
+                            }
+                            if (times == 1) value += 2;
+                            else if (times >= 2) value += 3;
+                            posts.unshift({
+                                post: post._id,
+                                rating: value
+                            })
+                        }
+                        
+                        data.push({
+                            user: user._id,
+                            posts: posts
+                        })
+                    }
+                    resolve(data)
                 })
-            }
-        })
-        console.log(data);
-        return data;
-    });
+        })})
+        return Data;
+    } catch (error) {
+        console.log(error);
+    }
+    
 }
 
 // @desc HomePage - Get all the Posts of the Users friends and others
 router.get('/:User_id', async (req, res) => {
-    // const data = make_Data();
     let all_posts = [];
     const Users_Posts = await Posts.find({author: req.params.User_id});
     all_posts = all_posts.concat(Users_Posts);
@@ -88,7 +139,7 @@ router.get('/:User_id', async (req, res) => {
         await NewUser.findById({_id: req.params.User_id})
         .then(async (user) => {
             for (const User of user.Connected_users) {
-                all_posts = all_posts.concat(await Posts.find({author: User}))
+                all_posts = all_posts.concat(await Posts.find({author: User}));
 
                 await NewUser.findById({_id: User})
                 .then(async (connected_user) => {
@@ -98,8 +149,10 @@ router.get('/:User_id', async (req, res) => {
                 })
             }
 
+            all_posts = all_posts.filter(function (el) {return el != null;});
+
             for(const post of all_posts){
-                if (all_posts.filter((v) => (v._id.toString() === post._id.toString())).length == 2) {
+                if (all_posts.filter((v) => (v._id.toString() === post._id.toString())).length >= 2) {
                     const Index = all_posts.map(item => item._id.toString()).indexOf(post._id.toString());
                 
                     all_posts.splice(Index, 1);

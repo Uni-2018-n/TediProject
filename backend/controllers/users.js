@@ -7,8 +7,6 @@ const fs                = require('fs');
 const FormData          = require('form-data');
 const convert           = require('xml-js');
 const mongoose          = require('mongoose');
-const upload            = require('../middleware/upload.js');
-const db                = require('../db.js')
 
 const getUsers = async (req, res) => {
     try {
@@ -253,7 +251,6 @@ const getRequest = (req, res) => {
 }
 
 const getProfile = (req, res) => {
-    console.log(req.params.id + "IM HERE");
     NewUser.findById(req.params.id)
     .then((result) => {
         if (req.params.id.toString() == req.params.UserId.toString() || result.Connected_users.includes(req.params.UserId)) {
@@ -296,7 +293,6 @@ const getNotifications = async (req, res) => {
 
 const getUsersInfo = async (req, res) => {
     try {
-        // for (const user of req.body.users) {}
         const result = await NewUser.find({},
             {
                 _id: 1,
@@ -309,7 +305,13 @@ const getUsersInfo = async (req, res) => {
                 email: 1
             }
         )
-        res.send(result);
+        res.send({
+            _id: result._id,
+            name: result.firstname.concat(" " + result.lastname),
+            phoneNumber: result.number,
+            email: result.email,
+            avatar: result.ProfilePic
+        });
     } catch (error) {
         console.log(error);
     }

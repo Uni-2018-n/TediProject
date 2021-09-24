@@ -15,6 +15,7 @@ function getCol(matrix, col){
 
 const matrix_factorization = async (R, P, Q, K, steps=50000, alpha=0.0002, beta=0.02) => {
     Q = transpose(Q);
+    let eij;
 
     for (let step = 0; step < steps; step++) {
         for (let i = 0; i < R.length; i++) {
@@ -54,7 +55,6 @@ const matrix_factorization = async (R, P, Q, K, steps=50000, alpha=0.0002, beta=
 
     try {
         const result = await mmultiply(P, Q);
-        console.log(result);
         return result;
     } catch (error) {
         console.log(error);
