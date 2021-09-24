@@ -59,25 +59,6 @@ router.get('/Data/posts', async (req, res) => {
             counter++;
         }
 
-        console.log(R);
-        R = [
-
-            [5,3,0,1],
-       
-            [4,0,0,1],
-       
-            [1,1,0,5],
-       
-            [1,0,0,4],
-       
-            [0,0,0,0],
-           
-            [2,1,3,0],
-       
-           ]
-
-           console.log(R);
-
         N = R.length
 
         M = R[0].length
@@ -88,33 +69,38 @@ router.get('/Data/posts', async (req, res) => {
         for (var i = 0 ; i < N; i++) {
             P[i] = []; // Initialize inner array
             for (var j = 0; j < K; j++) { // i++ needs to be j++
-                P[i][j] = Math.random();
+                var num = Math.random();
+                num = (num < 0.1 ? num * 10 : num)
+                P[i][j] = parseFloat(num.toFixed(8));
             }
         }
-
-        P = [[ 0.47541428  ,1.685651,    1.77578809],
-        [ 0.39228876  ,1.57102566 , 1.11317869],
-        [ 1.98855887 , 0.60674616, -0.3658349 ],
-        [ 1.71279801 , 0.10962353 , 0.2765648 ],
-        [ 0.46567216,  0.00622198 , 0.63384642],
-        [ 0.61811477 , 0.73850125,  0.62027099]]
 
         var Q = []; // Initialize array
         for (var i = 0 ; i < M; i++) {
             Q[i] = []; // Initialize inner array
             for (var j = 0; j < K; j++) { // i++ needs to be j++
-                Q[i][j] = Math.random();
+                var num = Math.random();
+                num = (num < 0.1 ? num * 10 : num)
+                Q[i][j] = parseFloat(num.toFixed(8));
             }
         }
 
-        Q = [[ 0.26914547 , 1.54206489 , 1.27311644],
-        [ 0.47061552 , 0.5840557 ,  0.9404649 ],
-        [ 1.08232288 , 1.48432495 , 1.63394157],
-        [ 2.35931281 , 0.2737889 , -0.3220709 ]]
         const nR = await MF.matrix_factorization(R, P, Q, K)
 
         if (isNaN(nR[0][0])) res.send("NaN")
-        else res.send(nR)
+        else {
+            counter = 0
+            for (const user of data) {
+                counter2 = 0;
+                for (const post of user.posts) {
+                    post.rating = Math.round(nR[counter][counter2]);
+                    counter2++;
+                }
+                counter++;
+            }
+            console.log(nR);
+            res.send(data)
+        }
     })
     .catch((error) => {console.log(error)});
 })
