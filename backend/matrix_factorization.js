@@ -13,7 +13,7 @@ function getCol(matrix, col){
     return column;
 }
 
-const matrix_factorization = async (R, P, Q, K, steps=50000, alpha=0.0002, beta=0.02) => {
+const matrix_factorization = async (R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02) => {
     Q = transpose(Q);
     let eij;
 
