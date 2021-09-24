@@ -305,8 +305,8 @@ const getUsersInfo = async (req, res) => {
                 ProfilePic: 1,
                 // Education: 1,
                 // Skills: 1,
-                // number: 1,
-                // email: 1
+                number: 1,
+                email: 1
             }
         )
         res.send(result);

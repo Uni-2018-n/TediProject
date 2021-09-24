@@ -70,6 +70,8 @@ export type userListType = {
     lastname: String,
     _id: String,
     ProfilePic: String,
+    number: String,
+    email: String,
 }
 
 export type chatsMessagesType = {
@@ -124,7 +126,11 @@ export const login = async (email: string, pass: string): Promise<Number> =>{
         }else{
             if(response.data.token) {
                 localStorage.setItem('user', JSON.stringify(response.data));
-                router.push('/user');
+                if(email === 'admin'){
+                    router.push('/admin')
+                }else{
+                    router.push('/user');
+                }
                 return -1;
             }
         }
