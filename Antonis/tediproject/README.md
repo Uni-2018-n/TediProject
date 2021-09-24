@@ -60,3 +60,5 @@ After that we have some actions that we need to use only if we need to generate 
 If we click the select button when clicking the users we are selecting them and adding them to an array so when we hit the export button we will download a JSON or XML file.
 
 If select isnt pressed if we click on a user we get a popup with all the information we have on the user.
+
+Its good to mention that on login the user is redirected to the admin page but could also go to the other pages as a normal user by changing the link to a /user etc. This is done so the admin can be a normal user if its desired. Also the admin can logout by /logout or by going to the main site and hitting the logout button.

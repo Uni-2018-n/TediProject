@@ -30,14 +30,14 @@
     <div id="genera">
       <ul>
         <li v-for="item in items" :key="item._id">
-          <Users @click="if(!select){idprop=item._id;flag=true;}else{if(selectedArray.includes(item._id)){selectedArray.splice(selectedArray.indexOf(item._id), 1)}else{selectedArray.push(item._id)}}" :user="item" :selected="selectedArray.includes(item._id)" />
+          <Users @click="if(!select){idprop=item;flag=true;}else{if(selectedArray.includes(item._id)){selectedArray.splice(selectedArray.indexOf(item._id), 1)}else{selectedArray.push(item._id)}}" :user="item" :selected="selectedArray.includes(item._id)" />
           <input class="inpcheck" type="checkbox" :value="item._id" v-model="selectedArray" :id="item._id" />
         </li>
       </ul>
     </div>
     <Footer />
   </div>
-  <userInfo v-if=flag :popupTriger="() => popupTriger()" :userId="idprop" />
+  <userInfo v-if=flag :popupTriger="() => popupTriger()" :user="idprop" />
 </template>
 
 <script lang="ts">
@@ -46,8 +46,9 @@ import Footer from "../components/footer.vue";
 import Users from "../components/adminPage/users.vue";
 import userInfo from "../components/adminPage/userInfo.vue"
 import userSearch from "../components/adminPage/userSearch.vue"
-import {userListType} from '../tsLibs/auth'
+import {userListType, givenType, loginCheck} from '../tsLibs/auth'
 import axios from "axios";
+import router from "../router/index"
 
 export default defineComponent({
   name: "AdminPage",
@@ -58,6 +59,15 @@ export default defineComponent({
     userSearch,
   },
   async setup() {
+    const user = ref<givenType>();
+    await loginCheck().then((data: givenType) =>{
+        user.value = data;
+        if(user.value && user.value.email != 'admin'){
+          router.go(-1)
+          // router.push({path: "/user"})
+        }
+    })
+
     const items = ref<userListType[]>([])
 
     try {
@@ -71,7 +81,7 @@ export default defineComponent({
     const query = ref({}); //to send
 
     const flag = ref(false);
-    const idpop = ref(null);
+    const idpop = ref<userListType>();
 
     const select = ref(false);
     const selectedArray = ref([]);

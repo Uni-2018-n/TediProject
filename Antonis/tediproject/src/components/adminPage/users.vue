@@ -24,9 +24,11 @@ import { getPic } from "../../tsLibs/funcs";
 export default defineComponent({
   name: "Users",
   props: {
-    user: {type: Object as PropType<userListType>, required: true}
+    user: {type: Object as PropType<userListType>, required: true},
+    selected: {type: Boolean, required: true},
   },
-  setup() {
+  setup(props) {
+    // console.log(props.selected)
     return {getPic, };
   },
 });
