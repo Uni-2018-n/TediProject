@@ -44,66 +44,69 @@ router.post('/', upload.fields([{name: 'photos'},{name: 'videos'}, {name: 'voice
     });
 })
 
-router.get('/Data/posts', async (req, res) => {
-    await make_Data().then(async (data) => {
+async function recommend() {
+    let Data = await new Promise(async (resolve, reject) =>{
+        await make_Data().then(async (data) => {
         
-        var R = []
-        let counter = 0;
-        for (const user of data) {
-            R[counter] = []
-            var counter2 = 0;
-            for (const post of user.posts) {
-                R[counter][counter2] = post.rating;
-                counter2++;
-            }
-            counter++;
-        }
-
-        N = R.length
-
-        M = R[0].length
-
-        K = 3
-
-        var P = []; // Initialize array
-        for (var i = 0 ; i < N; i++) {
-            P[i] = []; // Initialize inner array
-            for (var j = 0; j < K; j++) { // i++ needs to be j++
-                var num = Math.random();
-                num = (num < 0.1 ? num * 10 : num)
-                P[i][j] = parseFloat(num.toFixed(8));
-            }
-        }
-
-        var Q = []; // Initialize array
-        for (var i = 0 ; i < M; i++) {
-            Q[i] = []; // Initialize inner array
-            for (var j = 0; j < K; j++) { // i++ needs to be j++
-                var num = Math.random();
-                num = (num < 0.1 ? num * 10 : num)
-                Q[i][j] = parseFloat(num.toFixed(8));
-            }
-        }
-
-        const nR = await MF.matrix_factorization(R, P, Q, K)
-
-        if (isNaN(nR[0][0])) res.send("NaN")
-        else {
-            counter = 0
+            var R = []
+            let counter = 0;
             for (const user of data) {
-                counter2 = 0;
+                R[counter] = []
+                var counter2 = 0;
                 for (const post of user.posts) {
-                    post.rating = Math.round(nR[counter][counter2]);
+                    R[counter][counter2] = post.rating;
                     counter2++;
                 }
                 counter++;
             }
-            console.log(nR);
-            res.send(data)
-        }
+
+            N = R.length
+
+            M = R[0].length
+
+            K = 3
+
+            var P = []; // Initialize array
+            for (var i = 0 ; i < N; i++) {
+                P[i] = []; // Initialize inner array
+                for (var j = 0; j < K; j++) { // i++ needs to be j++
+                    var num = Math.random();
+                    num = (num < 0.1 ? num * 10 : num)
+                    P[i][j] = parseFloat(num.toFixed(8));
+                }
+            }
+
+            var Q = []; // Initialize array
+            for (var i = 0 ; i < M; i++) {
+                Q[i] = []; // Initialize inner array
+                for (var j = 0; j < K; j++) { // i++ needs to be j++
+                    var num = Math.random();
+                    num = (num < 0.1 ? num * 10 : num)
+                    Q[i][j] = parseFloat(num.toFixed(8));
+                }
+            }
+
+            const nR = await MF.matrix_factorization(R, P, Q, K)
+
+            if (isNaN(nR[0][0])) resolve("NaN")
+            else {
+                counter = 0
+                for (const user of data) {
+                    counter2 = 0;
+                    for (const post of user.posts) {
+                        post.rating = Math.round(nR[counter][counter2]);
+                        counter2++;
+                    }
+                    counter++;
+                }
+                // console.log(nR);
+                resolve(data)
+            }
+        })
+        .catch((error) => {console.log(error)});
     })
-    .catch((error) => {console.log(error)});
-})
+    return Data
+}
 
 async function make_Data() {
     let data = []
@@ -113,6 +116,7 @@ async function make_Data() {
             await NewUser.find().exec(async function(err, Users) {
                 await Posts.find().exec(function(err, Posts) {
                     for (const user of Users) {
+                        if (user.email == "admin") continue;
                         let posts = []
                         for (const post of Posts) {
                             var value = 0;
@@ -141,7 +145,6 @@ async function make_Data() {
     } catch (error) {
         console.log(error);
     }
-    
 }
 
 // @desc HomePage - Get all the Posts of the Users friends and others
@@ -164,14 +167,27 @@ router.get('/:User_id', async (req, res) => {
                 })
             }
 
+            const recommended_posts = await recommend();
+
+            for (const post of recommended_posts) {
+                if (post.user.toString() == user._id.toString()) {
+                    console.log("@")
+                    for (const Post of post.posts) {
+                        console.log(JSON.stringify(Post))
+                        if (Post.rating >= 2)
+                            all_posts = all_posts.concat(await Posts.findById(Post.post))
+                    }
+                    break;
+                }
+            }
+
             all_posts = all_posts.filter(function (el) {return el != null;});
 
-            for(const post of all_posts){
-                if (all_posts.filter((v) => (v._id.toString() === post._id.toString())).length >= 2) {
-                    const Index = all_posts.map(item => item._id.toString()).indexOf(post._id.toString());
-                
-                    all_posts.splice(Index, 1);
-                }                
+            for(let counter = 0; counter < all_posts.length; counter++){
+                if (all_posts.filter((v) => (v._id.toString() === all_posts[counter]._id.toString())).length >= 2) {
+                    all_posts.splice(counter, 1);
+                    counter--;
+                }
             }
 
             res.json({all_posts});
