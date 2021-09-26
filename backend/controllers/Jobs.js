@@ -149,7 +149,7 @@ const getJobs = async (req, res) => {
             const recommended_jobs = await recommend();
 
             for (const job of recommended_jobs) {
-                if (job.user.toString() == user._id.toString()) {
+                if (job.user.toString() == user._id.toString() && req.params.User_id != job.user.toString()) {
                     for (const JOB of job.jobs) {
                         console.log(JSON.stringify(JOB))
                         if (JOB.rating >= 2)
