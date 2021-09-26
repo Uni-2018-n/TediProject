@@ -1,6 +1,7 @@
 const Job         = require("../models/Jobs");
 const Application = require("../models/applications");
 const NewUser     = require("../models/SignUp");
+const MF          = require('../matrix_factorization');
 
 const createJob = async (req, res) => {
     const user = await NewUser.findById({_id: req.body.author})
@@ -21,6 +22,116 @@ const createJob = async (req, res) => {
     });
 }
 
+
+async function recommend() {
+    let Data = await new Promise(async (resolve, reject) =>{
+        await make_Data_jobs().then(async (data) => {
+        
+            var R = []
+            let counter = 0;
+            for (const user of data) {
+                R[counter] = []
+                var counter2 = 0;
+                for (const job of user.jobs) {
+                    R[counter][counter2] = job.rating;
+                    counter2++;
+                }
+                counter++;
+            }
+
+            console.log(R)
+
+            // R = [
+            //     [ 0, 0, 0, 1, 1, 1 ],
+            //     [ 5, 5, 5, 1, 1, 1 ],
+            //     [ 1, 1, 1, 5, 5, 5 ],
+            //   ]
+
+            N = R.length
+
+            M = R[0].length
+
+            K = 3
+
+            var P = []; // Initialize array
+            for (var i = 0 ; i < N; i++) {
+                P[i] = []; // Initialize inner array
+                for (var j = 0; j < K; j++) { // i++ needs to be j++
+                    var num = Math.random();
+                    num = (num < 0.1 ? num * 10 : num)
+                    P[i][j] = parseFloat(num.toFixed(8));
+                }
+            }
+
+            var Q = []; // Initialize array
+            for (var i = 0 ; i < M; i++) {
+                Q[i] = []; // Initialize inner array
+                for (var j = 0; j < K; j++) { // i++ needs to be j++
+                    var num = Math.random();
+                    num = (num < 0.1 ? num * 10 : num)
+                    Q[i][j] = parseFloat(num.toFixed(8));
+                }
+            }
+
+            const nR = await MF.matrix_factorization(R, P, Q, K)
+
+            if (isNaN(nR[0][0])) resolve("NaN")
+            else {
+                counter = 0
+                for (const user of data) {
+                    counter2 = 0;
+                    for (const job of user.jobs) {
+                        job.rating = Math.round(nR[counter][counter2]);
+                        counter2++;
+                    }
+                    counter++;
+                }
+                // console.log(nR);
+                resolve(data)
+            }
+        })
+        .catch((error) => {console.log(error)});
+    })
+    return Data
+}
+
+async function make_Data_jobs() {
+    let data = []
+
+    try {
+        let Data = await new Promise(async (resolve, reject) =>{
+            await NewUser.find().exec(async function(err, Users) {
+                await Job.find().exec(async function(err, Jobs) {
+                    for (const user of Users) {
+                        if (user.email == "admin") continue;
+                        let jobs = []
+                        for (const job of Jobs) {
+                            var value = 0;
+                            for (const app of job.Applications) {
+                                const App = await Application.findById(app)
+                                if (App.applicant.toString() == user._id.toString()) value+=4;
+                            }
+
+                            jobs.unshift({
+                                job: job._id,
+                                rating: value
+                            })
+                        }
+                        
+                        data.push({
+                            user: user._id,
+                            jobs: jobs
+                        })
+                    }
+                    resolve(data)
+                })
+        })})
+        return Data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const getJobs = async (req, res) => {
     let all_jobs = [];
     try {
@@ -34,6 +145,31 @@ const getJobs = async (req, res) => {
                     {author: {$nin: user.Connected_users}},
                     {Skills: {$elemMatch: {$in: user.Skills.skills}}}
                 ]}))
+
+            const recommended_jobs = await recommend();
+
+            for (const job of recommended_jobs) {
+                if (job.user.toString() == user._id.toString()) {
+                    for (const JOB of job.jobs) {
+                        console.log(JSON.stringify(JOB))
+                        if (JOB.rating >= 2)
+                            all_jobs = all_jobs.concat(await Job.findById(JOB.job))
+                    }
+                    break;
+                }
+            }
+
+            all_jobs = all_jobs.filter(function (el) {return el != null;});
+
+            for(let counter = 0; counter < all_jobs.length; counter++){
+                if (all_jobs.filter((v) => (v._id.toString() === all_jobs[counter]._id.toString())).length >= 2) {
+                    all_jobs.splice(counter, 1);
+                    counter--;
+                }
+            }
+
+            all_jobs = all_jobs.reverse()
+
             res.json({all_jobs});
         })
         .catch((error) => {
@@ -111,5 +247,5 @@ const getmyJobs = async (req, res) => {
 }
 
 module.exports = {
-    createJob, getJobs, applyJob, getApplications, getmyJobs//, deleteUser, updateUser
+    createJob, getJobs, applyJob, getApplications, getmyJobs, recommend//, updateUser
 }

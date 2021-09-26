@@ -23,7 +23,7 @@ router.post('/', JobController.createJob);
 // @desc Apply for a Job
 router.post('/:Job_id', upload.single('file'), JobController.applyJob);
 
-// router.delete('/:id', JobController.deleteJob);
+router.get('/Data/jobs', JobController.recommend);
 
 // router.patch('/:id', JobController.updateJob);
 
