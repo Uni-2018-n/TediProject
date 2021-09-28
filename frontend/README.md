@@ -1,5 +1,14 @@
 Read me file for front end:
 
+to run this vue project we need to have npm installed and do:
+npm install to install the node modules and
+npm run serve to run it.
+the program then will print where the port that it listens, the protocol and the address that it listens to.
+
+There is a chance that it might be needed to use this command:
+npm install vue@next
+this is to install some of the vue's core modules.
+
 user home page has a sign in and register tab, on register every field is required except phone number and profile picture, those could be set on register but it also could be set later on the settings tab etc.
 
 Generaly speaking the page layout has 3 compartments, 
