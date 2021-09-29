@@ -85,7 +85,6 @@ const NewUser = new mongoose.Schema({
             type: String
         }
     }]
-    // Add every file necessary later
 }, {timestamps: true});
 
 const model = mongoose.model('NewUser', NewUser);

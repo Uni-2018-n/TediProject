@@ -15,8 +15,6 @@ const router = express.Router();
 router.post('/', upload.fields([{name: 'photos'},{name: 'videos'}, {name: 'voices'}]), async (req, res) => {
     // Dont forget to check if post is valid (check library validator)
 
-    // console.log(req.files.photos)
-    // res.sendStatus(200);
     let pics = [];
     let vids = [];
     let voice = [];
@@ -171,9 +169,7 @@ router.get('/:User_id', async (req, res) => {
 
             for (const post of recommended_posts) {
                 if (post.user.toString() == user._id.toString()) {
-                    console.log("@")
                     for (const Post of post.posts) {
-                        console.log(JSON.stringify(Post))
                         if (Post.rating >= 2)
                             all_posts = all_posts.concat(await Posts.findById(Post.post))
                     }
