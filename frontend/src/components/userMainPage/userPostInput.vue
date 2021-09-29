@@ -182,6 +182,7 @@ export default defineComponent({
                 })
                 reset();
                 loadingFlag.value=false;
+                router.go(0);
             }catch (e){
                 loadingFlag.value=false;
                 console.log("**USER INPUT POST ERROR**");
