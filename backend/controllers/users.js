@@ -358,7 +358,7 @@ const JsontoXml = async (req, res) => {
 }
 
 module.exports = {
-    getUsers, getUser, createUser, updateUser, connectUser,
-    getConnected, acceptRequest, rejectRequest, getRequest, getProfile, getNotifications,
+    getUsers, getUser, createUser, updateUser, connectUser, getConnected,
+    acceptRequest, rejectRequest, getRequest, getProfile, getNotifications,
     getUsersInfo, JsontoXml, Json
 }

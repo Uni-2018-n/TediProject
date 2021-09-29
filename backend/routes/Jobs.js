@@ -23,6 +23,4 @@ router.post('/', JobController.createJob);
 // @desc Apply for a Job
 router.post('/:Job_id', upload.single('file'), JobController.applyJob);
 
-// router.patch('/:id', JobController.updateJob);
-
 module.exports = router;
