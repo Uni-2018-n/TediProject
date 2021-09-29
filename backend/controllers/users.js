@@ -4,7 +4,6 @@ const UploadController  = require('../controllers/Upload.js');
 const bcrypt            = require('bcryptjs');
 const jwt               = require('jsonwebtoken');
 const fs                = require('fs');
-const FormData          = require('form-data');
 const convert           = require('xml-js');
 const mongoose          = require('mongoose');
 
