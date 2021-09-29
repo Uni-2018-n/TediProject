@@ -101,21 +101,9 @@ const createUser = (req, res) => {
     });
 }
 
-const deleteUser = (req, res) => {
-    const {id} = req.params;
-    NewUser.findByIdAndDelete(id)
-    .then((result) => {
-        res.json({redirect: '/'}) // redirect to home page
-        // res.send(`The user with the id ${id} is a loser so we deleted him`);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
-}
-
 const updateUser = (req, res) => {
     const {id} = req.params;
-    // console.log(req.file)
+
     // The new data we want to patch
     NewUser.findByIdAndUpdate(id, req.body)
     .then(async (result) => {
@@ -370,7 +358,7 @@ const JsontoXml = async (req, res) => {
 }
 
 module.exports = {
-    getUsers, getUser, createUser, deleteUser, updateUser, connectUser,
+    getUsers, getUser, createUser, updateUser, connectUser,
     getConnected, acceptRequest, rejectRequest, getRequest, getProfile, getNotifications,
     getUsersInfo, JsontoXml, Json
 }

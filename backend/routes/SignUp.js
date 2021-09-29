@@ -17,9 +17,6 @@ router.get('/:id', UserController.getUser);
 // @desc Get Users Profile
 router.get('/profile/:id/:UserId', UserController.getProfile);
 
-// @desc Delete a User
-router.delete('/:id', UserController.deleteUser);
-
 // @desc Update Users Profile
 router.patch('/:id', upload.single('file'), UserController.updateUser);
 

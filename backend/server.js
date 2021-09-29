@@ -4,11 +4,8 @@ const hbs            = require('express-handlebars');
 const mongoose       = require('mongoose');
 const Grid           = require('gridfs-stream');
 const cors           = require('cors');
-const passport       = require('passport');
-const localStrategy  = require('passport-local');
 const bcrypt         = require('bcryptjs');
 const jwt            = require('jsonwebtoken');
-// const hbs            = require('hbs');
 
 const https          = require('https');
 const fs             = require('fs');
@@ -43,13 +40,12 @@ mongoose.connection.once('open', () => {
   gfs = Grid(mongoose.connection.db, mongoose.mongo);
   gfs.collection('uploads');
 });
-// 
+
 // Middleware
 app.engine('hbs', hbs({ extname: '.hbs' }));
 app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 app.use(express.static('/home/smackflad/Documents/uni/6o/tedi/Project/TediProject/Antonis/tediproject/src' + '/public'));
-// console.log(__dirname);
 app.use(session({
     secret: "verygoodsecret",
     resave: false,
