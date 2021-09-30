@@ -18,25 +18,6 @@ const getUsers = async (req, res) => {
             }
         )
 
-        // result.forEach( async function(table) {
-        //     try {
-        //         if (table.ProfilePic) {
-        //             temp = {filename: table.ProfilePic}
-                        
-        //             console.log(table.ProfilePic);
-        //             const file = await gfs.files.findOne({ filename: table.ProfilePic });
-        //             // File exists
-        //             const readStream = gfs.createReadStream(file.filename);
-        //             readStream.pipe(res)
-        //             // return res.json(file)
-        //             await UploadController.getUsersFiles(temp)
-        //             console.log(temp);
-        //         }
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // });
-
         res.send(result);
     } catch (error) {
         console.log(error);
@@ -119,7 +100,6 @@ const updateUser = (req, res) => {
         if (req.body.Skills) result.Skills = req.body.Skills;
         if (req.body.number) result.number = req.body.number;
         if (req.body.Experience) {
-            req.body.Experience.Experience = req.body.Experience.Experience
             result.Experience = req.body.Experience;
         }
 
