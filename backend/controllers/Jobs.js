@@ -39,14 +39,6 @@ async function recommend() {
                 counter++;
             }
 
-            console.log(R)
-
-            // R = [
-            //     [ 0, 0, 0, 1, 1, 1 ],
-            //     [ 5, 5, 5, 1, 1, 1 ],
-            //     [ 1, 1, 1, 5, 5, 5 ],
-            //   ]
-
             N = R.length
 
             M = R[0].length
@@ -86,7 +78,6 @@ async function recommend() {
                     }
                     counter++;
                 }
-                // console.log(nR);
                 resolve(data)
             }
         })
