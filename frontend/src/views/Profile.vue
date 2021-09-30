@@ -126,7 +126,6 @@ export default defineComponent({
         if(user.value)
         try {
             const response = await axios.get("https://localhost:8000/users/profile/"+user.value._id+"/"+user.value._id)
-            // console.log(response.data)
             skills.value = response.data.Skills.skills;
             skillsPrivate.value = response.data.Skills.private;
             education.value = response.data.Education.string;

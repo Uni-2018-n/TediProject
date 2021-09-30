@@ -29,15 +29,13 @@ export default defineComponent({
     },
     setup(props) {
         const checked = ref(!props.private);
-        const toAppend = ref<string []>([]);
-        const tempAppend = ref(toAppend.value.concat(props.curr));
+        const tempAppend = ref(props.curr);
         const temp= ref("");
         const append = () => {
-            if(toAppend.value.includes(temp.value)) {
+            if(tempAppend.value.includes(temp.value)) {
                 temp.value = "";
             }else{
-                toAppend.value.push(temp.value);
-                tempAppend.value.push(temp.value);
+                tempAppend.value.unshift(temp.value);
                 temp.value ="";
             }
         }

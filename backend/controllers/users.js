@@ -119,7 +119,7 @@ const updateUser = (req, res) => {
         if (req.body.Skills) result.Skills = req.body.Skills;
         if (req.body.number) result.number = req.body.number;
         if (req.body.Experience) {
-            req.body.Experience.Experience = req.body.Experience.Experience.reverse();
+            req.body.Experience.Experience = req.body.Experience.Experience
             result.Experience = req.body.Experience;
         }
 

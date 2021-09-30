@@ -2,7 +2,7 @@
   <div class="outer">
     <div id="logo">
       <h1>LinkedIn Project</h1>
-      <h3>By SDI1800056 and SDI1800000</h3>
+      <h3>By SDI1800056 and SDI1800286</h3>
     </div>
     <div id="form">
       <welcomeForms />
