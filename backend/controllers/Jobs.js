@@ -140,11 +140,14 @@ const getJobs = async (req, res) => {
             const recommended_jobs = await recommend();
 
             for (const job of recommended_jobs) {
-                if (job.user.toString() == user._id.toString() && req.params.User_id != job.user.toString()) {
+                
+                if (job.user.toString() == req.params.User_id.toString()) {
                     for (const JOB of job.jobs) {
-                        console.log(JSON.stringify(JOB))
-                        if (JOB.rating >= 2)
-                            all_jobs = all_jobs.concat(await Job.findById(JOB.job))
+                        if (JOB.rating >= 2) {
+                            const j = await Job.findById(JOB.job);
+                            if (j.author.toString() != req.params.User_id.toString())
+                                all_jobs = all_jobs.concat(j)
+                        }
                     }
                     break;
                 }
