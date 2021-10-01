@@ -25,6 +25,7 @@ const PostsRoutes    = require('./routes/Posts.js');
 const ChatRoutes     = require('./routes/Chat.js');
 const JobRoutes      = require('./routes/Jobs.js');
 const SearchRoutes   = require('./routes/Search.js');
+const NewUser        = require('./models/SignUp');
 
 const app = express();
 
@@ -142,6 +143,27 @@ app.use('/', (req, res) => {
 });
 
 https.createServer(options, app).listen(8000, '127.0.0.1',function() {
-    console.log('test')
-    // myRoutes.myFunction();
+    let securePassword;
+
+    // Make admin
+    const used = NewUser.findOne({ email: "admin" })
+    .then((result) => {
+        if (result == null) {
+            void async function() {
+                securePassword = await bcrypt.hash("admin", 10)
+
+                const user = new NewUser ({
+                    firstname: "admin",
+                    lastname: "admin",
+                    email: "admin",
+                    password: securePassword,
+                });
+
+                user.save();
+            }();
+        }
+    })
+    .catch((err) => {
+        console.log(err);
+    });
   });

@@ -260,7 +260,7 @@ const getNotifications = async (req, res) => {
 
 const getUsersInfo = async (req, res) => {
     try {
-        const result = await NewUser.find({},
+        const result = await NewUser.find({email: {$not: {$eq: "admin"}}},
             {
                 _id: 1,
                 firstname: 1,
@@ -272,13 +272,20 @@ const getUsersInfo = async (req, res) => {
                 email: 1
             }
         )
-        res.send({
-            _id: result._id,
-            name: result.firstname.concat(" " + result.lastname),
-            phoneNumber: result.number,
-            email: result.email,
-            avatar: result.ProfilePic
-        });
+        const wait = await result.forEach(async (elem) => {
+            const element = result.pop()
+            const Name = await element.firstname.concat(" " + element.lastname);
+            await result.unshift({
+                _id: element._id,
+                name: Name,
+                firstname: element.firstname,
+                lastname: element.lastname,
+                phoneNumber: element.number,
+                email: element.email,
+                ProfilePic: element.ProfilePic
+            })
+        })
+        res.send(result);
     } catch (error) {
         console.log(error);
     }

@@ -1,9 +1,7 @@
 const express  = require("express");
 const mongoose = require("mongoose");
-const passport = require("passport");
 const upload   = require('../middleware/upload.js');
 const Posts    = require('../models/Posts.js');
-const jwt      = require('jsonwebtoken');
 const NewUser  = require('../models/SignUp');
 const MF       = require('../matrix_factorization');
 
