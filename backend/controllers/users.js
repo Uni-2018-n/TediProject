@@ -329,7 +329,7 @@ const JsontoXml = async (req, res) => {
         const users = {profile}
 
         var options = {compact: true, ignoreComment: true, spaces: 4};
-        var result = convert.json2xml("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + JSON.stringify({users}, null, 2), options);
+        var result = convert.json2xml(JSON.stringify({users}, null, 2), options);
         fs.writeFile('./users.xml', result, async err => {
             if (err) {
                 console.log('Error writing file', err);
