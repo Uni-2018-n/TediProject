@@ -2,9 +2,13 @@ const NewUser  = require('../models/SignUp');
 const mongoose = require("mongoose");
 
 const getUsers = async function (req, res) {
+    const words = req.params.name.split(' ');
+    if (!words[1]) words[1] = "";
     const users = await NewUser.find({
         $or: [{"firstname": {$regex: req.params.name}},
-              {"lastname": {$regex: req.params.name}}]
+              {"lastname": {$regex: req.params.name}},
+              {$and: [{"firstname": {$regex: words[0]}},
+                      {"lastname": {$regex: words[1]}}]}]
     },
     {
         _id: 1,
@@ -16,13 +20,17 @@ const getUsers = async function (req, res) {
 }
 
 const getUsers_Friends = async function (req, res) {
+    const words = req.params.name.split(' ');
+    if (!words[1]) words[1] = "";
     const connected_users = await NewUser.find({_id: req.params.id},{Connected_users: 1});
 
     let users = [];
     for (const connected of connected_users[0].Connected_users) {
         users = users.concat(await NewUser.find({_id: connected,
             $or: [{"firstname": {$regex: req.params.name}},
-                  {"lastname": {$regex: req.params.name}}]
+                  {"lastname": {$regex: req.params.name}},
+                  {$and: [{"firstname": {$regex: words[0]}},
+                          {"lastname": {$regex: words[1]}}]}]
         },
         {
             _id: 1,
