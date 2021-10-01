@@ -39,14 +39,6 @@ async function recommend() {
                 counter++;
             }
 
-            console.log(R)
-
-            // R = [
-            //     [ 0, 0, 0, 1, 1, 1 ],
-            //     [ 5, 5, 5, 1, 1, 1 ],
-            //     [ 1, 1, 1, 5, 5, 5 ],
-            //   ]
-
             N = R.length
 
             M = R[0].length
@@ -66,7 +58,7 @@ async function recommend() {
             var Q = []; // Initialize array
             for (var i = 0 ; i < M; i++) {
                 Q[i] = []; // Initialize inner array
-                for (var j = 0; j < K; j++) { // i++ needs to be j++
+                for (var j = 0; j < K; j++) {
                     var num = Math.random();
                     num = (num < 0.1 ? num * 10 : num)
                     Q[i][j] = parseFloat(num.toFixed(8));
@@ -86,7 +78,6 @@ async function recommend() {
                     }
                     counter++;
                 }
-                // console.log(nR);
                 resolve(data)
             }
         })
@@ -109,7 +100,7 @@ async function make_Data_jobs() {
                             var value = 0;
                             for (const app of job.Applications) {
                                 const App = await Application.findById(app)
-                                if (App.applicant.toString() == user._id.toString()) value+=4;
+                                if (App.applicant.toString() == user._id.toString()) value+=2;
                             }
 
                             jobs.unshift({
@@ -149,11 +140,14 @@ const getJobs = async (req, res) => {
             const recommended_jobs = await recommend();
 
             for (const job of recommended_jobs) {
-                if (job.user.toString() == user._id.toString() && req.params.User_id != job.user.toString()) {
+                
+                if (job.user.toString() == req.params.User_id.toString()) {
                     for (const JOB of job.jobs) {
-                        console.log(JSON.stringify(JOB))
-                        if (JOB.rating >= 2)
-                            all_jobs = all_jobs.concat(await Job.findById(JOB.job))
+                        if (JOB.rating >= 2) {
+                            const j = await Job.findById(JOB.job);
+                            if (j.author.toString() != req.params.User_id.toString())
+                                all_jobs = all_jobs.concat(j)
+                        }
                     }
                     break;
                 }

@@ -23,8 +23,4 @@ router.get("/:id/:name", SearchController.getUsers_Friends);
 // @desc Search Users by ID
 router.get('/search/id/:id', SearchController.getUsersID);
 
-// router.delete('/:id', JobController.deleteJob);
-
-// router.patch('/:id', JobController.updateJob);
-
 module.exports = router;
