@@ -137,8 +137,12 @@ app.get('/check', verifyToken, async (req, res) => {
 })
 
 app.use('/', (req, res) => {
+    // console.log('this is a test')
     res.send('hello');
     // res.render('index');
 });
 
-https.createServer(options, app).listen(8000);
+https.createServer(options, app).listen(8000, '127.0.0.1',function() {
+    console.log('test')
+    // myRoutes.myFunction();
+  });
