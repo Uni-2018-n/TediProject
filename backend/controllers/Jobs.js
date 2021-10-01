@@ -58,7 +58,7 @@ async function recommend() {
             var Q = []; // Initialize array
             for (var i = 0 ; i < M; i++) {
                 Q[i] = []; // Initialize inner array
-                for (var j = 0; j < K; j++) { // i++ needs to be j++
+                for (var j = 0; j < K; j++) {
                     var num = Math.random();
                     num = (num < 0.1 ? num * 10 : num)
                     Q[i][j] = parseFloat(num.toFixed(8));
@@ -100,7 +100,7 @@ async function make_Data_jobs() {
                             var value = 0;
                             for (const app of job.Applications) {
                                 const App = await Application.findById(app)
-                                if (App.applicant.toString() == user._id.toString()) value+=4;
+                                if (App.applicant.toString() == user._id.toString()) value+=2;
                             }
 
                             jobs.unshift({
